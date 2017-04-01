@@ -1,0 +1,52 @@
+
+# Directories #
+build/
+bin/
+target/
+
+# OS Files #
+.DS_Store
+
+*.class
+
+# SpringSource Tool Suite
+.settings
+.metadata
+.project
+.classpath
+.springBeans
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.db
+
+# Windows
+Thumbs.db 
+Desktop.ini
+
+# OSX
+.DS_Store
+.svn
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Eclipse
+*.pydevproject
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*~.nib
+
+# Vi files
+*.swp
+*.swo
+
+dependency-reduced-pom.xml
