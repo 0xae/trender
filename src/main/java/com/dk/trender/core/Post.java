@@ -77,6 +77,10 @@ public class Post {
 	@NotNull
 	@Embedded
 	private PostLink postLink;
+
+	public Post() {
+		// TODO
+	}
 	
 	@JsonProperty
 	public void setCoverHtml(String coverHtml) {

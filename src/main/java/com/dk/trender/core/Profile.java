@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -21,15 +23,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Entity
 @Table(name="z_profile")
+@NamedQueries({
+	@NamedQuery(
+	    name = "profile.findAll",
+	    query = "from Profile p"
+	),
+	@NamedQuery(
+	    name = "profile.byUsername",
+	    query = "from Profile p where username = :username"
+	),
+	@NamedQuery(
+	    name = "profile.search",
+	    query = "from Profile p where title like concat('%',:query,'%')"
+	),
+})
 public class Profile {
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
-
-	@NotEmpty
-	@NaturalId
-	@Column(name="username", nullable=false, unique=true)
-	private String username;	
 	
 	@NotEmpty
 	@Column(name="title", nullable=false)
@@ -44,6 +55,11 @@ public class Profile {
 
 	@Column(name="picture")
 	private String picture;
+
+	@NotEmpty
+	@NaturalId
+	@Column(name="username", nullable=false, unique=true)
+	private String username;
 	
 	@NotNull
 	@Column(name="indexed_at", nullable=false)
@@ -54,6 +70,10 @@ public class Profile {
 	
 	@Column(name="last_update")
 	private DateTime lastUpdate;
+
+	public Profile() {
+		// TODO
+	}
 
 	public void setId(long id) {
 		this.id = id;

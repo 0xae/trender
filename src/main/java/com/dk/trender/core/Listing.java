@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @NamedQueries({
 	@NamedQuery(
 	    name = "listing.findAll",
-	    query = "select zl from Listing zl"
+	    query = "from Listing l"
 	)
 })
 public class Listing {
@@ -34,8 +34,8 @@ public class Listing {
     private long id;
 
 	@NotEmpty
-	@Column(name="name", nullable=false)
-	private String name;
+	@Column(name="title", nullable=false)
+	private String title;
 
 	@Column(name="description")
 	private String description;
@@ -43,29 +43,14 @@ public class Listing {
 	@Column(name="created_at", updatable=false)
 	private DateTime createdAt;
 
-	@Column(name="updated_at")
-	private DateTime updatedAt;
+	@Column(name="last_update")
+	private DateTime lastUpdate;
 
-	@JsonProperty
-	public DateTime getUpdatedAt() {
-		return updatedAt;
-	}
-
-	@JsonProperty
-	public String getUpdatedAtFmt() {
-		return DateTimeFormat.forPattern("YYY-MM-d HH:mm:ss")
-			   .print(updatedAt);
-	}
+	@Column(name="last_activity")
+	private DateTime lastActivity;
 	
-	@JsonProperty
-	public String getCreatedAtFmt() {
-		return DateTimeFormat.forPattern("YYY-MM-d HH:mm:ss")
-			   .print(createdAt);
-	}
-	
-	@JsonProperty
-	public void setUpdatedAt(DateTime updatedAt) {
-		this.updatedAt = updatedAt;
+	public Listing() {
+		// TODO
 	}
 
 	@JsonProperty
@@ -79,13 +64,13 @@ public class Listing {
 	}
 
 	@JsonProperty
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
 	@JsonProperty
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String t) {
+		this.title = t;
 	}
 
 	@JsonProperty
@@ -106,5 +91,25 @@ public class Listing {
 	@JsonProperty
 	public void setCreatedAt(DateTime createdAt) {
 		this.createdAt = createdAt;
+	}
+	
+	@JsonProperty
+	public void setLastActivity(DateTime lastActivity) {
+		this.lastActivity = lastActivity;
+	}
+	
+	@JsonProperty
+	public DateTime getLastActivity() {
+		return lastActivity;
+	}
+	
+	@JsonProperty
+	public void setLastUpdate(DateTime lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
+
+	@JsonProperty
+	public DateTime getLastUpdate() {
+		return lastUpdate;
 	}
 }

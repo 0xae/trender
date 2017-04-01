@@ -48,7 +48,7 @@ create table z_post (
         count_angry int default 0 not null,
         count_sad int default 0 not null,
 
-        -- activity
+        -- link
         comment_link text not null,
         share_link text ,
         view_link text not null,
