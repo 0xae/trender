@@ -10,11 +10,15 @@ import org.hibernate.SessionFactory;
 
 import com.dk.trender.core.Listing;
 import com.dk.trender.core.Post;
+import com.dk.trender.core.Profile;
+import com.dk.trender.exceptions.ConstraintViolationExceptionMapper;
 import com.dk.trender.exceptions.NoResultExceptionExceptionMapper;
 import com.dk.trender.resources.ListingResource;
 import com.dk.trender.resources.PostResource;
+import com.dk.trender.resources.ProfileResource;
 import com.dk.trender.service.ListingService;
 import com.dk.trender.service.PostService;
+import com.dk.trender.service.ProfileService;
 
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
@@ -28,7 +32,8 @@ import io.dropwizard.setup.Environment;
 public class TrenderApplication extends Application<TrenderConfiguration> {
     private final HibernateBundle<TrenderConfiguration> hibernateBundle =
             new HibernateBundle<TrenderConfiguration>(Listing.class,
-            		                            Post.class) {
+            		                            	  Post.class,
+            		                            	  Profile.class) {
 				public DataSourceFactory getDataSourceFactory(TrenderConfiguration configuration) {
 					return configuration.getDatabase();
 				}
@@ -63,12 +68,15 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 
 		SessionFactory sessionFactory = hibernateBundle.getSessionFactory();
+		ProfileService profileService = new ProfileService(sessionFactory);
 		PostService postService = new PostService(sessionFactory);
-		ListingService listingService = new ListingService(sessionFactory, postService);
+		ListingService listingService = new ListingService(sessionFactory, postService, profileService);
 		
+//		env.jersey().register(new PostResource(postService));
 		env.jersey().register(new ListingResource(listingService));
-		env.jersey().register(new PostResource(postService));
+		env.jersey().register(new ProfileResource(profileService));
 		env.jersey().register(new NoResultExceptionExceptionMapper(env.metrics()));
+		env.jersey().register(new ConstraintViolationExceptionMapper());
 	}
 
     public static void main(String[] args) throws Exception {

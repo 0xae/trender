@@ -25,11 +25,4 @@ public class PostResource {
 	public PostResource(final PostService service) {
 		this.service = service;
 	}
-
-	@GET
-	@UnitOfWork
-	@Path("/view")
-	public Post viewPost(@QueryParam("fbid") String facebookId) {
-		return service.getByFacebookId(facebookId);
-	}
 }

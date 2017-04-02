@@ -9,6 +9,8 @@ import org.joda.time.DateTime;
 
 import com.dk.trender.core.Listing;
 import com.dk.trender.core.Post;
+import com.dk.trender.core.PostRequest;
+import com.dk.trender.core.Profile;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
@@ -19,15 +21,26 @@ import io.dropwizard.hibernate.AbstractDAO;
  */
 public class ListingService extends AbstractDAO<Listing> {
 	private final PostService postService;
+	private final ProfileService profileService;
 
-	public ListingService(SessionFactory factory, PostService postService) {
+	public ListingService(SessionFactory factory, 
+						  PostService postService,
+						  ProfileService profileService) {
         super(factory);
         this.postService = postService;
+        this.profileService = profileService;
     }
 
     @SuppressWarnings("unchecked")
     public List<Listing> findAll() {
-        return list(namedQuery("listing.findAll"));
+        return namedQuery("listing.findAll")
+        	   .getResultList();
+    }
+
+    public Listing findById(long id) {
+    	return (Listing) namedQuery("listing.findById")
+    					 .setParameter("id", id)
+			    		 .getSingleResult();
     }
 
     public Listing create(Listing listing) {
@@ -36,36 +49,35 @@ public class ListingService extends AbstractDAO<Listing> {
     	}
         return persist(listing);
     }
-
-    public Post createPost(long listingId, Post post) {
-    	post.setListingId(listingId);
-		// create post
-    	Listing listing = getById(listingId);
-    	final Post postCreated = postService.create(post);
-
-    	// update listing
-    	listing.setUpdatedAt(DateTime.now());
-    	currentSession().save(listing);
-
-    	currentSession().flush();
-    	return postCreated;
-    }
-
-    public Listing getById(long id) {
-    	final Listing l = get(id);
-    	if (l == null) {
-    		throw new NotFoundException();
-    	}
-    	return l;
-    }
-
-    public List<Post> fetchPosts(long listingId) {
-    	return postService.fetchPostsByListing(listingId);
-    }
     
-    public List<Post> todayPosts(long listingId) {
-    	final DateTime today = DateTime.now();
-    	return postService.filterPosts(listingId, today.minusMinutes(15), 
-    								   today.plusMinutes(30), 20L);
+    @SuppressWarnings("unchecked")
+    public List<Post> findPosts(Listing l) {
+    	return currentSession()
+    		   .createQuery("from Post where listing_id = :listingId")
+    		   .setParameter("listingId", l.getId())
+    		   .getResultList();
+    }
+
+    public Post addPost(Listing listing, PostRequest request) {
+		final Profile profile = profileService.findOrCreate(request.getProfile());
+    	final Post post = postService.create(request.getPost(), listing, profile);
+    	
+    	updateLastActivity(listing);
+    	profileService.updateLastActivity(profile);
+    	return post;
+    }
+
+    public Listing updateTitle(Listing obj) {
+    	namedQuery("listing.updateTitle")
+    	.setParameter("title", obj.getTitle())
+    	.setParameter("id", obj.getId())
+    	.executeUpdate();
+    	return obj;
+    }
+
+    public Listing updateLastActivity(Listing obj) {
+    	obj.setLastActivity(DateTime.now());
+    	currentSession().save(obj);
+    	return obj;
     }
 }

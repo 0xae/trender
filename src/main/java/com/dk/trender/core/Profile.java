@@ -13,13 +13,19 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * 
  * @author ayrton
  * @date 2017-04-01 19:07:14
+ */
+/**
+ * @author ayrton
+ *
  */
 @Entity
 @Table(name="z_profile")
@@ -33,15 +39,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 	    query = "from Profile p where username = :username"
 	),
 	@NamedQuery(
+	    name = "profile.byId",
+	    query = "from Profile p where id = :id"
+	),
+	@NamedQuery(
 	    name = "profile.search",
 	    query = "from Profile p where title like concat('%',:query,'%')"
-	),
+	)
 })
 public class Profile {
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
-	
+
 	@NotEmpty
 	@Column(name="title", nullable=false)
 	private String title;
@@ -56,18 +66,20 @@ public class Profile {
 	@Column(name="picture")
 	private String picture;
 
+	@Column(name="likes")
+	private int likes;
+
 	@NotEmpty
 	@NaturalId
 	@Column(name="username", nullable=false, unique=true)
 	private String username;
-	
-	@NotNull
+
 	@Column(name="indexed_at", nullable=false)
 	private DateTime indexedAt;
-	
+
 	@Column(name="last_activity")
 	private DateTime lastActivity;
-	
+
 	@Column(name="last_update")
 	private DateTime lastUpdate;
 
@@ -75,10 +87,26 @@ public class Profile {
 		// TODO
 	}
 
+	@JsonIgnore
+	public int like() {
+		likes += 1;
+		return likes;
+	}
+
+	@JsonProperty
+	public void setLikes(int count) {
+		this.likes = count;
+	}
+	
+	@JsonProperty
+	public int getLikes() {
+		return likes;
+	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+
 	@JsonProperty
 	public long getId() {
 		return id;
@@ -162,5 +190,11 @@ public class Profile {
 	@JsonProperty
 	public void setLastUpdate(DateTime lastUpdate) {
 		this.lastUpdate = lastUpdate;
+	}
+
+	@JsonProperty
+	public String getLastUpdateFmt() {
+		return DateTimeFormat.forPattern("YYY-MM-dd HH:mm:ss")
+		.print(lastUpdate);
 	}
 }

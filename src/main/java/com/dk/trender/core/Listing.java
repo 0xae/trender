@@ -25,7 +25,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @NamedQueries({
 	@NamedQuery(
 	    name = "listing.findAll",
-	    query = "from Listing l"
+	    query = "from Listing"
+	),
+	@NamedQuery(
+	    name = "listing.findById",
+	    query = "from Listing where id=:id"
+	),
+	@NamedQuery(
+	    name = "listing.updateTitle",
+	    query = "update Listing set title=:title where id=:id"
+	),
+	@NamedQuery(
+	    name = "listing.updateLastActivity",
+	    query = "update Listing set last_activity=:time where id=:id"
 	)
 })
 public class Listing {
@@ -48,7 +60,7 @@ public class Listing {
 
 	@Column(name="last_activity")
 	private DateTime lastActivity;
-	
+
 	public Listing() {
 		// TODO
 	}

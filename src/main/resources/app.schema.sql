@@ -8,6 +8,7 @@ create table z_profile (
         link text not null,
         picture text,
         username varchar(250) not null,
+        likes integer default 0,
 
         -- time
         indexed_at timestamp not null,

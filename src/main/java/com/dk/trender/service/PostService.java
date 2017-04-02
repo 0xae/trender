@@ -8,7 +8,9 @@ import javax.ws.rs.NotFoundException;
 import org.hibernate.SessionFactory;
 import org.joda.time.DateTime;
 
+import com.dk.trender.core.Listing;
 import com.dk.trender.core.Post;
+import com.dk.trender.core.Profile;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
@@ -37,6 +39,12 @@ public class PostService extends AbstractDAO<Post> {
     	} catch (org.hibernate.exception.ConstraintViolationException e) {
     		throw new BadRequestException("Verify if facebookId is null or if some field is missing!");
     	}
+    }
+
+    public Post create(Post post, Listing listing, Profile profile) {
+    	post.setProfileId(profile.getId());
+    	post.setListingId(listing.getId());
+    	return create(post);
     }
 
     public Post getById(long id) {

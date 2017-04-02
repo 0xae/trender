@@ -46,7 +46,6 @@ public class Post {
 	@Column(name="description")
 	private String description;
 
-	@NotEmpty
 	@Column(name="profile_id", nullable=false, updatable=false)
 	private long profileId;
 	
