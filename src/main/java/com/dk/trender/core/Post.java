@@ -46,6 +46,10 @@ public class Post {
 	@Column(name="description")
 	private String description;
 
+	@NotEmpty
+	@Column(name="timming", nullable=false)
+	private String timming;
+
 	@Column(name="profile_id", nullable=false, updatable=false)
 	private long profileId;
 	
@@ -55,6 +59,9 @@ public class Post {
 	@Column(name="time", updatable=false)
 	private DateTime timestamp;
 
+	@Column(name="indexed_at", updatable=false)
+	private DateTime indexedAt;
+	
 	@NotEmpty
 	@Column(name="facebook_id", unique=true, updatable=false)
 	private String facebookId;
@@ -76,9 +83,30 @@ public class Post {
 	@NotNull
 	@Embedded
 	private PostLink postLink;
+	
 
 	public Post() {
 		// TODO
+	}
+	
+	@JsonProperty
+	public void setIndexedAt(DateTime indexedAt) {
+		this.indexedAt = indexedAt;
+	}
+	
+	@JsonProperty
+	public DateTime getIndexedAt() {
+		return indexedAt;
+	}
+	
+	@JsonProperty
+	public void setTimming(String timming) {
+		this.timming = timming;
+	}
+	
+	@JsonProperty
+	public String getTimming() {
+		return timming;
 	}
 	
 	@JsonProperty

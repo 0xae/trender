@@ -9,6 +9,7 @@ create table z_profile (
         picture text,
         username varchar(250) not null,
         likes integer default 0,
+        listing_id bigint not null references z_listing(id),
 
         -- time
         indexed_at timestamp not null,
@@ -35,6 +36,7 @@ create table z_post (
         cover_html text,
         time timestamp,
         type varchar(100) not null,
+        timming varchar(250) not null,
 
         -- ids
         facebook_id varchar(250) not null,

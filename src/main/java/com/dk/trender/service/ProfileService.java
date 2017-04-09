@@ -49,18 +49,14 @@ public class ProfileService extends AbstractDAO<Profile>  {
     	final DateTime time = DateTime.now();
     	if (obj.getIndexedAt() == null)
     		obj.setIndexedAt(time);
+    	if (obj.getListingId() == 0) 
+    		obj.setListingId(1);
     	obj.setLastUpdate(time);
 		return persist(obj);
 	}
 
 	public Profile update(Profile p) {
 		p.setLastUpdate(DateTime.now());
-		currentSession().save(p);
-		return p;
-	}
-	
-	public Profile updateLastActivity(Profile p) {
-		p.setLastActivity(DateTime.now());
 		currentSession().save(p);
 		return p;
 	}

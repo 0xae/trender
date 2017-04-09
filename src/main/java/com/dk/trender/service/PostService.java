@@ -2,15 +2,14 @@ package com.dk.trender.service;
 
 import java.util.List;
 
-import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
 
 import org.hibernate.SessionFactory;
 import org.joda.time.DateTime;
 
-import com.dk.trender.core.Listing;
 import com.dk.trender.core.Post;
 import com.dk.trender.core.Profile;
+import com.dk.trender.service.utils.TimeParser;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
@@ -20,7 +19,7 @@ import io.dropwizard.hibernate.AbstractDAO;
  * @date 2017-03-31 14:11:37
  */
 public class PostService extends AbstractDAO<Post> {
-    public PostService(SessionFactory factory) {
+    public PostService(final SessionFactory factory) {
         super(factory);
     }
 
@@ -29,21 +28,23 @@ public class PostService extends AbstractDAO<Post> {
     	return list(namedQuery("post.findAll"));
     }
 
-    public Post create(Post object) {
+    private Post create(Post object) {
+		final DateTime now = DateTime.now();
     	if (object.getTimestamp() == null) {
-    		object.setTimestamp(DateTime.now());
+    		DateTime postTime = new TimeParser().parseTime(object.getTimming(), now);
+    		object.setTimestamp(postTime);
     	}
 
-    	try {
-        	return persist(object);    		
-    	} catch (org.hibernate.exception.ConstraintViolationException e) {
-    		throw new BadRequestException("Verify if facebookId is null or if some field is missing!");
+    	if (object.getIndexedAt() == null) {
+    		object.setIndexedAt(now);
     	}
+
+    	return persist(object);    		
     }
 
-    public Post create(Post post, Listing listing, Profile profile) {
+    public Post create(Post post, Profile profile) {
     	post.setProfileId(profile.getId());
-    	post.setListingId(listing.getId());
+    	post.setListingId(profile.getListingId());
     	return create(post);
     }
 
@@ -55,9 +56,10 @@ public class PostService extends AbstractDAO<Post> {
     	return p;
     }
 
-    public List<Post> fetchPostsByListing(long listingId) {
+    public List<Post> fetchRecentPosts(long listingId) {
+    	final String query = "from Post p where listing_id = :listingId order by timestamp desc";
     	return currentSession()
-	    	   .createQuery("select p from Post p where listing_id = :listingId", Post.class)
+	    	   .createQuery(query, Post.class)
 	    	   .setParameter("listingId", listingId)
 	    	   .getResultList();
     }

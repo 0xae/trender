@@ -31,7 +31,7 @@ import io.dropwizard.hibernate.UnitOfWork;
 @Produces(MediaType.APPLICATION_JSON)
 public class ListingResource {
 	private final ListingService service;
-	public ListingResource(final ListingService service) {
+	public ListingResource(ListingService service) {
 		this.service = service;
 	}
 
@@ -47,28 +47,18 @@ public class ListingResource {
 	public Listing getById(@PathParam("id") long id) {
 		return service.findById(id);
 	}
+	
+	@GET
+	@UnitOfWork
+	@Path("/{id}/posts")
+	public List<Post> getPosts(@PathParam("id") long listingId) {
+		return service.fetchPosts(listingId);
+	}
 
 	@POST
 	@UnitOfWork
 	public Listing create(@Valid Listing obj) {
 		return service.create(obj);
-	}
-
-	@POST
-	@UnitOfWork
-	@Path("/{id}/add_post")
-	public Post addPost(@PathParam("id") long listingId,
-						@Valid PostRequest postRequest) {
-		final Listing listing = service.findById(listingId);
-		return service.addPost(listing, postRequest);
-	}
-
-	@GET
-	@UnitOfWork
-	@Path("/{id}/posts")
-	public List<Post> getListingPosts(@PathParam("id") long listingId) {
-		final Listing listing = service.findById(listingId);
-		return service.findPosts(listing);
 	}
 
 	@PUT

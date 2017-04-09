@@ -16,6 +16,7 @@ import com.dk.trender.exceptions.NoResultExceptionExceptionMapper;
 import com.dk.trender.resources.ListingResource;
 import com.dk.trender.resources.PostResource;
 import com.dk.trender.resources.ProfileResource;
+import com.dk.trender.resources.TimelineResource;
 import com.dk.trender.service.ListingService;
 import com.dk.trender.service.PostService;
 import com.dk.trender.service.ProfileService;
@@ -58,12 +59,11 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 
 	@Override
 	public void run(TrenderConfiguration conf, Environment env) throws Exception {
-		final FilterRegistration.Dynamic cors = env.servlets()
+		final FilterRegistration.Dynamic cors = 
+				 env.servlets()
 				.addFilter("CORS", CrossOriginFilter.class);
-		// so much have been said and yet so little has been done
 		cors.setInitParameter("allowedOrigins", "*");
 		cors.setInitParameter("allowedHeaders", "*");
-		// cors.setInitParameter("allowedHeaders", "X-Requested-With, Content-Type, Accept, Origin, Authorization");
 		cors.setInitParameter("allowedMethods", "OPTIONS, GET, PUT, POST, DELETE, HEAD");
 		cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 
@@ -72,9 +72,10 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		PostService postService = new PostService(sessionFactory);
 		ListingService listingService = new ListingService(sessionFactory, postService, profileService);
 		
-//		env.jersey().register(new PostResource(postService));
+		env.jersey().register(new TimelineResource(listingService));
 		env.jersey().register(new ListingResource(listingService));
 		env.jersey().register(new ProfileResource(profileService));
+
 		env.jersey().register(new NoResultExceptionExceptionMapper(env.metrics()));
 		env.jersey().register(new ConstraintViolationExceptionMapper());
 	}

@@ -41,10 +41,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 	@NamedQuery(
 	    name = "profile.byId",
 	    query = "from Profile p where id = :id"
-	),
-	@NamedQuery(
-	    name = "profile.search",
-	    query = "from Profile p where title like concat('%',:query,'%')"
 	)
 })
 public class Profile {
@@ -69,6 +65,9 @@ public class Profile {
 	@Column(name="likes")
 	private int likes;
 
+	@Column(name="listing_id", nullable=false, updatable=false)
+	private long listingId;
+	
 	@NotEmpty
 	@NaturalId
 	@Column(name="username", nullable=false, unique=true)
@@ -85,6 +84,16 @@ public class Profile {
 
 	public Profile() {
 		// TODO
+	}
+	
+	@JsonProperty
+	public void setListingId(long listingId) {
+		this.listingId = listingId;
+	}
+	
+	@JsonProperty
+	public long getListingId() {
+		return listingId;
 	}
 
 	@JsonIgnore
