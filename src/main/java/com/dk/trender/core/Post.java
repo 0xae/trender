@@ -6,20 +6,21 @@ import javax.persistence.Embedded;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.persistence.ForeignKey;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.dropwizard.validation.OneOf;
-import org.joda.time.format.DateTimeFormat;
-
 
 /**
  * 
@@ -57,10 +58,10 @@ public class Post {
 	private String coverHtml;
 
 	@Column(name="time", updatable=false)
-	private DateTime timestamp;
+	private LocalDateTime timestamp;
 
 	@Column(name="indexed_at", updatable=false)
-	private DateTime indexedAt;
+	private LocalDateTime indexedAt;
 	
 	@NotEmpty
 	@Column(name="facebook_id", unique=true, updatable=false)
@@ -83,19 +84,46 @@ public class Post {
 	@NotNull
 	@Embedded
 	private PostLink postLink;
-	
 
+	@ManyToOne
+	@JoinColumn(name="listing_id", insertable=false, updatable=false, foreignKey=@ForeignKey(name="listing_id_fkey"))
+	private Listing listing;
+
+	@ManyToOne
+	@JoinColumn(name="profile_id", insertable=false, updatable=false, foreignKey=@ForeignKey(name="profile_id_fkey"))
+	private Profile author;
+	
 	public Post() {
 		// TODO
 	}
 	
 	@JsonProperty
-	public void setIndexedAt(DateTime indexedAt) {
+	public void setListing(Listing listing) {
+		this.listing = listing;
+	}
+	
+	@JsonProperty
+	public Listing getListing() {
+		return listing;
+	}
+
+	@JsonProperty
+	public void setAuthor(Profile profile) {
+		this.author = profile;
+	}
+	
+	@JsonProperty
+	public Profile getAuthor() {
+		return author;
+	}
+	
+	@JsonProperty
+	public void setIndexedAt(LocalDateTime indexedAt) {
 		this.indexedAt = indexedAt;
 	}
 	
 	@JsonProperty
-	public DateTime getIndexedAt() {
+	public LocalDateTime getIndexedAt() {
 		return indexedAt;
 	}
 	
@@ -146,8 +174,7 @@ public class Post {
 
 	@JsonProperty
 	public String getTimestampFmt() {
-		return DateTimeFormat.forPattern("YYY-MM-d HH:mm:ss")
-		.print(timestamp);
+		return timestamp.toString();
 	}
 
 	@JsonProperty
@@ -196,12 +223,12 @@ public class Post {
 	}
 
 	@JsonProperty
-	public DateTime getTimestamp() {
+	public LocalDateTime getTimestamp() {
 		return timestamp;
 	}
 
 	@JsonProperty
-	public void setTimestamp(DateTime timestamp) {
+	public void setTimestamp(LocalDateTime timestamp) {
 		this.timestamp = timestamp;
 	}
 

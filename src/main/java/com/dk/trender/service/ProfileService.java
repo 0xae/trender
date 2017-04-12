@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 
 import com.dk.trender.core.Profile;
 
@@ -46,7 +47,7 @@ public class ProfileService extends AbstractDAO<Profile>  {
 	}
 
     public Profile create(Profile obj) {
-    	final DateTime time = DateTime.now();
+    	final LocalDateTime time = new LocalDateTime();
     	if (obj.getIndexedAt() == null)
     		obj.setIndexedAt(time);
     	if (obj.getListingId() == 0) 
@@ -56,7 +57,7 @@ public class ProfileService extends AbstractDAO<Profile>  {
 	}
 
 	public Profile update(Profile p) {
-		p.setLastUpdate(DateTime.now());
+		p.setLastUpdate(new LocalDateTime());
 		currentSession().save(p);
 		return p;
 	}

@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 
 public class TimeParser {
 	public static final String MINUTES = "(\\d+) (mins*)";
@@ -14,13 +15,19 @@ public class TimeParser {
 	public static final String DATE = "(\\w+) (\\d+) (\\d+):(\\d+)([ap]m)";
 	public static final String NOW = "Just [nN]ow";
 
-	public DateTime parseTime(String time, DateTime start) {
+
+	public LocalDateTime parseTime(String time) {
+		return parseTime(time, new LocalDateTime());
+	}
+	
+	public LocalDateTime parseTime(String time, LocalDateTime start) {
+		LocalDateTime dt = new LocalDateTime();
 		if (isIt(time, MINUTES)) {
 			final List<String> b=extractWithRE(MINUTES, time);
-			return start.minusMinutes(Integer.parseInt(b.get(0)));
+			return dt.minusMinutes(Integer.parseInt(b.get(0)));
 		} else if (isIt(time, HOURS)) {
 			final List<String> b=extractWithRE(HOURS, time);
-			return start.minusHours(Integer.parseInt(b.get(0)));
+			return dt.minusHours(Integer.parseInt(b.get(0)));
 		} else if (isIt(time, DATE)) {
 			final List<String> b=extractWithRE(DATE, time);
 			int month = getMonth(b.get(0));
@@ -28,18 +35,13 @@ public class TimeParser {
 			int hours = Integer.parseInt(b.get(2));
 			int minute = Integer.parseInt(b.get(3));
 
-			return start.withMonthOfYear(month)
+			return dt.withMonthOfYear(month)
 					    .withDayOfMonth(day)
 					    .withHourOfDay(hours)
 					    .withMinuteOfHour(minute);
 		} else {
-			return start;
+			return dt;
 		}		
-	}
-	
-	public DateTime parseTime(String time) {
-		final DateTime now = DateTime.now();
-		return parseTime(time, now);
 	}
 
 	public List<String> extractWithRE(String weapon, String person) {	

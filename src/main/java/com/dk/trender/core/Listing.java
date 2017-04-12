@@ -8,7 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.joda.time.LocalDateTime;
+
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -53,13 +58,13 @@ public class Listing {
 	private String description;
 
 	@Column(name="created_at", updatable=false)
-	private DateTime createdAt;
+	private LocalDateTime createdAt;
 
 	@Column(name="last_update")
-	private DateTime lastUpdate;
+	private LocalDateTime lastUpdate;
 
 	@Column(name="last_activity")
-	private DateTime lastActivity;
+	private LocalDateTime lastActivity;
 
 	public Listing() {
 		// TODO
@@ -96,32 +101,32 @@ public class Listing {
 	}
 
 	@JsonProperty
-	public DateTime getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 
 	@JsonProperty
-	public void setCreatedAt(DateTime createdAt) {
+	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
 	
 	@JsonProperty
-	public void setLastActivity(DateTime lastActivity) {
+	public void setLastActivity(LocalDateTime lastActivity) {
 		this.lastActivity = lastActivity;
 	}
 	
 	@JsonProperty
-	public DateTime getLastActivity() {
+	public LocalDateTime getLastActivity() {
 		return lastActivity;
 	}
 	
 	@JsonProperty
-	public void setLastUpdate(DateTime lastUpdate) {
+	public void setLastUpdate(LocalDateTime lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
 
 	@JsonProperty
-	public DateTime getLastUpdate() {
+	public LocalDateTime getLastUpdate() {
 		return lastUpdate;
 	}
 }

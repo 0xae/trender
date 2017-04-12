@@ -8,7 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+
+import org.joda.time.LocalDateTime;
 
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -74,13 +78,13 @@ public class Profile {
 	private String username;
 
 	@Column(name="indexed_at", nullable=false)
-	private DateTime indexedAt;
+	private LocalDateTime indexedAt;
 
 	@Column(name="last_activity")
-	private DateTime lastActivity;
+	private LocalDateTime lastActivity;
 
 	@Column(name="last_update")
-	private DateTime lastUpdate;
+	private LocalDateTime lastUpdate;
 
 	public Profile() {
 		// TODO
@@ -172,38 +176,32 @@ public class Profile {
 	}
 
 	@JsonProperty
-	public DateTime getIndexedAt() {
+	public LocalDateTime getIndexedAt() {
 		return indexedAt;
 	}
 
 	@JsonProperty
-	public void setIndexedAt(DateTime indexedAt) {
+	public void setIndexedAt(LocalDateTime indexedAt) {
 		this.indexedAt = indexedAt;
 	}
 
 	@JsonProperty
-	public DateTime getLastActivity() {
+	public LocalDateTime getLastActivity() {
 		return lastActivity;
 	}
 
 	@JsonProperty
-	public void setLastActivity(DateTime lastActivity) {
+	public void setLastActivity(LocalDateTime lastActivity) {
 		this.lastActivity = lastActivity;
 	}
 
 	@JsonProperty
-	public DateTime getLastUpdate() {
+	public LocalDateTime getLastUpdate() {
 		return lastUpdate;
 	}
 
 	@JsonProperty
-	public void setLastUpdate(DateTime lastUpdate) {
+	public void setLastUpdate(LocalDateTime lastUpdate) {
 		this.lastUpdate = lastUpdate;
-	}
-
-	@JsonProperty
-	public String getLastUpdateFmt() {
-		return DateTimeFormat.forPattern("YYY-MM-dd HH:mm:ss")
-		.print(lastUpdate);
 	}
 }

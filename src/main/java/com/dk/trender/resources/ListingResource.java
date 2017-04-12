@@ -47,13 +47,6 @@ public class ListingResource {
 	public Listing getById(@PathParam("id") long id) {
 		return service.findById(id);
 	}
-	
-	@GET
-	@UnitOfWork
-	@Path("/{id}/posts")
-	public List<Post> getPosts(@PathParam("id") long listingId) {
-		return service.fetchPosts(listingId);
-	}
 
 	@POST
 	@UnitOfWork

@@ -28,4 +28,18 @@ public class PostResource {
 	public PostResource(final PostService service) {
 		this.service = service;
 	}
+
+	@GET
+	@Path("/{id}")
+	@UnitOfWork
+	public Post getById(@PathParam("id") final long id) {
+		return service.getById(id);
+	}
+
+	@GET
+	@Path("/fbid/{id}")
+	@UnitOfWork
+	public Post getByFacebookId(@PathParam("id") final String id) {
+		return service.getByFacebookId(id);				
+	}
 }

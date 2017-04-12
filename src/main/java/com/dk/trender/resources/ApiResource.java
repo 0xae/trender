@@ -1,0 +1,83 @@
+package com.dk.trender.resources;
+
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
+import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
+
+import com.dk.trender.api.ListingTrend;
+import com.dk.trender.core.Post;
+import com.dk.trender.core.PostRequest;
+import com.dk.trender.jdbi.TimelineDAO;
+import com.dk.trender.service.ListingService;
+import com.google.common.base.Optional;
+
+import io.dropwizard.hibernate.UnitOfWork;
+
+/**
+ * 
+ * @author ayrton
+ * @date 2017-04-02 18:36:53
+ */
+@Path("/api")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public class ApiResource {
+	private final ListingService service;
+	private final TimelineDAO timelineDAO;
+
+	public ApiResource(final ListingService service,
+			           final TimelineDAO timelineDAO) {
+		this.service = service;
+		this.timelineDAO = timelineDAO;
+	}
+
+	@GET
+	@UnitOfWork
+	@Path("/trending_topics")
+	public List<ListingTrend> getTrendingTopics() {
+		return null;
+	}
+	
+	@GET
+	@Path("/trending_lists")
+	public List<ListingTrend> getTrendingListings() {
+		return null;
+	}
+
+	@GET
+	@UnitOfWork
+	@Path("/recent_posts")
+	public List<Post> getRecentPosts(@QueryParam("time") Optional<String> minTime) {
+		if (minTime.isPresent()) {
+			LocalDateTime time = new LocalDateTime(minTime.get().replace(' ', 'T'));
+			return service.getPostsNewerThan(time);
+		}
+
+		final LocalDateTime end = new LocalDateTime();
+		return service.getPostsNewerThan(end.minusMinutes(15));
+	}
+
+	@GET
+	@UnitOfWork
+	@Path("/popular_posts")
+	public List<Post> getPopularPosts(@QueryParam("listing_id") final long listingId) {
+		return null;
+	}
+
+	@POST
+	@UnitOfWork
+	@Path("/add_post")
+	public Post addPost(@Valid PostRequest postRequest) {
+		return service.addPost(postRequest);
+	}
+}

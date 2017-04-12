@@ -3,7 +3,8 @@ package com.dk.trender.service;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import com.dk.trender.core.Listing;
 import com.dk.trender.core.Post;
@@ -43,20 +44,31 @@ public class ListingService extends AbstractDAO<Listing> {
 
     public Listing create(Listing listing) {
     	if (listing.getCreatedAt() == null) {
-    		listing.setCreatedAt(DateTime.now());
+    		listing.setCreatedAt(new LocalDateTime());
     	}
 
         return persist(listing);
     }
 
-    public List<Post> fetchPosts(long listingId){
-    	return postService.fetchRecentPosts(listingId);
-    }
+	public List<Post> getPostsNewerThan(final LocalDateTime time) {
+		final String query = "select p from Post p where time > to_timestamp(:ts, 'YYYY-MM-dd HH24:MI:ss') "+
+				             "order by time desc ";
+		return currentSession()
+			   .createQuery(query, Post.class)
+			   .setParameter("ts", format(time))
+			   .setMaxResults(20)
+			   .getResultList();
+	}
 
-    public Post addPost(Listing listing, PostRequest request) {
+	public String format(LocalDateTime t) {
+		return DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss")
+						     .print(t);
+	}
+
+    public Post addPost(PostRequest request) {
 		final Profile profile = profileService.findOrCreate(request.getProfile());
     	final Post post = postService.create(request.getPost(), profile);
-
+    	final Listing listing = findById(profile.getListingId());
     	updateLastActivity(listing);
     	updateLastActivity(profile);
     	return post;
@@ -71,14 +83,20 @@ public class ListingService extends AbstractDAO<Listing> {
     }
 
     private Listing updateLastActivity(Listing obj) {
-    	obj.setLastActivity(DateTime.now());
-    	currentSession().save(obj);
+    	obj.setLastActivity(new LocalDateTime());
+    	currentSession()
+    	.createQuery("update Listing set last_activity=now() where id=:objId")
+    	.setParameter("objId", obj.getId())
+    	.executeUpdate();
     	return obj;
     }
 
     private Profile updateLastActivity(Profile obj) {
-    	obj.setLastActivity(DateTime.now());
-    	currentSession().save(obj);
+    	obj.setLastActivity(new LocalDateTime());
+    	currentSession()
+    	.createQuery("update Profile set last_activity=now() where id=:objId")
+    	.setParameter("objId", obj.getId())
+    	.executeUpdate();
     	return obj;
     }
 }
