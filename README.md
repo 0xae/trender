@@ -21,4 +21,14 @@ The **trender** platform crawls, stores and makes use of search technologies and
     Having Fun
     Put my Solr and Lucene experience to the top
     Learn more about search/realtime technologies 
-    Prove that hibernate can be great for large-scale apps (i may be wrong thou) 
+    Prove that hibernate can be great for large-scale apps (i may be wrong thou)
+
+## Getting Started
+
+This is the backend only, trender is much bigger than this.<br/>
+i need to organize all those js, html and php scripts under a <br/>
+coesive and structured and organized architecture before i make them available<br/>
+Also in this stage, the crawler requires a customized chrome-chromium extension, <br/>
+so you can see i still got things a little bit "unsettled" hahaha.
+
+Just wait 
