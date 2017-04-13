@@ -47,7 +47,7 @@ public class ApiResource {
 	public List<ListingTrend> getTrendingTopics() {
 		return null;
 	}
-	
+
 	@GET
 	@Path("/trending_lists")
 	public List<ListingTrend> getTrendingListings() {
@@ -57,7 +57,8 @@ public class ApiResource {
 	@GET
 	@UnitOfWork
 	@Path("/recent_posts")
-	public List<Post> getRecentPosts(@QueryParam("time") Optional<String> minTime) {
+	public List<Post> getRecentPosts(@QueryParam("time") Optional<String> minTime,
+									 @QueryParam("listing") Optional<Long> listingId) {
 		if (minTime.isPresent()) {
 			LocalDateTime time = new LocalDateTime(minTime.get().replace(' ', 'T'));
 			return service.getPostsNewerThan(time);

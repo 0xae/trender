@@ -46,6 +46,13 @@ public class ProfileService extends AbstractDAO<Profile>  {
 		}
 	}
 
+	public List<Profile> fetchProfileWithoutPictures() {
+		return currentSession()
+		.createQuery("from Profile p where picture is null", Profile.class)
+		.setMaxResults(20)
+		.getResultList();
+	}
+
     public Profile create(Profile obj) {
     	final LocalDateTime time = new LocalDateTime();
     	if (obj.getIndexedAt() == null)

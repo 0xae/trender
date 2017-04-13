@@ -39,7 +39,14 @@ public class ProfileResource {
 	public List<Profile> getAll() {
 		return service.findAll();
 	}
-	
+
+	@GET
+	@UnitOfWork
+	@Path("/nopicture")
+	public List<Profile> getProfileWithNoPicture() {
+		return service.fetchProfileWithoutPictures();
+	}
+
 	@GET
 	@UnitOfWork
 	@Path("/{id}")

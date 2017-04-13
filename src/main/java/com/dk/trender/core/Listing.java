@@ -109,12 +109,12 @@ public class Listing {
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
-	
+
 	@JsonProperty
 	public void setLastActivity(LocalDateTime lastActivity) {
 		this.lastActivity = lastActivity;
 	}
-	
+
 	@JsonProperty
 	public LocalDateTime getLastActivity() {
 		return lastActivity;
