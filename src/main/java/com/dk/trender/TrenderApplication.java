@@ -35,13 +35,11 @@ import io.dropwizard.setup.Environment;
 
 public class TrenderApplication extends Application<TrenderConfiguration> {
     private final HibernateBundle<TrenderConfiguration> hibernateBundle =
-            new HibernateBundle<TrenderConfiguration>(Listing.class,
-            		                            	  Post.class,
-            		                            	  Profile.class) {
-				public DataSourceFactory getDataSourceFactory(TrenderConfiguration configuration) {
-					return configuration.getDatabase();
-				}
-            };
+        new HibernateBundle<TrenderConfiguration>(Listing.class, Post.class, Profile.class) {
+			public DataSourceFactory getDataSourceFactory(TrenderConfiguration configuration) {
+				return configuration.getDatabase();
+			}
+        };
 
 	@Override
 	public void initialize(Bootstrap<TrenderConfiguration> bootstrap) {
@@ -78,7 +76,7 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		PostService postService = new PostService(sessionFactory);
 		ListingService listingService = new ListingService(sessionFactory, postService, profileService);
 		
-		env.jersey().register(new ApiResource(listingService, jdbi.onDemand(TimelineDAO.class)));
+		env.jersey().register(new ApiResource(listingService));
 		env.jersey().register(new ListingResource(listingService));
 		env.jersey().register(new ProfileResource(profileService));
 		env.jersey().register(new PostResource(postService));

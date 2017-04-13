@@ -5,9 +5,7 @@ import java.util.List;
 import javax.ws.rs.NotFoundException;
 
 import org.hibernate.SessionFactory;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
-import org.skife.jdbi.v2.sqlobject.Bind;
 
 import com.dk.trender.core.Post;
 import com.dk.trender.core.Profile;

@@ -1,12 +1,12 @@
 package com.dk.trender.service.utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
 public class TimeParser {
@@ -15,13 +15,12 @@ public class TimeParser {
 	public static final String DATE = "(\\w+) (\\d+) (\\d+):(\\d+)([ap]m)";
 	public static final String NOW = "Just [nN]ow";
 
-
 	public LocalDateTime parseTime(String time) {
 		return parseTime(time, new LocalDateTime());
 	}
-	
+
 	public LocalDateTime parseTime(String time, LocalDateTime start) {
-		LocalDateTime dt = new LocalDateTime();
+		LocalDateTime dt = start;
 		if (isIt(time, MINUTES)) {
 			final List<String> b=extractWithRE(MINUTES, time);
 			return dt.minusMinutes(Integer.parseInt(b.get(0)));
@@ -47,17 +46,16 @@ public class TimeParser {
 	public List<String> extractWithRE(String weapon, String person) {	
 		 final Matcher m = getMatcher(weapon, person);
 		 if (!m.matches()) {
-			 System.out.println("NO MATCH");
 			 return Collections.emptyList();
 		 }		 
 
 		 final int count = m.groupCount();
-		 final String[] buf = new String[count];
+		 final List<String> buf = new ArrayList<>();
 		 for (int i=0; i<count; i++) {
-			 buf[i] = m.group(i+1);
+			  buf.add(m.group(i+1));
 		 }
 
-		 return Arrays.asList(buf);
+		 return buf;
 	}
 	
 	private boolean isIt(String buf, String regex) {
@@ -97,5 +95,4 @@ public class TimeParser {
 			return 12;
 		}
 	}
-
 }

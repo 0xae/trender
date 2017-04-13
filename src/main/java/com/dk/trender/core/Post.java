@@ -92,7 +92,7 @@ public class Post {
 	@ManyToOne
 	@JoinColumn(name="profile_id", insertable=false, updatable=false, foreignKey=@ForeignKey(name="profile_id_fkey"))
 	private Profile author;
-	
+
 	public Post() {
 		// TODO
 	}
@@ -111,37 +111,37 @@ public class Post {
 	public void setAuthor(Profile profile) {
 		this.author = profile;
 	}
-	
+
 	@JsonProperty
 	public Profile getAuthor() {
 		return author;
 	}
-	
+
 	@JsonProperty
 	public void setIndexedAt(LocalDateTime indexedAt) {
 		this.indexedAt = indexedAt;
 	}
-	
+
 	@JsonProperty
 	public LocalDateTime getIndexedAt() {
 		return indexedAt;
 	}
-	
+
 	@JsonProperty
 	public void setTimming(String timming) {
 		this.timming = timming;
 	}
-	
+
 	@JsonProperty
 	public String getTimming() {
 		return timming;
 	}
-	
+
 	@JsonProperty
 	public void setCoverHtml(String coverHtml) {
 		this.coverHtml = coverHtml;
 	}
-	
+
 	@JsonProperty
 	public String getCoverHtml() {
 		return coverHtml;

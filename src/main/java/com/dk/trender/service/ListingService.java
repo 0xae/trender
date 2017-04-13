@@ -51,18 +51,11 @@ public class ListingService extends AbstractDAO<Listing> {
     }
 
 	public List<Post> getPostsNewerThan(final LocalDateTime time) {
-		final String query = "select p from Post p where time > to_timestamp(:ts, 'YYYY-MM-dd HH24:MI:ss') "+
-				             "order by time desc ";
-		return currentSession()
-			   .createQuery(query, Post.class)
-			   .setParameter("ts", format(time))
-			   .setMaxResults(20)
-			   .getResultList();
+		return getPostsFromArchive(time, '>');
 	}
 
-	public String format(LocalDateTime t) {
-		return DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss")
-						     .print(t);
+	public List<Post> getPostsOlderThan(final LocalDateTime time) {
+		return getPostsFromArchive(time, '<');
 	}
 
     public Post addPost(PostRequest request) {
@@ -90,8 +83,23 @@ public class ListingService extends AbstractDAO<Listing> {
     	.executeUpdate();
     	return obj;
     }
+    
+	private String format(LocalDateTime t) {
+		return DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss")
+						     .print(t);
+	}
+    
+	private List<Post> getPostsFromArchive(final LocalDateTime time, char op) {
+		final String query = "select p from Post p where time "+op+" to_timestamp(:ts, 'YYYY-MM-dd HH24:MI:ss') "+
+				             "order by time desc ";
+		return currentSession()
+			   .createQuery(query, Post.class)
+			   .setParameter("ts", format(time))
+			   .setMaxResults(20)
+			   .getResultList();
+	}
 
-    private Profile updateLastActivity(Profile obj) {
+	private Profile updateLastActivity(Profile obj) {
     	obj.setLastActivity(new LocalDateTime());
     	currentSession()
     	.createQuery("update Profile set last_activity=now() where id=:objId")

@@ -33,12 +33,9 @@ import io.dropwizard.hibernate.UnitOfWork;
 @Produces(MediaType.APPLICATION_JSON)
 public class ApiResource {
 	private final ListingService service;
-	private final TimelineDAO timelineDAO;
 
-	public ApiResource(final ListingService service,
-			           final TimelineDAO timelineDAO) {
+	public ApiResource(final ListingService service) {
 		this.service = service;
-		this.timelineDAO = timelineDAO;
 	}
 
 	@GET
@@ -57,10 +54,9 @@ public class ApiResource {
 	@GET
 	@UnitOfWork
 	@Path("/recent_posts")
-	public List<Post> getRecentPosts(@QueryParam("time") Optional<String> minTime,
-									 @QueryParam("listing") Optional<Long> listingId) {
+	public List<Post> getRecentPosts(@QueryParam("time") Optional<String> minTime) {
 		if (minTime.isPresent()) {
-			LocalDateTime time = new LocalDateTime(minTime.get().replace(' ', 'T'));
+			final LocalDateTime time = new LocalDateTime(minTime.get().replace(' ', 'T'));
 			return service.getPostsNewerThan(time);
 		}
 

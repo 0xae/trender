@@ -3,7 +3,6 @@ package com.dk.trender.service;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
 import com.dk.trender.core.Profile;
