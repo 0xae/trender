@@ -60,7 +60,7 @@ public class ProfileResource {
 		return service.create(request);
 	}
 
-	@PUT
+	@POST
 	@UnitOfWork
 	@Path("/{id}/picture")
 	public Profile updatePicture(@PathParam("id") final long id,
