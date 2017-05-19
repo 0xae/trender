@@ -6,7 +6,7 @@ public class SearchTrend {
 	private String title;
 	private long count=0;
 	private DateTime lastActivity;
-	
+
 	public long getCount() {
 		return count;
 	}

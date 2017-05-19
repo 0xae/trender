@@ -11,13 +11,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
 import com.dk.trender.api.ListingTrend;
 import com.dk.trender.core.Post;
 import com.dk.trender.core.PostRequest;
-import com.dk.trender.jdbi.TimelineDAO;
 import com.dk.trender.service.ListingService;
 import com.google.common.base.Optional;
 
