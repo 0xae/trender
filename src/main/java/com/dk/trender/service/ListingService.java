@@ -3,6 +3,7 @@ package com.dk.trender.service;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 
@@ -60,11 +61,19 @@ public class ListingService extends AbstractDAO<Listing> {
 
     public Post addPost(PostRequest request) {
 		final Profile profile = profileService.findOrCreate(request.getProfile());
-    	final Post post = postService.create(request.getPost(), profile);
-    	final Listing listing = findById(profile.getListingId());
-    	updateLastActivity(listing);
-    	updateLastActivity(profile);
-    	return post;
+		try {
+			return postService.create(request.getPost(), profile);			
+		} catch (ConstraintViolationException e) {
+			currentSession().getTransaction().rollback();
+			return postService.updateLikes(
+					request.getPost().getPostReaction().getCountLikes(), 
+					request.getPost().getFacebookId() 
+				);
+		} finally {
+//	    	final Listing listing = findById(profile.getListingId());
+//	    	updateLastActivity(listing);
+//	    	updateLastActivity(profile);			
+		}
     }
 
     public Listing updateTitle(Listing obj) {

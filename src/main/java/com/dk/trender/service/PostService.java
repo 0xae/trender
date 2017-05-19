@@ -4,10 +4,12 @@ import java.util.List;
 
 import javax.ws.rs.NotFoundException;
 
+import org.hibernate.Transaction;
 import org.hibernate.SessionFactory;
 import org.joda.time.LocalDateTime;
 
 import com.dk.trender.core.Post;
+import com.dk.trender.core.PostReaction;
 import com.dk.trender.core.Profile;
 import com.dk.trender.service.utils.TimeParser;
 
@@ -47,6 +49,17 @@ public class PostService extends AbstractDAO<Post> {
 					  .getNamedQuery("post.findByFacebook")
 				      .setParameter("facebookId", facebookId)
 				      .getSingleResult();
+	}
+	
+	public Post updateLikes(long likes, String facebookId) {
+		final Post p = getByFacebookId(facebookId);
+		final PostReaction r = p.getPostReaction();
+		if (r.getCountLikes() != likes) {
+			r.setCountLikes(likes);
+			p.setTimestamp(p.getTimestamp().plusMinutes(5));
+			currentSession().save(p);			
+		}
+		return p;
 	}
 
     private Post create(Post object) {

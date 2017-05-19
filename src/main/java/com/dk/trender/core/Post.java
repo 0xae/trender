@@ -31,12 +31,16 @@ import io.dropwizard.validation.OneOf;
 @Table(name="z_post")
 @NamedQueries({
 	@NamedQuery(
-	    name = "post.findAll",
-	    query = "from Post"
+	    name="post.findAll",
+	    query="from Post"
 	),
 	@NamedQuery(
-	    name = "post.findByFacebook",
-	    query = "from Post where facebook_id = :facebookId"
+	    name="post.updateLike",
+	    query="update Post p set count_likes=:likes where id = :id"
+	),
+	@NamedQuery(
+	    name="post.findByFacebook",
+	    query="from Post where facebook_id = :facebookId"
 	)
 })
 public class Post {
