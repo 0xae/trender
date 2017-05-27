@@ -1,10 +1,6 @@
 package com.dk.trender.core;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.junit.Test;
 
@@ -63,7 +59,7 @@ public class TimeParserTest {
 		assertThat(now).matches(NOW);
 	}
 	
-	public static List<String> extractFromRE(String weapon, String person) {	
+	public List<String> extractFromRE(String weapon, String person) {	
 		return new TimeParser().extractWithRE(weapon, person);
 	}
 }
