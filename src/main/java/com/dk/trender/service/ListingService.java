@@ -70,8 +70,7 @@ public class ListingService extends AbstractDAO<Listing> {
 					request.getPost().getFacebookId() 
 				);
 		} finally {
-//	    	final Listing listing = findById(profile.getListingId());
-//	    	updateLastActivity(listing);
+//	    	updateLastActivity(findById(profile.getListingId()));
 //	    	updateLastActivity(profile);			
 		}
     }
