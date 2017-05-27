@@ -32,7 +32,7 @@ public class ListingTrend {
 
 	public String getLastActivityFmt() {
 		return DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss")
-						     .print(lastActivity);
+			   .print(lastActivity);
 	}
 
 	public void setLastActivity(DateTime lastActivity) {
