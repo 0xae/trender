@@ -84,14 +84,7 @@ public class ListingService extends AbstractDAO<Listing> {
     	return obj;
     }
 
-    private Listing updateLastActivity(Listing obj) {
-    	obj.setLastActivity(new LocalDateTime());
-    	currentSession()
-    	.createQuery("update Listing set last_activity=now() where id=:objId")
-    	.setParameter("objId", obj.getId())
-    	.executeUpdate();
-    	return obj;
-    }
+
     
 	private String format(LocalDateTime t) {
 		return DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss")
@@ -107,6 +100,15 @@ public class ListingService extends AbstractDAO<Listing> {
 			   .setMaxResults(20)
 			   .getResultList();
 	}
+	
+    private Listing updateLastActivity(Listing obj) {
+    	obj.setLastActivity(new LocalDateTime());
+    	currentSession()
+    	.createQuery("update Listing set last_activity=now() where id=:objId")
+    	.setParameter("objId", obj.getId())
+    	.executeUpdate();
+    	return obj;
+    }
 
 	private Profile updateLastActivity(Profile obj) {
     	obj.setLastActivity(new LocalDateTime());
