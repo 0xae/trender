@@ -31,4 +31,4 @@ coesive and structured and organized architecture before i make them available<b
 Also in this stage, the crawler requires a customized chrome-chromium extension, <br/>
 so you can see i still got things a little bit "unsettled".
 
-Just wait 
+Enjoy
