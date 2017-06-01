@@ -1,8 +1,8 @@
 # The Newsfeed Aggregator & Trending topics detector
 
 This is a dropwizard rest app that stores, analyzes and provides a query api to retrieve<br/>
-most recent  activities, listing, topic trendings, and all sort of behavioral information<br/>
-happenning on my facebook.<br/>
+most recent  activities, listing, trendings topics, and all sort of aggregated behavioral information<br/>
+happenning on this world.<br/>
 
 This is just half of the code, the other half is the crawler written in javascript/jquery<br/> 
 and the frontend app that displays all this information for consumption and configuration,<br/>
@@ -22,6 +22,8 @@ The **trender** platform crawls, stores and makes use of search technologies and
     Put my Solr and Lucene experience to the top
     Learn more about search/realtime technologies 
     Prove that hibernate can be great for large-scale apps (i may be wrong thou)
+    How far can my thinkpad go ?
+    A cool app for myself
 
 ## Getting Started
 
