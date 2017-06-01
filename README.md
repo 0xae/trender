@@ -8,7 +8,7 @@ This is just half of the code, the other half is the crawler written in javascri
 and the frontend app that displays all this information for consumption and configuration,<br/>
 more on that later.
 
-The idea is to built something akin to [Trending Topics](https://github.com/datawrangling/trendingtopics), but with a much simpler architecture.<br/>
+The idea is to build something akin to [Trending Topics](https://github.com/datawrangling/trendingtopics), but with a much simpler architecture.<br/>
 The **trender** platform crawls, stores and makes use of search technologies and leverages the power<br/> of PostgreSQL to provide you accurate, diverse and descriptive information on realtime or at least near to realtime about what's happening on facebook.<br/>
 
 ## Motivation
