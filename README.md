@@ -27,7 +27,7 @@ The **trender** platform crawls, stores and makes use of search technologies and
 
 This is the backend only, trender is much bigger than this.<br/>
 i need to organize all those js, html and php scripts under a <br/>
-coesive and structured and organized architecture before i make them available<br/>
+coesive, structured and organized architecture before i make them available<br/>
 Also in this stage, the crawler requires a customized chrome-chromium extension, <br/>
 so you can see i still got things a little bit "unsettled".
 
