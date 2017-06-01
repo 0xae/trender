@@ -1,4 +1,4 @@
-# The Newsfeed Aggregator & Analyzer
+# The Newsfeed Aggregator & Trending topics detector
 
 This is a dropwizard rest app that stores, analyzes and provides a query api to retrieve<br/>
 most recent  activities, listing, topic trendings, and all sort of behavioral information<br/>
