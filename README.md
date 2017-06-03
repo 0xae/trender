@@ -21,7 +21,7 @@ The **trender** platform crawls, stores and makes use of search technologies and
     Having Fun
     Put my Solr and Lucene experience to the top
     Learn more about search/realtime technologies 
-    Prove that hibernate can be great for large-scale apps (i may be wrong thou)
+    Prove that hibernate can be great for large-scale apps (i may be wrong tho)
     How far can my thinkpad go ?
     A cool app for myself
 
