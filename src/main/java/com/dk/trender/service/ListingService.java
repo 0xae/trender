@@ -5,7 +5,7 @@ import java.util.List;
 import org.hibernate.SessionFactory;
 import org.hibernate.exception.ConstraintViolationException;
 import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
+import static org.joda.time.format.DateTimeFormat.forPattern;
 
 import com.dk.trender.core.Listing;
 import com.dk.trender.core.Post;
@@ -83,24 +83,22 @@ public class ListingService extends AbstractDAO<Listing> {
     	return obj;
     }
 
-
-    
-	private String format(LocalDateTime t) {
-		return DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss")
-						     .print(t);
-	}
-    
 	private List<Post> getPostsFromArchive(final LocalDateTime time, char op) {
 		final String query = "select p from Post p where time "+op+" to_timestamp(:ts, 'YYYY-MM-dd HH24:MI:ss') "+
 				             "order by time desc ";
 		return currentSession()
 			   .createQuery(query, Post.class)
-			   .setParameter("ts", format(time))
+			   .setParameter("ts", forPattern("YYYY-MM-dd HH:mm:ss").print(time))
 			   .setMaxResults(20)
 			   .getResultList();
 	}
-	
-    private Listing updateLastActivity(Listing obj) {
+
+	/**
+	 * XXX: work out these names
+	 * @param obj
+	 * @return
+	 */
+    private Listing updateActivity(Listing obj) {
     	obj.setLastActivity(new LocalDateTime());
     	currentSession()
     	.createQuery("update Listing set last_activity=now() where id=:objId")
@@ -109,7 +107,7 @@ public class ListingService extends AbstractDAO<Listing> {
     	return obj;
     }
 
-	private Profile updateLastActivity(Profile obj) {
+	private Profile updateProfile(Profile obj) {
     	obj.setLastActivity(new LocalDateTime());
     	currentSession()
     	.createQuery("update Profile set last_activity=now() where id=:objId")

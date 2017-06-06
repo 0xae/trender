@@ -17,6 +17,7 @@ import com.dk.trender.api.ListingTrend;
 import com.dk.trender.core.Post;
 import com.dk.trender.core.PostRequest;
 import com.dk.trender.service.ListingService;
+import com.dk.trender.service.PostService;
 import com.google.common.base.Optional;
 
 import io.dropwizard.hibernate.UnitOfWork;
@@ -31,9 +32,12 @@ import io.dropwizard.hibernate.UnitOfWork;
 @Produces(MediaType.APPLICATION_JSON)
 public class ApiResource {
 	private final ListingService service;
+	private final PostService postService;
 
-	public ApiResource(final ListingService service) {
+	public ApiResource(ListingService service,
+				       PostService postService) {
 		this.service = service;
+		this.postService = postService;
 	}
 
 	@GET
@@ -69,10 +73,14 @@ public class ApiResource {
 		return null;
 	}
 
-	@POST
+	@GET
 	@UnitOfWork
-	@Path("/add_post")
-	public Post addPost(@Valid PostRequest postRequest) {
-		return service.addPost(postRequest);
+	@Path("/search")
+	public List<Post> searchPost(@QueryParam("q") String query,
+								 @QueryParam("start") String startO,
+								 @QueryParam("end") String endO) {
+		final LocalDateTime start = new LocalDateTime(startO);
+		final LocalDateTime end = new LocalDateTime(endO);
+		return postService.searchPosts(query, start, end);
 	}
 }

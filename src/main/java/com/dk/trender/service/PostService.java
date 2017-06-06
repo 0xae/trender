@@ -7,6 +7,7 @@ import javax.ws.rs.NotFoundException;
 import org.hibernate.Transaction;
 import org.hibernate.SessionFactory;
 import org.joda.time.LocalDateTime;
+import static org.joda.time.format.DateTimeFormat.forPattern;
 
 import com.dk.trender.core.Post;
 import com.dk.trender.core.PostReaction;
@@ -36,6 +37,20 @@ public class PostService extends AbstractDAO<Post> {
     	return create(post);
     }
 
+    private Post create(Post object) {
+		final LocalDateTime now = new LocalDateTime();
+    	if (object.getTimestamp() == null) {
+    		LocalDateTime postTime = new TimeParser().parseTime(object.getTimming(), now);
+    		object.setTimestamp(postTime);
+    	}
+
+    	if (object.getIndexedAt() == null) {
+    		object.setIndexedAt(now);
+    	}
+
+    	return persist(object);    		
+    }
+    
     public Post getById(long id) {
     	Post p = get(id);
     	if (p == null) {
@@ -50,6 +65,22 @@ public class PostService extends AbstractDAO<Post> {
 				      .setParameter("facebookId", facebookId)
 				      .getSingleResult();
 	}
+
+	public List<Post> searchPosts(String query, LocalDateTime start, LocalDateTime end) {
+		final String sql = 
+				"from Post where description like concat('%',:query,'%') " +
+				"and time >=  to_timestamp(:start, 'YYYY-MM-dd HH24:MI:ss') "+
+				"and time <=  to_timestamp(:end, 'YYYY-MM-dd HH24:MI:ss')  "+
+				"order by time DESC ";
+
+		return currentSession()
+				   .createQuery(sql, Post.class)
+				   .setParameter("query", query)
+				   .setParameter("start", forPattern("YYYY-MM-dd HH:mm:ss").print(start))
+				   .setParameter("end", forPattern("YYYY-MM-dd HH:mm:ss").print(end))
+				   .setMaxResults(20)
+				   .getResultList();
+	}
 	
 	public Post updateLikes(long likes, String facebookId) {
 		final Post p = getByFacebookId(facebookId);
@@ -61,18 +92,4 @@ public class PostService extends AbstractDAO<Post> {
 		}
 		return p;
 	}
-
-    private Post create(Post object) {
-		final LocalDateTime now = new LocalDateTime();
-    	if (object.getTimestamp() == null) {
-    		LocalDateTime postTime = new TimeParser().parseTime(object.getTimming(), now);
-    		object.setTimestamp(postTime);
-    	}
-
-    	if (object.getIndexedAt() == null) {
-    		object.setIndexedAt(now);
-    	}
-
-    	return persist(object);    		
-    }
 }
