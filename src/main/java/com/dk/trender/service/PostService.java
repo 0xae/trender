@@ -81,7 +81,7 @@ public class PostService extends AbstractDAO<Post> {
 				   .setMaxResults(20)
 				   .getResultList();
 	}
-	
+
 	public Post updateLikes(long likes, String facebookId) {
 		final Post p = getByFacebookId(facebookId);
 		final PostReaction r = p.getPostReaction();

@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDateTime;
 
 import com.dk.trender.api.ListingTrend;
@@ -73,12 +74,19 @@ public class ApiResource {
 		return null;
 	}
 
+	@POST
+	@UnitOfWork
+	@Path("/add_post")
+	public Post addPost(@Valid PostRequest request) {
+		return service.addPost(request);
+	}
+
 	@GET
 	@UnitOfWork
 	@Path("/search")
-	public List<Post> searchPost(@QueryParam("q") String query,
-								 @QueryParam("start") String startO,
-								 @QueryParam("end") String endO) {
+	public List<Post> searchPost(@QueryParam("q") @NotEmpty String query,
+								 @QueryParam("start") @NotEmpty String startO,
+								 @QueryParam("end") @NotEmpty String endO) {
 		final LocalDateTime start = new LocalDateTime(startO);
 		final LocalDateTime end = new LocalDateTime(endO);
 		return postService.searchPosts(query, start, end);
