@@ -50,7 +50,7 @@ public class PostService extends AbstractDAO<Post> {
 
     	return persist(object);    		
     }
-    
+
     public Post getById(long id) {
     	Post p = get(id);
     	if (p == null) {
@@ -78,7 +78,7 @@ public class PostService extends AbstractDAO<Post> {
 				   .setParameter("query", query)
 				   .setParameter("start", forPattern("YYYY-MM-dd HH:mm:ss").print(start))
 				   .setParameter("end", forPattern("YYYY-MM-dd HH:mm:ss").print(end))
-				   .setMaxResults(20)
+				   .setMaxResults(30)
 				   .getResultList();
 	}
 
