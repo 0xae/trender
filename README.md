@@ -25,12 +25,14 @@ The **trender** platform crawls, stores and makes use of search technologies and
     How far can my thinkpad go ?
     A cool app for myself
 
-## Getting Started
+## Architecture
 
-This is the backend only, trender is much bigger than this.<br/>
-i need to organize all those js, html and php scripts under a <br/>
-coesive, structured and organized architecture before i make them available<br/>
-Also in this stage, the crawler requires a customized chrome-chromium extension, <br/>
-so you can see i still got things a little bit "unsettled".
+These are the main components:
+
+[Trender Apps](https://github.com/0xae/trender-apps)
+
+[Trender API](.)
+
+ML/Search Engine
 
 Enjoy
