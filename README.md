@@ -27,12 +27,8 @@ The **trender** platform crawls, stores and makes use of search technologies and
 
 ## Architecture
 
-These are the main components:
+    [Trender Apps](https://github.com/0xae/trender-apps)
 
-[Trender Apps](https://github.com/0xae/trender-apps)
+    [Trender API](.)
 
-[Trender API](.)
-
-ML/Search Engine
-
-Enjoy
+    ML/Search Engine
