@@ -39,7 +39,7 @@ and i love it.
 
 ### ML/Search/Trending Engine
 search servers, ml & nlp tools. this would be the core of the stuff,
-in here we want to use snlp (Sanford Natutal Language Processing [Group]) to detect
+in here we want to use snlp (Sanford Natural Language Processing [Group]) to detect
 trends via use of sentiment analysis and some kind of word turnover rate
 
 that's it
