@@ -27,13 +27,13 @@ The **trender** platform crawls, stores and makes use of search technologies and
 
 ## Architecture
 
-[Trender Apps](https://github.com/0xae/trender-apps)
+### [Trender Apps](https://github.com/0xae/trender-apps)
 frontend consumption, manifold of consumers/producers,
 crawlers, spiders, etc
 
-Trender API
+### Trender API
 the API allows you to and organize update your data,
 and querying the system for very dynamic information.
 
-ML/Search/Trending Engine
+### ML/Search/Trending Engine
 search servers, nlp tools
