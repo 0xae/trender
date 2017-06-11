@@ -29,13 +29,17 @@ The **trender** platform crawls, stores and makes use of search technologies and
 
 ### [Trender Apps](https://github.com/0xae/trender-apps)
 frontend consumption, manifold of consumers/producers,
-crawlers, spiders, etc
+crawlers, spiders, ajax, videos, etc
 
 ### Trender API
 the API allows you to and organize update your data,
 and querying the system for very dynamic information.
+currently the api is written in java with the dropwizard library
+and i love it.
 
 ### ML/Search/Trending Engine
-search servers, nlp tools
+search servers, ml & nlp tools. this would be the core of the stuff,
+in here we want to use snlp (Sanford Natutal Language Processing [Group]) to detect
+trends via use of sentiment analysis and some kind of word turnover rate
 
 that's it
