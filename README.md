@@ -59,8 +59,8 @@ that's it
 - [ ] Dropwizard Metrics ?
 
 ### Ideas for timeline/searching/design
-[Twitter #UbiE3 pirate trending](https://twitter.com/search?q=%23UbiE3%20pirate&src=typd)
+[#UbiE3 pirate](https://twitter.com/search?q=%23UbiE3%20pirate&src=typd)
 
-[SkullandBones](https://twitter.com/hashtag/SkullandBones?src=hash)
+[#SkullandBones](https://twitter.com/hashtag/SkullandBones?src=hash)
 
 [Announcement of SkullandBones](https://www.polygon.com/e3/2017/6/12/15785604/skull-and-bones-ubisofts-new-multiplayer-pirate-game-announced)
