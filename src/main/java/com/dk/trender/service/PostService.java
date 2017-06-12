@@ -69,15 +69,17 @@ public class PostService extends AbstractDAO<Post> {
 	public List<Post> searchPosts(String query, LocalDateTime start, LocalDateTime end) {
 		final String sql = 
 				"from Post where description like concat('%',:query,'%') " +
-				"and time >=  to_timestamp(:start, 'YYYY-MM-dd HH24:MI:ss') "+
-				"and time <=  to_timestamp(:end, 'YYYY-MM-dd HH24:MI:ss')  "+
+//				"and time >=  to_timestamp(:start, 'YYYY-MM-dd HH24:MI:ss') "+
+//				"and time <=  to_timestamp(:end, 'YYYY-MM-dd HH24:MI:ss')  "+
+				"and time >=  to_timestamp(:start, 'YYYY-MM-dd') "+
+				"and time <=  to_timestamp(:end, 'YYYY-MM-dd')  "+
 				"order by time DESC ";
 
 		return currentSession()
 				   .createQuery(sql, Post.class)
 				   .setParameter("query", query)
-				   .setParameter("start", forPattern("YYYY-MM-dd HH:mm:ss").print(start))
-				   .setParameter("end", forPattern("YYYY-MM-dd HH:mm:ss").print(end))
+				   .setParameter("start", forPattern("YYYY-MM-dd ").print(start))
+				   .setParameter("end", forPattern("YYYY-MM-dd ").print(end))
 				   .setMaxResults(30)
 				   .getResultList();
 	}
