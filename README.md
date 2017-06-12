@@ -9,7 +9,7 @@ and the frontend app that displays all this information for consumption and conf
 more on that later.
 
 The idea is to build something akin to [Trending Topics](https://github.com/datawrangling/trendingtopics), but with a much simpler architecture.<br/>
-The **trender** platform crawls, stores and makes use of search technologies and leverages the power<br/> of PostgreSQL to provide you accurate, diverse and descriptive information on realtime or at least near to realtime about what's happening on facebook.<br/>
+The **trender** platform crawls, stores and makes use of search technologies and leverages the power<br/> of PostgreSQL to provide you accurate, diverse and descriptive information on realtime or at least near to realtime about what's happening with informations that you feed it, for example data from facebook, twitter, wikipedia, etc, etc.<br/>
 
 ## Motivation
 
@@ -25,12 +25,37 @@ The **trender** platform crawls, stores and makes use of search technologies and
     How far can my thinkpad go ?
     A cool app for myself
 
-## Getting Started
+## Architecture
 
-This is the backend only, trender is much bigger than this.<br/>
-i need to organize all those js, html and php scripts under a <br/>
-coesive, structured and organized architecture before i make them available<br/>
-Also in this stage, the crawler requires a customized chrome-chromium extension, <br/>
-so you can see i still got things a little bit "unsettled".
+### [Trender Apps](https://github.com/0xae/trender-apps)
+frontend consumption, manifold of consumers/producers,
+crawlers, spiders, ajax, videos, etc
 
-Enjoy
+### Trender API (here)
+the API allows you to and organize update your data,
+and querying the system for very dynamic information.
+currently the api is written in java with the dropwizard library
+and i love it.
+
+### ML/Search/Trending Engine (soon)
+search servers, ml & nlp tools. this would be the core of the stuff,
+in here we want to use snlp (Sanford Natural Language Processing [Group]) to detect
+trends via use of sentiment analysis and some kind of word turnover rate. full text search
+can be provided via postgres (flexible, fast and convenient) or some other specialized
+vendor (lucene, elastic, sphinx).
+the reason we need a full-text search offering it's because it doenst make sense
+to detect good/bad trends if your searching abilities is poor.
+so well the search will have some support for Semantic matching, as it's way cool.
+
+that's it
+
+## Tasks
+
+- [ ] rich multimedia (music, videos, images, links, etc) API 
+- [ ] Trending algorithm and API
+- [ ] Natural Language Processing
+- [ ] Searching
+- [ ] Full Test Coverage
+- [ ] Crawling API
+- [ ] Dropwizard Metrics ?
+
