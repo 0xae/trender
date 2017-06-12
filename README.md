@@ -74,3 +74,5 @@ that's it
 [Learning words (google word2vec)](https://opensource.googleblog.com/2013/08/learning-meaning-behind-words.html)
 
 [google word2vec](https://code.google.com/archive/p/word2vec/)
+
+[Augur Prediction](https://augur.net/)
