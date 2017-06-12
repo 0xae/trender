@@ -49,7 +49,7 @@ so well the search will have some support for Semantic matching, as it's way coo
 
 that's it
 
-### Tasks
+## Tasks
 
 - [ ] rich multimedia (music, videos, images, links, etc) API 
 - [ ] Trending algorithm and API
@@ -59,7 +59,7 @@ that's it
 - [ ] Crawling API
 - [ ] Dropwizard Metrics ?
 
-### Ideas for timeline/searching/design
+## Ideas for timeline/searching/design
 [#UbiE3 pirate](https://twitter.com/search?q=%23UbiE3%20pirate&src=typd)
 
 [#SkullandBones](https://twitter.com/hashtag/SkullandBones?src=hash)
