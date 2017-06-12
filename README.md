@@ -48,3 +48,13 @@ to detect good/bad trends if your searching abilities is poor.
 so well the search will have some support for Semantic matching, as it's way cool.
 
 that's it
+
+### Tasks
+
+- [ ] Trending algorithm and API
+- [ ] Natural Language Processing
+- [ ] Searching
+- [ ] Full Test Coverage
+- [ ] Crawling API
+- [ ] Dropwizard Metrics ?
+
