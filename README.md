@@ -51,6 +51,7 @@ that's it
 
 ### Tasks
 
+- [ ] rich multimedia (music, videos, images, links, etc) API 
 - [ ] Trending algorithm and API
 - [ ] Natural Language Processing
 - [ ] Searching
