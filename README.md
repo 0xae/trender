@@ -76,3 +76,5 @@ that's it
 [google word2vec](https://code.google.com/archive/p/word2vec/)
 
 [Augur Prediction](https://augur.net/)
+
+[Scrappy fast crawler and spider](https://scrapy.org/)
