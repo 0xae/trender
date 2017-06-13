@@ -64,6 +64,9 @@ that's it
     
 ### trending-topics media 
     use crawlers to get media content
+
+### storage
+* [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
     
 ## Links
 
@@ -85,6 +88,5 @@ that's it
 
 [Scrappy fast crawler and spider](https://scrapy.org/)
 
-[Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
 
 
