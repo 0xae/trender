@@ -61,8 +61,10 @@ that's it
 - [ ] Rich Descriptive and Analytical API
 
 ## Ideas
+    
+### now 
+    use crawlers (for twitter/facebook) to crawl rich content (videos, imgs, music, etc) for trending topics
 
-* use crawlers (for twitter/facebook) to crawl rich content (videos, imgs, music, etc) for trending topics
 
 ## Links
 
