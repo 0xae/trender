@@ -63,9 +63,8 @@ that's it
 ## Ideas
     
 ### trending-topics media 
-    use crawlers (for twitter/facebook) to crawl get media content (videos,music,pictures,...) for trending topics
-
-
+    use crawlers to get media content (videos,music,pictures,...)
+    
 ## Links
 
 [CS 229 Machine Learning](http://cs229.stanford.edu/projects2013.html)
