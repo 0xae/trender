@@ -58,6 +58,11 @@ that's it
 - [ ] Full Test Coverage
 - [ ] Crawling API
 - [ ] Dropwizard Metrics ?
+- [ ] Rich Descriptive and Analytical API
+
+## Ideas
+
+* use crawlers (for twitter/facebook) to crawl rich content (videos, imgs, music, etc) for trending topics
 
 ## Links
 
