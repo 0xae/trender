@@ -62,8 +62,8 @@ that's it
 
 ## Ideas
     
-### now 
-    use crawlers (for twitter/facebook) to crawl rich content (videos, imgs, music, etc) for trending topics
+### trending-topics media 
+    use crawlers (for twitter/facebook) to crawl get media content (videos,music,pictures,...) for trending topics
 
 
 ## Links
