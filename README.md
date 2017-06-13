@@ -84,3 +84,7 @@ that's it
 [Augur Prediction](https://augur.net/)
 
 [Scrappy fast crawler and spider](https://scrapy.org/)
+
+[Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
+
+
