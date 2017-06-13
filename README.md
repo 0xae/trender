@@ -51,7 +51,7 @@ that's it
 
 ## Tasks
 
-- [ ] rich multimedia (music, videos, images, links, etc) API 
+- [ ] Media content (music, videos, picture, links, etc) API 
 - [ ] Trending algorithm and API
 - [ ] Natural Language Processing
 - [ ] Searching
@@ -63,7 +63,7 @@ that's it
 ## Ideas
     
 ### trending-topics media 
-    use crawlers to get media content (videos,music,pictures,...)
+    use crawlers to get media content
     
 ## Links
 
