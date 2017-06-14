@@ -37,10 +37,10 @@ and querying the system for very dynamic information.
 currently the api is written in java with the dropwizard library
 and i love it.
 
-### ML/Search/Trending Engine (soon)
+### Trending/Text Analysis/Search/Trending Engine (soon)
 search servers, ml & nlp tools. this would be the core of the stuff,
-in here we want to use snlp (Sanford Natural Language Processing [Group]) to detect
-trends via use of sentiment analysis and some kind of word turnover rate. full text search
+in here we want to use SNLP (Sanford Natural Language Processing [Group]) to detect
+trends using sentiment analysis and some kind of word turnover rate. full text search
 can be provided via postgres (flexible, fast and convenient) or some other specialized
 vendor (lucene, elastic, sphinx).
 the reason we need a full-text search offering it's because it doenst make sense
