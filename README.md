@@ -70,24 +70,27 @@ that's it
 * [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
     
 ## Links
-
-[CS 229 Machine Learning](http://cs229.stanford.edu/projects2013.html)
-
-[Reddit Atlas](https://www.reddit.com/r/RedditAtlas/)
-
-[Project Atlas](https://draemm.li/various/place-atlas/)
-
-[Generating Fantasy Maps](http://mewo2.com/notes/terrain/)
-
+### Text Processing
 [The Stanford NLP Group](https://nlp.stanford.edu/)
 
 [Learning words (google word2vec)](https://opensource.googleblog.com/2013/08/learning-meaning-behind-words.html)
 
 [google word2vec](https://code.google.com/archive/p/word2vec/)
 
-[Augur Prediction](https://augur.net/)
+### Machine Learning
+[CS 229 Machine Learning](http://cs229.stanford.edu/projects2013.html)
+
+### General Stuff    
+[Reddit Atlas](https://www.reddit.com/r/RedditAtlas/)
+
+[Project Atlas](https://draemm.li/various/place-atlas/)
+
+[Generating Fantasy Maps](http://mewo2.com/notes/terrain/)
 
 [Scrappy fast crawler and spider](https://scrapy.org/)
+
+[Augur Prediction](https://augur.net/)
+
 
 
 
