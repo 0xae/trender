@@ -60,11 +60,11 @@ public class ApiResource {
 	public List<Post> getRecentPosts(@QueryParam("time") Optional<String> minTime) {
 		if (minTime.isPresent()) {
 			final LocalDateTime time = new LocalDateTime(minTime.get().replace(' ', 'T'));
-			return service.getPostsNewerThan(time);
+			return postService.getPostsNewerThan(time);
 		}
 
 		final LocalDateTime end = new LocalDateTime();
-		return service.getPostsNewerThan(end.minusMinutes(15));
+		return postService.getPostsNewerThan(end.minusMinutes(15));
 	}
 
 	@GET
@@ -78,7 +78,7 @@ public class ApiResource {
 	@UnitOfWork
 	@Path("/add_post")
 	public Post addPost(@Valid PostRequest request) {
-		return service.addPost(request);
+		return postService.addPost(request);
 	}
 
 	@GET

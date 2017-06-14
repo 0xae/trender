@@ -5,11 +5,14 @@ import java.util.List;
 import javax.ws.rs.NotFoundException;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import org.joda.time.LocalDateTime;
 import static org.joda.time.format.DateTimeFormat.forPattern;
 
+import com.dk.trender.core.Listing;
 import com.dk.trender.core.Post;
 import com.dk.trender.core.PostReaction;
+import com.dk.trender.core.PostRequest;
 import com.dk.trender.core.Profile;
 import com.dk.trender.service.utils.TimeParser;
 
@@ -21,8 +24,12 @@ import io.dropwizard.hibernate.AbstractDAO;
  * @date 2017-03-31 14:11:37
  */
 public class PostService extends AbstractDAO<Post> {
-    public PostService(final SessionFactory factory) {
+	private final ProfileService profileService;
+
+	public PostService(final SessionFactory factory,
+					   final ProfileService service) {
         super(factory);
+        this.profileService = service;
     }
 
     @SuppressWarnings("unchecked")
@@ -30,10 +37,58 @@ public class PostService extends AbstractDAO<Post> {
     	return list(namedQuery("post.findAll"));
     }
 
+    /**
+     * XXX: move lines 50,57 to Post class
+     * @param post
+     * @param profile
+     * @return
+     */
     public Post create(Post post, Profile profile) {
     	post.setProfileId(profile.getId());
     	post.setListingId(profile.getListingId());
-    	return create(post);
+		final LocalDateTime now = new LocalDateTime();
+    	if (post.getTimestamp() == null) {
+    		LocalDateTime postTime = new TimeParser().parseTime(post.getTimming(), now);
+    		post.setTimestamp(postTime);
+    	}
+
+    	if (post.getIndexedAt() == null) {
+    		post.setIndexedAt(now);
+    	}
+
+    	return persist(post);
+    }
+
+	public List<Post> getPostsNewerThan(final LocalDateTime time) {
+		return getPostsFromArchive(time, '>');
+	}
+
+	public List<Post> getPostsOlderThan(final LocalDateTime time) {
+		return getPostsFromArchive(time, '<');
+	}
+
+    public Post addPost(PostRequest request) {
+		final Profile profile = profileService.findOrCreate(request.getProfile());
+		try {
+			return create(request.getPost(), profile);			
+		} catch (ConstraintViolationException e) {
+			currentSession().getTransaction().rollback();
+			return updateLikes(
+					request.getPost().getPostReaction().getCountLikes(), 
+					request.getPost().getFacebookId() 
+				);
+		} finally {
+//	    	updateLastActivity(findById(profile.getListingId()));
+//	    	updateLastActivity(profile);			
+		}
+    }
+
+    public Listing updateTitle(Listing obj) {
+    	namedQuery("listing.updateTitle")
+    	.setParameter("title", obj.getTitle())
+    	.setParameter("id", obj.getId())
+    	.executeUpdate();
+    	return obj;
     }
 
     public Post getById(long id) {
@@ -80,17 +135,19 @@ public class PostService extends AbstractDAO<Post> {
 		return p;
 	}
 
-    private Post create(Post object) {
-		final LocalDateTime now = new LocalDateTime();
-    	if (object.getTimestamp() == null) {
-    		LocalDateTime postTime = new TimeParser().parseTime(object.getTimming(), now);
-    		object.setTimestamp(postTime);
-    	}
-
-    	if (object.getIndexedAt() == null) {
-    		object.setIndexedAt(now);
-    	}
-
-    	return persist(object);    		
-    }
+	/**
+	 * XXX: maybe we should remove this
+	 * @param time
+	 * @param op
+	 * @return
+	 */
+	private List<Post> getPostsFromArchive(final LocalDateTime time, char op) {
+		final String query = "select p from Post p where time "+op+" to_timestamp(:ts, 'YYYY-MM-dd HH24:MI:ss') "+
+				             "order by time desc ";
+		return currentSession()
+			   .createQuery(query, Post.class)
+			   .setParameter("ts", forPattern("YYYY-MM-dd HH:mm:ss").print(time))
+			   .setMaxResults(20)
+			   .getResultList();
+	}
 }
