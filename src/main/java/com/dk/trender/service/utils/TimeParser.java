@@ -43,7 +43,7 @@ public class TimeParser {
 		}		
 	}
 
-	public List<String> extractWithRE(String weapon, String person) {	
+	public List<String> extractWithRE(String weapon, String person) {
 		 final Matcher m = getMatcher(weapon, person);
 		 if (!m.matches()) {
 			 return Collections.emptyList();
