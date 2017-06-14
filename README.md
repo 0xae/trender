@@ -65,6 +65,10 @@ that's it
     
 ### trending-topics media 
     use crawlers to get media content
+### software-engineering
+    well, we enjoy the luxury of things happening all the time (crawling activity)
+    what if we used that to implement some kind of production testing
+    for higher quality
 
 ### storage
 * [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)

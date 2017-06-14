@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.ws.rs.NotFoundException;
 
-import org.hibernate.Transaction;
 import org.hibernate.SessionFactory;
 import org.joda.time.LocalDateTime;
 import static org.joda.time.format.DateTimeFormat.forPattern;
@@ -35,20 +34,6 @@ public class PostService extends AbstractDAO<Post> {
     	post.setProfileId(profile.getId());
     	post.setListingId(profile.getListingId());
     	return create(post);
-    }
-
-    private Post create(Post object) {
-		final LocalDateTime now = new LocalDateTime();
-    	if (object.getTimestamp() == null) {
-    		LocalDateTime postTime = new TimeParser().parseTime(object.getTimming(), now);
-    		object.setTimestamp(postTime);
-    	}
-
-    	if (object.getIndexedAt() == null) {
-    		object.setIndexedAt(now);
-    	}
-
-    	return persist(object);    		
     }
 
     public Post getById(long id) {
@@ -94,4 +79,18 @@ public class PostService extends AbstractDAO<Post> {
 		}
 		return p;
 	}
+
+    private Post create(Post object) {
+		final LocalDateTime now = new LocalDateTime();
+    	if (object.getTimestamp() == null) {
+    		LocalDateTime postTime = new TimeParser().parseTime(object.getTimming(), now);
+    		object.setTimestamp(postTime);
+    	}
+
+    	if (object.getIndexedAt() == null) {
+    		object.setIndexedAt(now);
+    	}
+
+    	return persist(object);    		
+    }
 }
