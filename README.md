@@ -84,6 +84,10 @@ that's it
 ### Machine Learning
 [CS 229 Machine Learning](http://cs229.stanford.edu/projects2013.html)
 
+[Exploring LSTMS](http://blog.echen.me/2017/05/30/exploring-lstms/?imm_mid=0f2ce7&cmp=em-data-na-na-newsltr_20170614)
+
+[RNN Effectiveness](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
+
 ### General Stuff    
 [Reddit Atlas](https://www.reddit.com/r/RedditAtlas/)
 
