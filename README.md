@@ -2,7 +2,7 @@
 
 This is a dropwizard rest app that stores, analyzes and provides a query api to retrieve<br/>
 most recent  activities, listing, trendings topics, and all sort of aggregated behavioral information<br/>
-happenning on this world.<br/>
+happenning.<br/>
 
 This is just half of the code, the other half is the crawler written in javascript/jquery<br/> 
 and the frontend app that displays all this information for consumption and configuration,<br/>
