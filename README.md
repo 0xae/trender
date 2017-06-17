@@ -61,7 +61,7 @@ that's it
     
 ### trending-topics media 
     use crawlers to get media content
-### lite-testing
+### live-testing
     well, we enjoy the luxury of things happening all the time (crawling activity)
     what if we used that to implement some kind of serve->test ( ~live testing ? )
 
