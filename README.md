@@ -94,6 +94,12 @@ that's it
 
 [Augur Prediction](https://augur.net/)
 
+[Consensus & Paxos](https://hackernoon.com/how-your-data-is-stored-or-the-laws-of-the-imaginary-greeks-54c569c17a49)
 
+[kafka & Message Queues](https://hackernoon.com/a-super-quick-comparison-between-kafka-and-message-queues-e69742d855a8)
+
+[Awesome blog, full of code](https://www.approach0.xyz/tkblog/)
+
+[math-aware search engine](https://github.com/approach0/search-engine)
 
 
