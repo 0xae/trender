@@ -53,6 +53,13 @@ public class ApiResource {
 	public List<ListingTrend> getTrendingListings() {
 		return null;
 	}
+	
+	@POST
+	@UnitOfWork
+	@Path("/add_post")
+	public Post addPost(@Valid PostRequest request) {
+		return postService.addPost(request);
+	}
 
 	@GET
 	@UnitOfWork
@@ -65,20 +72,6 @@ public class ApiResource {
 
 		final LocalDateTime end = new LocalDateTime();
 		return postService.getPostsNewerThan(end.minusMinutes(15));
-	}
-
-	@GET
-	@UnitOfWork
-	@Path("/popular_posts")
-	public List<Post> getPopularPosts(@QueryParam("listing_id") final long listingId) {
-		return null;
-	}
-
-	@POST
-	@UnitOfWork
-	@Path("/add_post")
-	public Post addPost(@Valid PostRequest request) {
-		return postService.addPost(request);
 	}
 
 	@GET

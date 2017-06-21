@@ -57,7 +57,7 @@ public class Post {
 
 	@Column(name="profile_id", nullable=false, updatable=false)
 	private long profileId;
-	
+
 	@Column(name="cover_html", updatable=false)
 	private String coverHtml;
 
@@ -66,7 +66,7 @@ public class Post {
 
 	@Column(name="indexed_at", updatable=false)
 	private LocalDateTime indexedAt;
-	
+
 	@NotEmpty
 	@Column(name="facebook_id", unique=true, updatable=false)
 	private String facebookId;
