@@ -100,12 +100,12 @@ public class Post {
 	public Post() {
 		// TODO
 	}
-	
+
 	@JsonProperty
 	public void setListing(Listing listing) {
 		this.listing = listing;
 	}
-	
+
 	@JsonProperty
 	public Listing getListing() {
 		return listing;
@@ -200,12 +200,12 @@ public class Post {
 	public void setPostReaction(PostReaction postReaction) {
 		this.postReaction = postReaction;
 	}
-	
+
 	@JsonProperty
 	public PostReaction getPostReaction() {
 		return postReaction;
 	}
-	
+
 	@JsonProperty
 	public long getId() {
 		return id;
