@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 import org.joda.time.LocalDateTime;
 
 public class TimeParser {
-	public static final String MINUTES = "(\\d+) (mins*)";
-	public static final String HOURS = "(\\d+) (hrs*)";
+	public static final String MINUTES = "(\\d+) (min[u][t][e]s*)";
+	public static final String HOURS = "(\\d+) (h[o][u]rs*)";
 	public static final String DATE = "(\\w+) (\\d+) (\\d+):(\\d+)([ap]m)";
 	public static final String NOW = "Just [nN]ow";
 
