@@ -1,16 +1,8 @@
 package com.dk.trender.core;
 
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 
 public class PostRequest {
 	@NotNull
