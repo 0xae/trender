@@ -42,9 +42,9 @@ public class PostService extends AbstractDAO<Post> {
 		} catch (ConstraintViolationException e) {
 			currentSession().getTransaction().rollback();
 			return updateLikes(
-					request.getPost().getPostReaction().getCountLikes(), 
-					request.getPost().getFacebookId() 
-				);
+				request.getPost().getPostReaction().getCountLikes(), 
+				request.getPost().getFacebookId() 
+			);
 		}
     }
 
@@ -106,8 +106,7 @@ public class PostService extends AbstractDAO<Post> {
 		final Post p = findByFacebookId(facebookId);
 		final PostReaction r = p.getPostReaction();
 
-		// update likes iff its diferent
-		// from the actual value
+		// update likes iff its diferent from the actual value
 		if (r.getCountLikes() != likes) {
 			r.setCountLikes(likes);
 			p.setTimestamp(p.getTimestamp().plusMinutes(5));

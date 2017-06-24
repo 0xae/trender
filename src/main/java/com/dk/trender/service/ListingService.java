@@ -3,13 +3,9 @@ package com.dk.trender.service;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.exception.ConstraintViolationException;
 import org.joda.time.LocalDateTime;
-import static org.joda.time.format.DateTimeFormat.forPattern;
 
 import com.dk.trender.core.Listing;
-import com.dk.trender.core.Post;
-import com.dk.trender.core.PostRequest;
 import com.dk.trender.core.Profile;
 
 import io.dropwizard.hibernate.AbstractDAO;
@@ -25,10 +21,7 @@ public class ListingService extends AbstractDAO<Listing> {
     }
 	
     public Listing create(Listing listing) {
-    	if (listing.getCreatedAt() == null) {
-    		listing.setCreatedAt(new LocalDateTime());
-    	}
-
+		listing.setCreatedAt(new LocalDateTime());
         return persist(listing);
     }
     
