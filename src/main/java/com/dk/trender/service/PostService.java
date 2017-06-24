@@ -37,36 +37,6 @@ public class PostService extends AbstractDAO<Post> {
     	return list(namedQuery("post.findAll"));
     }
 
-    /**
-     * XXX: move lines 50,57 to Post class
-     * @param post
-     * @param profile
-     * @return
-     */
-    public Post create(Post post, Profile profile) {
-    	post.setProfileId(profile.getId());
-    	post.setListingId(profile.getListingId());
-		final LocalDateTime now = new LocalDateTime();
-    	if (post.getTimestamp() == null) {
-    		LocalDateTime postTime = new TimeParser().parseTime(post.getTimming(), now);
-    		post.setTimestamp(postTime);
-    	}
-
-    	if (post.getIndexedAt() == null) {
-    		post.setIndexedAt(now);
-    	}
-
-    	return persist(post);
-    }
-
-	public List<Post> getPostsNewerThan(final LocalDateTime time) {
-		return getPostsFromArchive(time, '>');
-	}
-
-	public List<Post> getPostsOlderThan(final LocalDateTime time) {
-		return getPostsFromArchive(time, '<');
-	}
-
     public Post addPost(PostRequest request) {
 		final Profile profile = profileService.findOrCreate(request.getProfile());
 		try {
@@ -77,11 +47,30 @@ public class PostService extends AbstractDAO<Post> {
 					request.getPost().getPostReaction().getCountLikes(), 
 					request.getPost().getFacebookId() 
 				);
-		} finally {
-//	    	updateLastActivity(findById(profile.getListingId()));
-//	    	updateLastActivity(profile);			
 		}
     }
+    
+    /**
+     * XXX: move lines 50,57 to Post class
+     * @param post
+     * @param profile
+     * @return
+     */
+    private Post create(Post post, Profile profile) {
+    	post.setProfileId(profile.getId());
+    	post.setListingId(profile.getListingId());
+		post.setIndexedAt(new LocalDateTime());
+		post.setTimming("");
+    	return persist(post);
+    }
+
+	public List<Post> getPostsNewerThan(final LocalDateTime time) {
+		return getPostsFromArchive(time, '>');
+	}
+
+	public List<Post> getPostsOlderThan(final LocalDateTime time) {
+		return getPostsFromArchive(time, '<');
+	}
 
     public Listing updateTitle(Listing obj) {
     	namedQuery("listing.updateTitle")
@@ -106,6 +95,13 @@ public class PostService extends AbstractDAO<Post> {
 				      .getSingleResult();
 	}
 
+	/**
+	 * XXX: time format must be adjustable
+	 * @param query
+	 * @param start
+	 * @param end
+	 * @return
+	 */
 	public List<Post> searchPosts(String query, LocalDateTime start, LocalDateTime end) {
 		final String sql = 
 				"from Post where description like concat('%',:query,'%') " +

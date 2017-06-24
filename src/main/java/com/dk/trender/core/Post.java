@@ -51,7 +51,7 @@ public class Post {
 	@Column(name="description")
 	private String description;
 
-	@NotEmpty
+	// XXX: remove this column later
 	@Column(name="timming", nullable=false)
 	private String timming;
 
@@ -61,7 +61,7 @@ public class Post {
 	@Column(name="cover_html", updatable=false)
 	private String coverHtml;
 
-	@Column(name="time", updatable=false)
+	@Column(name="time", updatable=false, nullable=false)
 	private LocalDateTime timestamp;
 
 	@Column(name="indexed_at", updatable=false)

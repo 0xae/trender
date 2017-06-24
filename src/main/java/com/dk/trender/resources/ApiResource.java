@@ -33,12 +33,9 @@ import io.dropwizard.hibernate.UnitOfWork;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ApiResource {
-	private final ListingService service;
 	private final PostService postService;
 
-	public ApiResource(ListingService service,
-				       PostService postService) {
-		this.service = service;
+	public ApiResource(PostService postService) {
 		this.postService = postService;
 	}
 

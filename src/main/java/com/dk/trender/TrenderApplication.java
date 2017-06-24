@@ -71,7 +71,7 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		ListingService listingService = new ListingService(sessionFactory);
 		PostService postService = new PostService(sessionFactory, profileService);
 
-		env.jersey().register(new ApiResource(listingService, postService));
+		env.jersey().register(new ApiResource(postService));
 		env.jersey().register(new ListingResource(listingService));
 		env.jersey().register(new ProfileResource(profileService));
 		env.jersey().register(new PostResource(postService));
