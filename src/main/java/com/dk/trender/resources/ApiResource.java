@@ -65,11 +65,11 @@ public class ApiResource {
 	public List<Post> getRecentPosts(@QueryParam("time") Optional<String> minTime) {
 		if (minTime.isPresent()) {
 			final LocalDateTime time = new LocalDateTime(minTime.get().replace(' ', 'T'));
-			return postService.getPostsNewerThan(time);
+			return postService.findPostsNewerThan(time);
 		}
 
 		final LocalDateTime end = new LocalDateTime();
-		return postService.getPostsNewerThan(end.minusMinutes(15));
+		return postService.findPostsNewerThan(end.minusMinutes(15));
 	}
 
 	@GET

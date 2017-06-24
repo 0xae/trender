@@ -1,13 +1,10 @@
 package com.dk.trender.resources;
 
-import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.dk.trender.core.Post;
@@ -33,13 +30,13 @@ public class PostResource {
 	@Path("/{id}")
 	@UnitOfWork
 	public Post getById(@PathParam("id") final long id) {
-		return service.getById(id);
+		return service.findById(id);
 	}
 
 	@GET
 	@Path("/fbid/{id}")
 	@UnitOfWork
 	public Post getByFacebookId(@PathParam("id") final String id) {
-		return service.getByFacebookId(id);				
+		return service.findByFacebookId(id);				
 	}
 }

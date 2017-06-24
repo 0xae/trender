@@ -9,12 +9,10 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.joda.time.LocalDateTime;
 import static org.joda.time.format.DateTimeFormat.forPattern;
 
-import com.dk.trender.core.Listing;
 import com.dk.trender.core.Post;
 import com.dk.trender.core.PostReaction;
 import com.dk.trender.core.PostRequest;
 import com.dk.trender.core.Profile;
-import com.dk.trender.service.utils.TimeParser;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
@@ -30,11 +28,6 @@ public class PostService extends AbstractDAO<Post> {
 					   final ProfileService service) {
         super(factory);
         this.profileService = service;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<Post> findAll() {
-    	return list(namedQuery("post.findAll"));
     }
 
     /**
@@ -55,15 +48,17 @@ public class PostService extends AbstractDAO<Post> {
 		}
     }
 
-	public List<Post> getPostsNewerThan(final LocalDateTime time) {
+
+    @SuppressWarnings("unchecked")
+    public List<Post> findAll() {
+    	return list(namedQuery("post.findAll"));
+    }
+    
+	public List<Post> findPostsNewerThan(final LocalDateTime time) {
 		return getPostsFromArchive(time, '>');
 	}
 
-	public List<Post> getPostsOlderThan(final LocalDateTime time) {
-		return getPostsFromArchive(time, '<');
-	}
-
-    public Post getById(long id) {
+    public Post findById(long id) {
     	Post p = get(id);
     	if (p == null) {
     		throw new NotFoundException();    		
@@ -71,7 +66,7 @@ public class PostService extends AbstractDAO<Post> {
     	return p;
     }
 
-	public Post getByFacebookId(final String facebookId) {
+	public Post findByFacebookId(final String facebookId) {
 		return (Post) currentSession()
 					  .getNamedQuery("post.findByFacebook")
 				      .setParameter("facebookId", facebookId)
@@ -108,7 +103,7 @@ public class PostService extends AbstractDAO<Post> {
 	 * @return
 	 */
 	private Post updateLikes(long likes, String facebookId) {
-		final Post p = getByFacebookId(facebookId);
+		final Post p = findByFacebookId(facebookId);
 		final PostReaction r = p.getPostReaction();
 
 		// update likes iff its diferent
