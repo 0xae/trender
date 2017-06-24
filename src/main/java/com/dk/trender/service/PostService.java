@@ -8,7 +8,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.exception.ConstraintViolationException;
 import org.joda.time.LocalDateTime;
 import static org.joda.time.format.DateTimeFormat.forPattern;
-import org.joda.time.format.DateTimeFormat;
 
 import com.dk.trender.core.Post;
 import com.dk.trender.core.PostReaction;
