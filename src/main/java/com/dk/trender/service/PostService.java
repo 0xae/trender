@@ -37,6 +37,11 @@ public class PostService extends AbstractDAO<Post> {
     	return list(namedQuery("post.findAll"));
     }
 
+    /**
+     * TODO: log this
+     * @param request
+     * @return
+     */
     public Post addPost(PostRequest request) {
 		final Profile profile = profileService.findOrCreate(request.getProfile());
 		try {
@@ -49,20 +54,6 @@ public class PostService extends AbstractDAO<Post> {
 				);
 		}
     }
-    
-    /**
-     * XXX: move lines 50,57 to Post class
-     * @param post
-     * @param profile
-     * @return
-     */
-    private Post create(Post post, Profile profile) {
-    	post.setProfileId(profile.getId());
-    	post.setListingId(profile.getListingId());
-		post.setIndexedAt(new LocalDateTime());
-		post.setTimming("");
-    	return persist(post);
-    }
 
 	public List<Post> getPostsNewerThan(final LocalDateTime time) {
 		return getPostsFromArchive(time, '>');
@@ -71,14 +62,6 @@ public class PostService extends AbstractDAO<Post> {
 	public List<Post> getPostsOlderThan(final LocalDateTime time) {
 		return getPostsFromArchive(time, '<');
 	}
-
-    public Listing updateTitle(Listing obj) {
-    	namedQuery("listing.updateTitle")
-    	.setParameter("title", obj.getTitle())
-    	.setParameter("id", obj.getId())
-    	.executeUpdate();
-    	return obj;
-    }
 
     public Post getById(long id) {
     	Post p = get(id);
@@ -97,6 +80,7 @@ public class PostService extends AbstractDAO<Post> {
 
 	/**
 	 * XXX: time format must be adjustable
+	 * datetime param is YYYY-MM-dd HH24:MI:ss
 	 * @param query
 	 * @param start
 	 * @param end
@@ -105,8 +89,6 @@ public class PostService extends AbstractDAO<Post> {
 	public List<Post> searchPosts(String query, LocalDateTime start, LocalDateTime end) {
 		final String sql = 
 				"from Post where description like concat('%',:query,'%') " +
-//				"and time >=  to_timestamp(:start, 'YYYY-MM-dd HH24:MI:ss') "+
-//				"and time <=  to_timestamp(:end, 'YYYY-MM-dd HH24:MI:ss')  "+
 				"and time >=  to_timestamp(:start, 'YYYY-MM-dd') "+
 				"and time <=  to_timestamp(:end, 'YYYY-MM-dd')  "+
 				"order by time DESC ";
@@ -119,10 +101,18 @@ public class PostService extends AbstractDAO<Post> {
 				   .setMaxResults(30)
 				   .getResultList();
 	}
-
-	public Post updateLikes(long likes, String facebookId) {
+	
+	/**
+	 * @param likes
+	 * @param facebookId
+	 * @return
+	 */
+	private Post updateLikes(long likes, String facebookId) {
 		final Post p = getByFacebookId(facebookId);
 		final PostReaction r = p.getPostReaction();
+
+		// update likes iff its diferent
+		// from the actual value
 		if (r.getCountLikes() != likes) {
 			r.setCountLikes(likes);
 			p.setTimestamp(p.getTimestamp().plusMinutes(5));
@@ -130,6 +120,20 @@ public class PostService extends AbstractDAO<Post> {
 		}
 		return p;
 	}
+	
+    /**
+     * XXX: move lines 50,57 to Post class
+     * @param post
+     * @param profile
+     * @return
+     */
+    private Post create(Post post, Profile profile) {
+    	post.setProfileId(profile.getId());
+    	post.setListingId(profile.getListingId());
+		post.setIndexedAt(new LocalDateTime());
+		post.setTimming("");
+    	return persist(post);
+    }
 
 	/**
 	 * XXX: maybe we should remove this
