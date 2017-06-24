@@ -64,7 +64,7 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		cors.setInitParameter("allowedHeaders", "*");
 		cors.setInitParameter("allowedMethods", "OPTIONS, GET, PUT, POST, DELETE, HEAD");
 		cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
-		cors.setInitParameter(CrossOriginFilter.CHAIN_PREFLIGHT_PARAM, Boolean.FALSE.toString());
+//		cors.setInitParameter(CrossOriginFilter.CHAIN_PREFLIGHT_PARAM, Boolean.FALSE.toString());
 
 		SessionFactory sessionFactory = hibernateBundle.getSessionFactory();
 		ProfileService profileService = new ProfileService(sessionFactory);
