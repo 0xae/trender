@@ -6,7 +6,6 @@ import org.hibernate.SessionFactory;
 import org.joda.time.LocalDateTime;
 
 import com.dk.trender.core.Listing;
-import com.dk.trender.core.Profile;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
@@ -35,28 +34,5 @@ public class ListingService extends AbstractDAO<Listing> {
     public List<Listing> findAll() {
         return namedQuery("listing.findAll")
         	   .getResultList();
-    }
-
-	/**
-	 * TODO: work out these names
-	 * @param obj
-	 * @return
-	 */
-    private Listing updateActivity(Listing obj) {
-    	obj.setLastActivity(new LocalDateTime());
-    	currentSession()
-    	.createQuery("update Listing set last_activity=now() where id=:objId")
-    	.setParameter("objId", obj.getId())
-    	.executeUpdate();
-    	return obj;
-    }
-
-	private Profile updateProfile(Profile obj) {
-    	obj.setLastActivity(new LocalDateTime());
-    	currentSession()
-    	.createQuery("update Profile set last_activity=now() where id=:objId")
-    	.setParameter("objId", obj.getId())
-    	.executeUpdate();
-    	return obj;
     }
 }

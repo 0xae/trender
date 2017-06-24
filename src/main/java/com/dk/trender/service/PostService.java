@@ -54,7 +54,16 @@ public class PostService extends AbstractDAO<Post> {
     }
     
 	public List<Post> findPostsNewerThan(final LocalDateTime time) {
-		return getPostsFromArchive(time, '>');
+		final String query = 
+				"select p from Post p "+
+				"where time > to_timestamp(:ts, 'YYYY-MM-dd HH24:MI:ss') "+
+	            "order by time desc ";
+
+		return currentSession()
+		  .createQuery(query, Post.class)
+		  .setParameter("ts", forPattern("YYYY-MM-dd HH:mm:ss").print(time))
+		  .setMaxResults(50)
+		  .getResultList();
 	}
 
     public Post findById(long id) {
@@ -111,6 +120,7 @@ public class PostService extends AbstractDAO<Post> {
 			p.setTimestamp(p.getTimestamp().plusMinutes(5));
 			currentSession().save(p);			
 		}
+
 		return p;
 	}
 	
@@ -126,20 +136,4 @@ public class PostService extends AbstractDAO<Post> {
 		post.setIndexedAt(new LocalDateTime());
     	return persist(post);
     }
-
-	/**
-	 * XXX: maybe we should remove this
-	 * @param time
-	 * @param op
-	 * @return
-	 */
-	private List<Post> getPostsFromArchive(final LocalDateTime time, char op) {
-		final String query = "select p from Post p where time "+op+" to_timestamp(:ts, 'YYYY-MM-dd HH24:MI:ss') "+
-				             "order by time desc ";
-		return currentSession()
-			   .createQuery(query, Post.class)
-			   .setParameter("ts", forPattern("YYYY-MM-dd HH:mm:ss").print(time))
-			   .setMaxResults(20)
-			   .getResultList();
-	}
 }

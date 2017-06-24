@@ -18,7 +18,6 @@ import com.dk.trender.api.ListingTrend;
 import com.dk.trender.core.Post;
 
 import com.dk.trender.core.PostRequest;
-import com.dk.trender.service.ListingService;
 import com.dk.trender.service.PostService;
 import com.google.common.base.Optional;
 
@@ -68,7 +67,7 @@ public class ApiResource {
 		}
 
 		final LocalDateTime end = new LocalDateTime();
-		return postService.findPostsNewerThan(end.minusMinutes(15));
+		return postService.findPostsNewerThan(end.minusHours(2));
 	}
 
 	@GET
