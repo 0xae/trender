@@ -34,11 +34,17 @@ import io.dropwizard.hibernate.UnitOfWork;
 @Produces(MediaType.APPLICATION_JSON)
 public class ApiResource {
 	private final PostService postService;
-
 	public ApiResource(PostService postService) {
 		this.postService = postService;
 	}
 
+	@POST
+	@UnitOfWork
+	@Path("/add_post")
+	public Post addPost(@Valid PostRequest request) {
+		return postService.addPost(request);
+	}
+	
 	@GET
 	@UnitOfWork
 	@Path("/trending_topics")
@@ -50,13 +56,6 @@ public class ApiResource {
 	@Path("/trending_lists")
 	public List<ListingTrend> getTrendingListings() {
 		return null;
-	}
-	
-	@POST
-	@UnitOfWork
-	@Path("/add_post")
-	public Post addPost(@Valid PostRequest request) {
-		return postService.addPost(request);
 	}
 
 	@GET

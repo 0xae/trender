@@ -29,9 +29,24 @@ import io.dropwizard.hibernate.UnitOfWork;
 @Produces(MediaType.APPLICATION_JSON)
 public class ProfileResource {
 	private final ProfileService service;
-
 	public ProfileResource(final ProfileService service) {
 		this.service = service;
+	}
+	
+	@POST
+	@UnitOfWork
+	public Profile create(@Valid final Profile request) {
+		return service.create(request);
+	}
+
+	@PUT
+	@UnitOfWork
+	@Path("/{id}/title")
+	public Profile updateTitle(@PathParam("id") final long id,
+			                   @NotEmpty final String title) {
+		final Profile p = service.findById(id);
+		p.setTitle(title);
+		return service.update(p);
 	}
 
 	@GET
@@ -54,29 +69,4 @@ public class ProfileResource {
 		return service.findById(id);
 	}
 
-	@POST
-	@UnitOfWork
-	public Profile create(@Valid final Profile request) {
-		return service.create(request);
-	}
-
-	@POST
-	@UnitOfWork
-	@Path("/{id}/picture")
-	public Profile updatePicture(@PathParam("id") final long id,
-			                     @NotEmpty final String picture) {
-		final Profile p = service.findById(id);
-		p.setPicture(picture);
-		return service.update(p);
-	}
-
-	@PUT
-	@UnitOfWork
-	@Path("/{id}/title")
-	public Profile updateTitle(@PathParam("id") final long id,
-			                   @NotEmpty final String title) {
-		final Profile p = service.findById(id);
-		p.setTitle(title);
-		return service.update(p);
-	}
 }

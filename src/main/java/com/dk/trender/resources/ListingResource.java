@@ -31,9 +31,14 @@ import io.dropwizard.hibernate.UnitOfWork;
 @Produces(MediaType.APPLICATION_JSON)
 public class ListingResource {
 	private final ListingService service;
-
 	public ListingResource(ListingService service) {
 		this.service = service;
+	}
+
+	@POST
+	@UnitOfWork
+	public Listing create(@Valid Listing obj) {
+		return service.create(obj);
 	}
 
 	@GET
@@ -48,19 +53,4 @@ public class ListingResource {
 	public Listing getById(@PathParam("id") long id) {
 		return service.findById(id);
 	}
-
-	@POST
-	@UnitOfWork
-	public Listing create(@Valid Listing obj) {
-		return service.create(obj);
-	}
-
-//	@PUT
-//	@UnitOfWork
-//	@Path("/{id}/title")
-//	public Listing updateTitle(@PathParam("id") long id,
-//			                   @NotEmpty String title) {
-//		Listing l = service.findById(id);
-//		return service.updateTitle(l);
-//	}
 }
