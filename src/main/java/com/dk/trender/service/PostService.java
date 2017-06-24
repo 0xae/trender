@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.exception.ConstraintViolationException;
 import org.joda.time.LocalDateTime;
 import static org.joda.time.format.DateTimeFormat.forPattern;
+import org.joda.time.format.DateTimeFormat;
 
 import com.dk.trender.core.Post;
 import com.dk.trender.core.PostReaction;
@@ -47,7 +48,6 @@ public class PostService extends AbstractDAO<Post> {
 			);
 		}
     }
-
 
     @SuppressWarnings("unchecked")
     public List<Post> findAll() {
@@ -96,7 +96,7 @@ public class PostService extends AbstractDAO<Post> {
 				   .setMaxResults(30)
 				   .getResultList();
 	}
-	
+
 	/**
 	 * @param likes
 	 * @param facebookId
@@ -125,7 +125,6 @@ public class PostService extends AbstractDAO<Post> {
     	post.setProfileId(profile.getId());
     	post.setListingId(profile.getListingId());
 		post.setIndexedAt(new LocalDateTime());
-		post.setTimming("");
     	return persist(post);
     }
 

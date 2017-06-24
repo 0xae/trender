@@ -48,11 +48,12 @@ public class Post {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
 
+	@NotEmpty
 	@Column(name="description")
 	private String description;
 
-	// XXX: remove this column later
-	@Column(name="timming", nullable=false)
+	@NotEmpty
+	@Column(name="timming", nullable=false, updatable=false)
 	private String timming;
 
 	@Column(name="profile_id", nullable=false, updatable=false)

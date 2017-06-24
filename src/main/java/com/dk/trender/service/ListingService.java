@@ -19,12 +19,12 @@ public class ListingService extends AbstractDAO<Listing> {
 	public ListingService(SessionFactory factory) {
         super(factory);
     }
-	
+
     public Listing create(Listing listing) {
 		listing.setCreatedAt(new LocalDateTime());
         return persist(listing);
     }
-    
+
     public Listing findById(long id) {
     	return (Listing) namedQuery("listing.findById")
     					 .setParameter("id", id)
