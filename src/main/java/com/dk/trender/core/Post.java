@@ -39,6 +39,10 @@ import io.dropwizard.validation.OneOf;
 	    query="update Post p set count_likes=:likes where id = :id"
 	),
 	@NamedQuery(
+	    name="post.updatePicture",
+	    query="update Post p set picture=:pic where facebook_id = :facebook_id"
+	),
+	@NamedQuery(
 	    name="post.findByFacebook",
 	    query="from Post where facebook_id = :facebookId"
 	)
@@ -51,6 +55,10 @@ public class Post {
 	@NotEmpty
 	@Column(name="description")
 	private String description;
+
+	@NotEmpty
+	@Column(name="picture", nullable=false)
+	private String picture;
 
 	@NotEmpty
 	@Column(name="timming", nullable=false, updatable=false)
@@ -101,6 +109,16 @@ public class Post {
 	public Post() {
 		// TODO
 	}
+
+	@JsonProperty
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
+	
+	@JsonProperty
+	public String getPicture() {
+		return picture;
+	}	
 
 	@JsonProperty
 	public void setListing(Listing listing) {

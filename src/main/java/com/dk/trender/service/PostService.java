@@ -1,6 +1,7 @@
 package com.dk.trender.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.ws.rs.NotFoundException;
 
@@ -10,7 +11,6 @@ import org.joda.time.LocalDateTime;
 import static org.joda.time.format.DateTimeFormat.forPattern;
 
 import com.dk.trender.core.Post;
-import com.dk.trender.core.PostReaction;
 import com.dk.trender.core.PostRequest;
 import com.dk.trender.core.Profile;
 
@@ -41,10 +41,8 @@ public class PostService extends AbstractDAO<Post> {
 			return create(request.getPost(), profile);			
 		} catch (ConstraintViolationException e) {
 			currentSession().getTransaction().rollback();
-			return updateLikes(
-				request.getPost().getPostReaction().getCountLikes(), 
-				request.getPost().getFacebookId() 
-			);
+			updatePostActivity(request.getPost());
+			return request.getPost();
 		}
     }
 
@@ -52,7 +50,7 @@ public class PostService extends AbstractDAO<Post> {
     public List<Post> findAll() {
     	return list(namedQuery("post.findAll"));
     }
-    
+
 	public List<Post> findPostsNewerThan(final LocalDateTime time) {
 		final String query = 
 				"select p from Post p "+
@@ -110,18 +108,21 @@ public class PostService extends AbstractDAO<Post> {
 	 * @param facebookId
 	 * @return
 	 */
-	private Post updateLikes(long likes, String facebookId) {
-		final Post p = findByFacebookId(facebookId);
-		final PostReaction r = p.getPostReaction();
+	private Post updatePostActivity(Post newPost) {
+		final Post update = findByFacebookId(newPost.getFacebookId());
+		final long newLikes = newPost.getPostReaction().getCountLikes();
+		final long oldLikes = update.getPostReaction().getCountLikes();
 
-		// update likes iff its diferent from the actual value
-		if (r.getCountLikes() != likes) {
-			r.setCountLikes(likes);
-			p.setTimestamp(p.getTimestamp().plusMinutes(5));
-			currentSession().save(p);			
+		if (oldLikes != newLikes) {
+			update.getPostReaction().setCountLikes(newLikes);			
 		}
 
-		return p;
+		if (!newPost.getPicture().equals(update.getPicture())) {
+			update.setPicture(newPost.getPicture());
+		}
+
+		currentSession().save(update);
+		return update;
 	}
 	
     /**

@@ -37,6 +37,7 @@ create table z_post (
         time timestamp,
         type varchar(100) not null,
         timming varchar(250) not null,
+        picture text not null,
 
         -- ids
         facebook_id varchar(250) not null,
