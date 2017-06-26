@@ -4,7 +4,7 @@ This is a dropwizard rest app that stores, analyzes and provides a query api to 
 most recent  activities, listing, trendings topics, and all sort of aggregated behavioral information<br/>
 happenning.<br/>
 
-The idea is to build something akin to [Trending Topics](https://github.com/datawrangling/trendingtopics), but with a much simpler and faster and cheaper architecture.<br/>
+The idea is to build something akin to [Trending Topics](https://github.com/datawrangling/trendingtopics), but with a much simpler and faster and cheaper architecture, that runs fine on localhost.<br/>
 The **trender** platform crawls, stores and makes use of search technologies and leverages the power<br/> of PostgreSQL to provide you accurate, diverse and descriptive information on realtime or at least near to realtime about what's happening with informations that you feed it, for example data from facebook, twitter, wikipedia, etc, etc.<br/>
 
 ## Motivation
