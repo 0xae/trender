@@ -102,4 +102,6 @@ that's it
 
 [math-aware search engine](https://github.com/approach0/search-engine)
 
+[south korea trending posts on steemit](https://steemit.com/trending/kr)
+
 
