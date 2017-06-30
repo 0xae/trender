@@ -67,6 +67,8 @@ that's it
 ### bittorrent network
     architecture, clients, downloading, peers,...
 
+[Webtorrent IO](https://webtorrent.io/intro)
+
 ### storage
 * [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
     
