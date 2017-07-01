@@ -42,7 +42,7 @@ trends using sentiment analysis and some kind of word turnover rate. full text s
 can be provided via postgres (flexible, fast and convenient) or some other specialized
 vendor (lucene, elastic, sphinx).
 the reason we need a full-text search offering it's because it doenst make sense
-to detect good/bad trends if your searching abilities is poor.
+to detect good/bad trends if your searching abilities are poor.
 so well the search will have some support for Semantic matching, as it's way cool.
 
 that's it
