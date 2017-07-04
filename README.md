@@ -68,15 +68,16 @@ that's it
     what if we used that to implement some kind of serve->test ( ~live testing ? )
 ### bittorrent network
     architecture, clients, downloading, peers,...
-### tv guide
-[Tv Guide](http://www.tvguide.co.uk/)
-
-[Webtorrent IO](https://webtorrent.io/intro)
 
 ### storage
 * [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
     
 ## Links
+### Multimedia websites
+[Tv Guide](http://www.tvguide.co.uk/)
+
+[Webtorrent IO](https://webtorrent.io/intro)
+
 ### Text Processing
 [The Stanford NLP Group](https://nlp.stanford.edu/)
 
