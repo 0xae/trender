@@ -68,11 +68,11 @@ that's it
     what if we used that to implement some kind of serve->test ( ~live testing ? )
 ### bittorrent network
     architecture, clients, downloading, peers,...
-
-### storage
-* [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
     
 ## Links
+### storage
+* [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
+
 ### Multimedia websites
 [Tv Guide](http://www.tvguide.co.uk/)
 
