@@ -67,7 +67,7 @@ public class ApiResource {
 		}
 
 		final LocalDateTime end = new LocalDateTime();
-		return postService.findPostsNewerThan(end.minusHours(2));
+		return postService.findPostsNewerThan(end.minusHours(5));
 	}
 
 	@GET
