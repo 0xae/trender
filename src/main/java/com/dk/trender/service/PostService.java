@@ -124,7 +124,7 @@ public class PostService extends AbstractDAO<Post> {
 		currentSession().save(update);
 		return update;
 	}
-	
+
     /**
      * XXX: move lines 50,57 to Post class
      * @param post
