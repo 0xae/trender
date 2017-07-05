@@ -115,4 +115,6 @@ that's it
 
 [south korea trending posts on steemit](https://steemit.com/trending/kr)
 
+# A Geek amusings
+[geeking.co](http://geeking.co/)
 
