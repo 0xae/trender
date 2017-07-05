@@ -51,6 +51,7 @@ that's it
 
 - [ ] Media content (music, videos, picture, links, etc) API 
 - [ ] Trending algorithm and API
+- [ ] Links management API
 - [ ] Natural Language Processing
 - [ ] Searching
 - [ ] Full Test Coverage
