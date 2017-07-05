@@ -1,11 +1,13 @@
 # An exquisite newsfeed
 
-This is a dropwizard rest app that stores, analyzes and provides a query api to retrieve<br/>
+This is a rest app that stores, analyzes and provides a query api to retrieve<br/>
 most recent  activities, listing, trendings topics, and all sort of aggregated behavioral information<br/>
 happenning.<br/>
 
-The idea is to build something akin to [Trending Topics](https://github.com/datawrangling/trendingtopics), but with a much simpler architecture.<br/>
+The idea is to build something akin to [Trending Topics](https://github.com/datawrangling/trendingtopics), but with a much simpler and faster and cheaper architecture, that runs fine on localhost.<br/>
 The **trender** platform crawls, stores and makes use of search technologies and leverages the power<br/> of PostgreSQL to provide you accurate, diverse and descriptive information on realtime or at least near to realtime about what's happening with informations that you feed it, for example data from facebook, twitter, wikipedia, etc, etc.<br/>
+
+This is alpha release and probably wont come to beta seas until christmas.
 
 ## Motivation
 
@@ -40,7 +42,7 @@ trends using sentiment analysis and some kind of word turnover rate. full text s
 can be provided via postgres (flexible, fast and convenient) or some other specialized
 vendor (lucene, elastic, sphinx).
 the reason we need a full-text search offering it's because it doenst make sense
-to detect good/bad trends if your searching abilities is poor.
+to detect good/bad trends if your searching abilities are poor.
 so well the search will have some support for Semantic matching, as it's way cool.
 
 that's it
@@ -49,13 +51,14 @@ that's it
 
 - [ ] Media content (music, videos, picture, links, etc) API 
 - [ ] Trending algorithm and API
+- [ ] Links management API
 - [ ] Natural Language Processing
 - [ ] Searching
 - [ ] Full Test Coverage
 - [ ] Crawling API
 - [ ] Dropwizard Metrics ?
 - [ ] Rich Descriptive and Analytical API
-- [ ] Fix posts timestamp (ajust and better test the TimeParser class)
+- [X] Fix posts timestamp (ajust and better test the TimeParser class)
 
 ## Ideas
     
@@ -64,11 +67,19 @@ that's it
 ### live-testing
     well, we enjoy the luxury of things happening all the time (crawling activity)
     what if we used that to implement some kind of serve->test ( ~live testing ? )
-
-### storage
-* [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
+### bittorrent network
+    architecture, clients, downloading, peers,...
     
 ## Links
+### storage
+* [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
+
+### Multimedia websites
+[Tv Guide](http://www.tvguide.co.uk/)
+[My5](https://www.my5.tv)
+
+[Webtorrent IO](https://webtorrent.io/intro)
+
 ### Text Processing
 [The Stanford NLP Group](https://nlp.stanford.edu/)
 
@@ -84,6 +95,7 @@ that's it
 [RNN Effectiveness](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
 
 ### General Stuff    
+[Random post code generator](https://www.doogal.co.uk/PostcodeGenerator.php)
 [Reddit Atlas](https://www.reddit.com/r/RedditAtlas/)
 
 [Project Atlas](https://draemm.li/various/place-atlas/)
@@ -102,4 +114,8 @@ that's it
 
 [math-aware search engine](https://github.com/approach0/search-engine)
 
+[south korea trending posts on steemit](https://steemit.com/trending/kr)
+
+# A Geek amusings
+[geeking.co](http://geeking.co/)
 
