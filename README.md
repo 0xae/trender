@@ -1,6 +1,6 @@
 # An exquisite newsfeed
 
-This is a dropwizard rest app that stores, analyzes and provides a query api to retrieve<br/>
+This is a rest app that stores, analyzes and provides a query api to retrieve<br/>
 most recent  activities, listing, trendings topics, and all sort of aggregated behavioral information<br/>
 happenning.<br/>
 
