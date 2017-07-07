@@ -43,7 +43,7 @@ public class ApiResource {
 	public Post addPost(@Valid PostRequest request) {
 		return postService.addPost(request);
 	}
-	
+
 	@GET
 	@UnitOfWork
 	@Path("/trending_topics")

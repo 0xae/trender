@@ -113,15 +113,18 @@ public class PostService extends AbstractDAO<Post> {
 		final long newLikes = newPost.getPostReaction().getCountLikes();
 		final long oldLikes = update.getPostReaction().getCountLikes();
 
-		if (oldLikes != newLikes) {
+		final boolean likesChanged = oldLikes != newLikes; 
+		if (likesChanged) {
 			update.getPostReaction().setCountLikes(newLikes);			
 		}
 
-		if (!newPost.getPicture().equals(update.getPicture())) {
+		final boolean pictureChanged =!newPost.getPicture().equals(update.getPicture()); 
+		if (pictureChanged) {
 			update.setPicture(newPost.getPicture());
 		}
-
-		currentSession().save(update);
+		
+		if (likesChanged || pictureChanged)
+			currentSession().save(update);
 		return update;
 	}
 
