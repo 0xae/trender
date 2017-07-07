@@ -51,20 +51,24 @@ public class PostService extends AbstractDAO<Post> {
     	return list(namedQuery("post.findAll"));
     }
 
-	public List<Post> findPostsNewerThan(final LocalDateTime time) {
+	public List<Post> findPostsNewerThan(final LocalDateTime time,
+										 final Integer limit,
+										 final Integer offset,
+										 final String sortOrder) {
 		final String query = 
 				"select p from Post p "+
 				"where time > to_timestamp(:ts, 'YYYY-MM-dd HH24:MI:ss') "+
-	            "order by time desc ";
+	            "order by time " + (sortOrder!="desc" ? "asc" : "desc");
 
 		return currentSession()
 		  .createQuery(query, Post.class)
 		  .setParameter("ts", forPattern("YYYY-MM-dd HH:mm:ss").print(time))
-		  .setMaxResults(50)
+		  .setMaxResults(Math.min(limit, 100))
+		  .setFirstResult(Math.min(0, offset))
 		  .getResultList();
 	}
 
-    public Post findById(long id) {
+	public Post findById(long id) {
     	Post p = get(id);
     	if (p == null) {
     		throw new NotFoundException();    		

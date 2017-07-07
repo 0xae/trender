@@ -3,6 +3,7 @@ package com.dk.trender.resources;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -60,14 +61,12 @@ public class ApiResource {
 	@GET
 	@UnitOfWork
 	@Path("/recent_posts")
-	public List<Post> getRecentPosts(@QueryParam("time") Optional<String> minTime) {
-		if (minTime.isPresent()) {
-			final LocalDateTime time = new LocalDateTime(minTime.get().replace(' ', 'T'));
-			return postService.findPostsNewerThan(time);
-		}
-
-		final LocalDateTime end = new LocalDateTime();
-		return postService.findPostsNewerThan(end.minusHours(5));
+	public List<Post> getRecentPosts(@QueryParam("time") @NotEmpty String minTime,
+									 @QueryParam("limit") @NotNull Integer limit,
+									 @QueryParam("offset") Optional<Integer> offset,
+									 @QueryParam("o") Optional<String> sortOrder) {
+		final LocalDateTime time = new LocalDateTime(minTime.replace(' ', 'T'));
+		return postService.findPostsNewerThan(time, limit, offset.or(0), sortOrder.or("asc"));
 	}
 
 	@GET
