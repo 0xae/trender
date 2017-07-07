@@ -64,7 +64,7 @@ public class PostService extends AbstractDAO<Post> {
 		  .createQuery(query, Post.class)
 		  .setParameter("ts", forPattern("YYYY-MM-dd HH:mm:ss").print(time))
 		  .setMaxResults(Math.min(limit, 100))
-		  .setFirstResult(Math.min(0, offset))
+		  .setFirstResult(offset)
 		  .getResultList();
 	}
 
@@ -101,8 +101,8 @@ public class PostService extends AbstractDAO<Post> {
 		return currentSession()
 				   .createQuery(sql, Post.class)
 				   .setParameter("query", query)
-				   .setParameter("start", forPattern("YYYY-MM-dd ").print(start))
-				   .setParameter("end", forPattern("YYYY-MM-dd ").print(end))
+				   .setParameter("start", forPattern("YYYY-MM-dd").print(start))
+				   .setParameter("end", forPattern("YYYY-MM-dd").print(end))
 				   .setMaxResults(30)
 				   .getResultList();
 	}
