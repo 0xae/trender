@@ -59,6 +59,7 @@ that's it
 - [ ] Dropwizard Metrics ?
 - [ ] Rich Descriptive and Analytical API
 - [X] Fix posts timestamp (ajust and better test the TimeParser class)
+- [ ] migrate all js scripts to happy python scrappy scripts
 
 ## Ideas
     
