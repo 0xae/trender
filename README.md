@@ -69,7 +69,7 @@ that's it
     well, we enjoy the luxury of things happening all the time (crawling activity)
     what if we used that to implement some kind of serve->test ( ~live testing ? )
 ### P2P network
-    bittorrent architecture, checkout tornet,...
+    bittorrent architecture & checkout tornet
     
 ## Links
 ### storage
