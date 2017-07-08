@@ -49,11 +49,13 @@ public class PostService extends AbstractDAO<Post> {
 			return request.getPost();
 		}
     }
-    
-    public PostMedia addPostMedia(PostMedia media) {
+
+    public PostMedia addPostMedia(PostMedia media, String fid) {
+    	Post p = findByFacebookId(fid);
+    	media.setPostId(p.getId());
     	return postMediaService.addPostMedia(media);
     }
-    
+
     public List<PostMedia> getPostMediaObjects(long postId, LocalDateTime since, String type) {    	
     	return postMediaService.getAllPostMedia(postId, since, type);
     }

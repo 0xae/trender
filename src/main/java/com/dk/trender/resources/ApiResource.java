@@ -15,7 +15,6 @@ import javax.ws.rs.core.MediaType;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDateTime;
 
-import com.dk.trender.api.ListingTrend;
 import com.dk.trender.core.Post;
 import com.dk.trender.core.PostMedia;
 import com.dk.trender.core.PostRequest;
@@ -24,7 +23,6 @@ import com.dk.trender.service.PostService;
 import com.google.common.base.Optional;
 
 import io.dropwizard.hibernate.UnitOfWork;
-import net.bytebuddy.implementation.bind.annotation.DefaultCall;
 
 /**
  * 
@@ -42,7 +40,7 @@ public class ApiResource {
 		this.postService = postService;
 		this.indexService = indexService;
 	}
-	
+
 	@GET
 	@UnitOfWork
 	@Path("/recent_posts")
@@ -74,13 +72,6 @@ public class ApiResource {
 	
 	@POST
 	@UnitOfWork
-	@Path("/add_post_media")
-	public PostMedia addPostMedia(@Valid PostMedia request) {
-		return postService.addPostMedia(request);
-	}
-	
-	@POST
-	@UnitOfWork
 	@Path("/media/index")
 	public void indexThesePosts(@Valid List<String> urls) {
 		indexService.addToIndex(urls);
@@ -100,6 +91,14 @@ public class ApiResource {
 		return indexService.indexSize();
 	}
 	
+	@POST
+	@UnitOfWork
+	@Path("/add_post_media")
+	public PostMedia addPostMedia(@Valid PostMedia request,
+								  @QueryParam("fid") @NotNull String fId) {
+		return postService.addPostMedia(request, fId);
+	}
+	
 	@GET
 	@UnitOfWork
 	@Path("/post/{postId}/media")
@@ -108,18 +107,5 @@ public class ApiResource {
 										@QueryParam("type") @NotEmpty String mediaType) {
 		final LocalDateTime since = new LocalDateTime(sinceP);
 		return postService.getPostMediaObjects(postId, since, mediaType);
-	}
-
-	@GET
-	@UnitOfWork
-	@Path("/trending_topics")
-	public List<ListingTrend> getTrendingTopics() {
-		return null;
-	}
-
-	@GET
-	@Path("/trending_lists")
-	public List<ListingTrend> getTrendingListings() {
-		return null;
 	}
 }

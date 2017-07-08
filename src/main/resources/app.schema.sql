@@ -67,11 +67,14 @@ create table z_post_media (
         id bigserial primary key,
         title text not null,
         description text not null,
+        ref varchar(50) not null,
         type varchar(50) not null,
         timestamp timestamp not null,
         data jsonb not null,
         post_id bigint not null references z_post(id),
-        indexed_at timestamp not null
+        indexed_at timestamp not null,
+
+        UNIQUE(ref)
 );
 
 insert into z_listing(title, description) 

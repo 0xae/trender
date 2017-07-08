@@ -46,6 +46,19 @@ public class PostMedia {
 	@Column(name="post_id", nullable=false, updatable=false)
 	private long postId;
 
+	@NotEmpty
+	@Column(name="ref", nullable=false, updatable=false)
+	private String mediaRef;
+	
+	@JsonProperty
+	public void setMediaRef(String mediaId) {
+		this.mediaRef = mediaId;
+	}
+	
+	@JsonProperty
+	public String getMediaRef() {
+		return mediaRef;
+	}	
 
 	@JsonProperty
 	public long getPostId() {
