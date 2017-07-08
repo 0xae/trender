@@ -76,7 +76,7 @@ that's it
 * [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
 
 ### Multimedia websites
-[Tv Guide](http://www.tvguide.co.uk/)
+[UK Tv Guide](http://www.tvguide.co.uk/)
 
 [Youtube API](https://www.youtube.com/yt/dev/demos.html#/sentiment)
 
@@ -101,7 +101,8 @@ that's it
 [RNN Effectiveness](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
 
 ### General Stuff    
-[Random post code generator](https://www.doogal.co.uk/PostcodeGenerator.php)
+[Random UK post code generator](https://www.doogal.co.uk/PostcodeGenerator.php)
+
 [Reddit Atlas](https://www.reddit.com/r/RedditAtlas/)
 
 [Project Atlas](https://draemm.li/various/place-atlas/)
