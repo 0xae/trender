@@ -30,6 +30,7 @@ create table z_listing (
         last_activity timestamp 
 );
 
+
 create table z_post (
         id bigserial primary key,
         description text,
@@ -58,8 +59,19 @@ create table z_post (
         view_link text not null,
 
         -- time 
-        indexed_at timestamp,
+        indexed_at timestamp not null,
         UNIQUE(facebook_id)
+);
+
+create table z_post_media (
+        id bigserial primary key,
+        title text not null,
+        description text not null,
+        type varchar(50) not null,
+        timestamp timestamp not null,
+        data jsonb not null,
+        post_id bigint not null references z_post(id),
+        indexed_at timestamp not null
 );
 
 insert into z_listing(title, description) 

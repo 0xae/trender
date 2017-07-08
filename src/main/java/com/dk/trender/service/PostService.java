@@ -11,6 +11,7 @@ import org.joda.time.LocalDateTime;
 import static org.joda.time.format.DateTimeFormat.forPattern;
 
 import com.dk.trender.core.Post;
+import com.dk.trender.core.PostMedia;
 import com.dk.trender.core.PostRequest;
 import com.dk.trender.core.Profile;
 
@@ -23,11 +24,14 @@ import io.dropwizard.hibernate.AbstractDAO;
  */
 public class PostService extends AbstractDAO<Post> {
 	private final ProfileService profileService;
+	private final PostMediaService postMediaService;
 
 	public PostService(final SessionFactory factory,
-					   final ProfileService service) {
+					   final ProfileService service,
+					   final PostMediaService postMedia) {
         super(factory);
         this.profileService = service;
+        this.postMediaService = postMedia;
     }
 
     /**
@@ -44,6 +48,14 @@ public class PostService extends AbstractDAO<Post> {
 			updatePostActivity(request.getPost());
 			return request.getPost();
 		}
+    }
+    
+    public PostMedia addPostMedia(PostMedia media) {
+    	return postMediaService.addPostMedia(media);
+    }
+    
+    public List<PostMedia> getPostMediaObjects(long postId, LocalDateTime since, String type) {    	
+    	return postMediaService.getAllPostMedia(postId, since, type);
     }
 
     @SuppressWarnings("unchecked")

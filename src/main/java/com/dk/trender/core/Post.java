@@ -53,7 +53,7 @@ public class Post {
     private long id;
 
 	@NotEmpty
-	@Column(name="description")
+	@Column(name="description", nullable=false)
 	private String description;
 
 	@NotEmpty

@@ -17,12 +17,14 @@ import org.joda.time.LocalDateTime;
 
 import com.dk.trender.api.ListingTrend;
 import com.dk.trender.core.Post;
-
+import com.dk.trender.core.PostMedia;
 import com.dk.trender.core.PostRequest;
+import com.dk.trender.service.IndexService;
 import com.dk.trender.service.PostService;
 import com.google.common.base.Optional;
 
 import io.dropwizard.hibernate.UnitOfWork;
+import net.bytebuddy.implementation.bind.annotation.DefaultCall;
 
 /**
  * 
@@ -34,8 +36,33 @@ import io.dropwizard.hibernate.UnitOfWork;
 @Produces(MediaType.APPLICATION_JSON)
 public class ApiResource {
 	private final PostService postService;
-	public ApiResource(PostService postService) {
+	private final IndexService indexService;
+
+	public ApiResource(PostService postService, IndexService indexService) {
 		this.postService = postService;
+		this.indexService = indexService;
+	}
+	
+	@GET
+	@UnitOfWork
+	@Path("/recent_posts")
+	public List<Post> getRecentPosts(@QueryParam("since") @NotEmpty String minTime,
+									 @QueryParam("limit") @NotNull Integer limit,
+									 @QueryParam("offset") Optional<Integer> offset,
+									 @QueryParam("o") Optional<String> sortOrder) {
+		final LocalDateTime time = new LocalDateTime(minTime.replace(' ', 'T'));
+		return postService.findPostsNewerThan(time, limit, offset.or(0), sortOrder.or("asc"));
+	}
+
+	@GET
+	@UnitOfWork
+	@Path("/search_posts")
+	public List<Post> searchPost(@QueryParam("q") @NotEmpty String query,
+								 @QueryParam("start") @NotEmpty String startO,
+								 @QueryParam("end") @NotEmpty String endO) {
+		final LocalDateTime start = new LocalDateTime(startO);
+		final LocalDateTime end = new LocalDateTime(endO);
+		return postService.searchPosts(query, start, end);
 	}
 
 	@POST
@@ -43,6 +70,44 @@ public class ApiResource {
 	@Path("/add_post")
 	public Post addPost(@Valid PostRequest request) {
 		return postService.addPost(request);
+	}
+	
+	@POST
+	@UnitOfWork
+	@Path("/add_post_media")
+	public PostMedia addPostMedia(@Valid PostMedia request) {
+		return postService.addPostMedia(request);
+	}
+	
+	@POST
+	@UnitOfWork
+	@Path("/media/index")
+	public void indexThesePosts(@Valid List<String> urls) {
+		indexService.addToIndex(urls);
+	}
+
+	@GET
+	@UnitOfWork
+	@Path("/media/to_index")
+	public List<String> getPostsInIndex() {
+		return indexService.retrieveIndex();
+	}
+
+	@GET
+	@UnitOfWork
+	@Path("/media/index_sz")
+	public int getIndexSize() {
+		return indexService.indexSize();
+	}
+	
+	@GET
+	@UnitOfWork
+	@Path("/post/{postId}/media")
+	public List<PostMedia> getPostMedia(@QueryParam("postId") @NotNull Long postId,
+										@QueryParam("since") @NotEmpty String sinceP,
+										@QueryParam("type") @NotEmpty String mediaType) {
+		final LocalDateTime since = new LocalDateTime(sinceP);
+		return postService.getPostMediaObjects(postId, since, mediaType);
 	}
 
 	@GET
@@ -56,27 +121,5 @@ public class ApiResource {
 	@Path("/trending_lists")
 	public List<ListingTrend> getTrendingListings() {
 		return null;
-	}
-
-	@GET
-	@UnitOfWork
-	@Path("/recent_posts")
-	public List<Post> getRecentPosts(@QueryParam("time") @NotEmpty String minTime,
-									 @QueryParam("limit") @NotNull Integer limit,
-									 @QueryParam("offset") Optional<Integer> offset,
-									 @QueryParam("o") Optional<String> sortOrder) {
-		final LocalDateTime time = new LocalDateTime(minTime.replace(' ', 'T'));
-		return postService.findPostsNewerThan(time, limit, offset.or(0), sortOrder.or("asc"));
-	}
-
-	@GET
-	@UnitOfWork
-	@Path("/search")
-	public List<Post> searchPost(@QueryParam("q") @NotEmpty String query,
-								 @QueryParam("start") @NotEmpty String startO,
-								 @QueryParam("end") @NotEmpty String endO) {
-		final LocalDateTime start = new LocalDateTime(startO);
-		final LocalDateTime end = new LocalDateTime(endO);
-		return postService.searchPosts(query, start, end);
 	}
 }
