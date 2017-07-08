@@ -129,6 +129,7 @@ public class PostService extends AbstractDAO<Post> {
 		
 		if (likesChanged || pictureChanged)
 			currentSession().save(update);
+
 		return update;
 	}
 
