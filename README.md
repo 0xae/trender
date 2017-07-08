@@ -31,7 +31,7 @@ crawlers, spiders, ajax, videos, etc
 
 ### Trender API (here)
 the API allows you to and organize update your data,
-and querying the system for very dynamic information.
+and querying the system for dynamic information.
 currently the api is written in java with the dropwizard library
 and i love it.
 
@@ -64,7 +64,7 @@ that's it
 ## Ideas
     
 ### trending-topics media 
-    use crawlers to get media content
+    use spiders to get media content
 ### live-testing
     well, we enjoy the luxury of things happening all the time (crawling activity)
     what if we used that to implement some kind of serve->test ( ~live testing ? )
