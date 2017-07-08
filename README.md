@@ -84,12 +84,14 @@ that's it
 
 [Webtorrent IO](https://webtorrent.io/intro)
 
-### Text Processing
+### Text/Data Processing
 [The Stanford NLP Group](https://nlp.stanford.edu/)
 
 [Learning words (google word2vec)](https://opensource.googleblog.com/2013/08/learning-meaning-behind-words.html)
 
 [google word2vec](https://code.google.com/archive/p/word2vec/)
+
+[Command-line JSON processor](https://github.com/stedolan/jq)
 
 ### Machine Learning
 [CS 229 Machine Learning](http://cs229.stanford.edu/projects2013.html)
