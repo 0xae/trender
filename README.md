@@ -77,6 +77,9 @@ that's it
 
 ### Multimedia websites
 [Tv Guide](http://www.tvguide.co.uk/)
+
+[Youtube API](https://www.youtube.com/yt/dev/demos.html#/sentiment)
+
 [My5](https://www.my5.tv)
 
 [Webtorrent IO](https://webtorrent.io/intro)
