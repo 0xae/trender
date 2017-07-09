@@ -125,5 +125,6 @@ that's it
 
 # A Geek amusings
 [geeking.co](http://geeking.co/)
+[nerdist.com][http://nerdist.com/]
 
 we're up all night to get lucky 
