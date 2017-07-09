@@ -8,6 +8,8 @@ target/
 .DS_Store
 
 *.class
+*.pyc
+*.pyo
 
 # SpringSource Tool Suite
 .settings

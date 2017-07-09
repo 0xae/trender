@@ -33,7 +33,20 @@ public class PostService extends AbstractDAO<Post> {
         this.profileService = service;
         this.postMediaService = postMedia;
     }
+	
+    public PostMedia addPostMedia(PostMedia media, String fid) {
+    	final Post p = findByFacebookId(fid);
+    	return postMediaService.addPostMedia(p, media);
+    }
 
+    public List<PostMedia> getPostMediaObjects(long postId, String type) {    	
+    	return postMediaService.getAllPostMedia(postId, type);
+    }
+
+    public List<PostMedia> getRecentPostMedia(String type, String postFid) {    	
+    	return postMediaService.getRecentPostMedia(type, postFid);
+    }
+    
     /**
      * TODO: log this
      * @param request
@@ -48,16 +61,6 @@ public class PostService extends AbstractDAO<Post> {
 			updatePostActivity(request.getPost());
 			return request.getPost();
 		}
-    }
-
-    public PostMedia addPostMedia(PostMedia media, String fid) {
-    	Post p = findByFacebookId(fid);
-    	media.setPostId(p.getId());
-    	return postMediaService.addPostMedia(media);
-    }
-
-    public List<PostMedia> getPostMediaObjects(long postId, LocalDateTime since, String type) {    	
-    	return postMediaService.getAllPostMedia(postId, since, type);
     }
 
     @SuppressWarnings("unchecked")

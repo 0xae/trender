@@ -2,12 +2,16 @@ package com.dk.trender.core;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDateTime;
 
@@ -28,10 +32,9 @@ public class PostMedia {
 	@Column(name="description", nullable=false)
 	private String description;
 
-	@NotNull
 	@Column(name="timestamp", nullable=false)
 	private LocalDateTime time;
-	
+
 	@Column(name="indexed_at", nullable=false)
 	private LocalDateTime indexedAt;
 
@@ -41,6 +44,7 @@ public class PostMedia {
 
 	@NotEmpty
 	@Column(name="data", nullable=false)
+    @ColumnTransformer(write = "?::jsonb")
 	private String data;
 
 	@Column(name="post_id", nullable=false, updatable=false)
@@ -49,16 +53,16 @@ public class PostMedia {
 	@NotEmpty
 	@Column(name="ref", nullable=false, updatable=false)
 	private String mediaRef;
-	
+
 	@JsonProperty
 	public void setMediaRef(String mediaId) {
 		this.mediaRef = mediaId;
 	}
-	
+
 	@JsonProperty
 	public String getMediaRef() {
 		return mediaRef;
-	}	
+	}
 
 	@JsonProperty
 	public long getPostId() {
@@ -74,7 +78,7 @@ public class PostMedia {
 	public String getData() {
 		return data;
 	}
-	
+
 	@JsonProperty
 	public void setData(String data) {
 		this.data = data;

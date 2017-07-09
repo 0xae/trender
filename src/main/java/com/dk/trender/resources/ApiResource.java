@@ -8,6 +8,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDateTime;
 
+import com.dk.trender.core.IndexItem;
 import com.dk.trender.core.Post;
 import com.dk.trender.core.PostMedia;
 import com.dk.trender.core.PostRequest;
@@ -43,7 +45,7 @@ public class ApiResource {
 
 	@GET
 	@UnitOfWork
-	@Path("/recent_posts")
+	@Path("/post/recent")
 	public List<Post> getRecentPosts(@QueryParam("since") @NotEmpty String minTime,
 									 @QueryParam("limit") @NotNull Integer limit,
 									 @QueryParam("offset") Optional<Integer> offset,
@@ -54,7 +56,7 @@ public class ApiResource {
 
 	@GET
 	@UnitOfWork
-	@Path("/search_posts")
+	@Path("/post/search")
 	public List<Post> searchPost(@QueryParam("q") @NotEmpty String query,
 								 @QueryParam("start") @NotEmpty String startO,
 								 @QueryParam("end") @NotEmpty String endO) {
@@ -65,47 +67,53 @@ public class ApiResource {
 
 	@POST
 	@UnitOfWork
-	@Path("/add_post")
+	@Path("/post/new")
 	public Post addPost(@Valid PostRequest request) {
 		return postService.addPost(request);
 	}
-	
-	@POST
-	@UnitOfWork
-	@Path("/media/index")
-	public void indexThesePosts(@Valid List<String> urls) {
-		indexService.addToIndex(urls);
-	}
 
 	@GET
 	@UnitOfWork
-	@Path("/media/to_index")
-	public List<String> getPostsInIndex() {
-		return indexService.retrieveIndex();
+	@Path("/media/post/{postId}")
+	public List<PostMedia> getPostMedia(@PathParam("postId") @NotNull Long postId,
+										@QueryParam("type") Optional<String> mediaType) {
+		return postService.getPostMediaObjects(postId, mediaType.or("*"));
 	}
 
-	@GET
-	@UnitOfWork
-	@Path("/media/index_sz")
-	public int getIndexSize() {
-		return indexService.indexSize();
-	}
-	
 	@POST
 	@UnitOfWork
-	@Path("/add_post_media")
+	@Path("/media/post")
 	public PostMedia addPostMedia(@Valid PostMedia request,
 								  @QueryParam("fid") @NotNull String fId) {
 		return postService.addPostMedia(request, fId);
 	}
+
+	@GET
+	@UnitOfWork
+	@Path("/media/index/stats")
+	public int getIndexSize() {
+		return indexService.indexSize();
+	}
+
+	@GET
+	@UnitOfWork
+	@Path("/media/recent")
+	public List<PostMedia> getMostRecent(@QueryParam("fid") @NotNull String fId,
+										 @QueryParam("type") Optional<String> type) {
+		return postService.getRecentPostMedia(type.or("*"), fId);
+	}
 	
 	@GET
 	@UnitOfWork
-	@Path("/post/{postId}/media")
-	public List<PostMedia> getPostMedia(@QueryParam("postId") @NotNull Long postId,
-										@QueryParam("since") @NotEmpty String sinceP,
-										@QueryParam("type") @NotEmpty String mediaType) {
-		final LocalDateTime since = new LocalDateTime(sinceP);
-		return postService.getPostMediaObjects(postId, since, mediaType);
+	@Path("/media/index")
+	public List<IndexItem> getPostsInIndex() {
+		return indexService.retrieveIndex();
+	}
+
+	@POST
+	@UnitOfWork
+	@Path("/media/index")
+	public void indexThesePosts(@NotEmpty List<IndexItem> urls) {
+		indexService.addToIndex(urls);
 	}
 }

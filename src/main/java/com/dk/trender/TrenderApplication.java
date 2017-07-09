@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 
 import com.dk.trender.core.Listing;
 import com.dk.trender.core.Post;
+import com.dk.trender.core.PostMedia;
 import com.dk.trender.core.Profile;
 import com.dk.trender.exceptions.ConstraintViolationExceptionMapper;
 import com.dk.trender.exceptions.NoResultExceptionExceptionMapper;
@@ -34,7 +35,7 @@ import io.dropwizard.setup.Environment;
 
 public class TrenderApplication extends Application<TrenderConfiguration> {
     private final HibernateBundle<TrenderConfiguration> hibernateBundle =
-        new HibernateBundle<TrenderConfiguration>(Listing.class, Post.class, Profile.class) {
+    		new HibernateBundle<TrenderConfiguration>(Listing.class, Post.class, Profile.class, PostMedia.class) {
 			public DataSourceFactory getDataSourceFactory(TrenderConfiguration configuration) {
 				return configuration.getDatabase();
 			}
