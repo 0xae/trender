@@ -76,54 +76,38 @@ that's it
 * [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
 
 ### Multimedia websites
-[UK Tv Guide](http://www.tvguide.co.uk/)
-
-[Youtube API](https://www.youtube.com/yt/dev/demos.html#/sentiment)
-
-[My5](https://www.my5.tv)
-
-[Webtorrent IO](https://webtorrent.io/intro)
+* [UK Tv Guide](http://www.tvguide.co.uk/)
+* [Youtube API](https://www.youtube.com/yt/dev/demos.html#/sentiment)
+* [My5](https://www.my5.tv)
+* [Webtorrent IO](https://webtorrent.io/intro)
 
 ### Text/Data Processing
-[The Stanford NLP Group](https://nlp.stanford.edu/)
-
-[Learning words (google word2vec)](https://opensource.googleblog.com/2013/08/learning-meaning-behind-words.html)
-
-[google word2vec](https://code.google.com/archive/p/word2vec/)
-
-[Command-line JSON processor](https://github.com/stedolan/jq)
+* [The Stanford NLP Group](https://nlp.stanford.edu/)
+* [Learning words (google word2vec)](https://opensource.googleblog.com/2013/08/learning-meaning-behind-words.html)
+* [google word2vec](https://code.google.com/archive/p/word2vec/)
+* [Command-line JSON processor](https://github.com/stedolan/jq)
 
 ### Machine Learning
-[CS 229 Machine Learning](http://cs229.stanford.edu/projects2013.html)
-
-[Exploring LSTMS](http://blog.echen.me/2017/05/30/exploring-lstms/?imm_mid=0f2ce7&cmp=em-data-na-na-newsltr_20170614)
-
-[RNN Effectiveness](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
+* [CS 229 Machine Learning](http://cs229.stanford.edu/projects2013.html)
+* [Exploring LSTMS](http://blog.echen.me/2017/05/30/exploring-lstms/?imm_mid=0f2ce7&cmp=em-data-na-na-newsltr_20170614)
+* [RNN Effectiveness](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
 
 ### General Stuff    
-[Random UK post code generator](https://www.doogal.co.uk/PostcodeGenerator.php)
-
-[Reddit Atlas](https://www.reddit.com/r/RedditAtlas/)
-
-[Project Atlas](https://draemm.li/various/place-atlas/)
-
-[Generating Fantasy Maps](http://mewo2.com/notes/terrain/)
-
-[Scrappy fast crawler and spider](https://scrapy.org/)
-
-[Augur Prediction](https://augur.net/)
-
-[Consensus & Paxos](https://hackernoon.com/how-your-data-is-stored-or-the-laws-of-the-imaginary-greeks-54c569c17a49)
-
-[kafka & Message Queues](https://hackernoon.com/a-super-quick-comparison-between-kafka-and-message-queues-e69742d855a8)
-
-[Awesome blog, full of code](https://www.approach0.xyz/tkblog/)
-
-[math-aware search engine](https://github.com/approach0/search-engine)
-
-[south korea trending posts on steemit](https://steemit.com/trending/kr)
+* [Random UK post code generator](https://www.doogal.co.uk/PostcodeGenerator.php)
+* [Reddit Atlas](https://www.reddit.com/r/RedditAtlas/)
+* [Project Atlas](https://draemm.li/various/place-atlas/)
+* [Generating Fantasy Maps](http://mewo2.com/notes/terrain/)
+* [Scrappy fast crawler and spider](https://scrapy.org/)
+* [Augur Prediction](https://augur.net/)
+* [Consensus & Paxos](https://hackernoon.com/how-your-data-is-stored-or-the-laws-of-the-imaginary-greeks-54c569c17a49)
+* [kafka & Message Queues](https://hackernoon.com/a-super-quick-comparison-between-kafka-and-message-queues-e69742d855a8)
+* [Awesome blog, full of code](https://www.approach0.xyz/tkblog/)
+* [math-aware search engine](https://github.com/approach0/search-engine)
+* [south korea trending posts on steemit](https://steemit.com/trending/kr)
 
 # A Geek amusings
-[geeking.co](http://geeking.co/)
+* [geeking.co](http://geeking.co/)
+* [nerdist.com](http://nerdist.com/)
+* [soundcloud/subwayssounds](https://soundcloud.com/subwayssounds)
 
 we're up all night to get lucky 
