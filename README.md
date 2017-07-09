@@ -104,6 +104,7 @@ that's it
 * [Awesome blog, full of code](https://www.approach0.xyz/tkblog/)
 * [math-aware search engine](https://github.com/approach0/search-engine)
 * [south korea trending posts on steemit](https://steemit.com/trending/kr)
+* [github markdown](https://guides.github.com/features/mastering-markdown/)
 
 # A Geek amusings
 * [geeking.co](http://geeking.co/)
