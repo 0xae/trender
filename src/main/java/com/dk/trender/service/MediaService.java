@@ -11,8 +11,8 @@ import com.dk.trender.core.Post;
 import com.dk.trender.core.PostMedia;
 import io.dropwizard.hibernate.AbstractDAO;
 
-public class PostMediaService extends AbstractDAO<PostMedia> {
-	public PostMediaService(SessionFactory sessionFactory) {
+public class MediaService extends AbstractDAO<PostMedia> {
+	public MediaService(SessionFactory sessionFactory) {
 		super(sessionFactory);
 	}
 
@@ -39,6 +39,19 @@ public class PostMediaService extends AbstractDAO<PostMedia> {
 				   .setParameter("postFid", postFid)
 				   .setMaxResults(30)
 				   .getResultList();
+    }
+	
+	public int getPostMediaCount(String postFid, String type) {	
+		final String sql = 
+			"select count(1) as totalItems from PostMedia "+
+			"where (:type='*' or type=:type) "+
+			"and post_id=(from Post where facebook_id=:postFid) ";
+
+		return currentSession()
+				   .createQuery(sql)
+				   .setParameter("type", type)
+				   .setParameter("postFid", postFid)
+				   .getFirstResult();
     }
 
 	public List<PostMedia> getAllPostMedia(long postId, String type) {	

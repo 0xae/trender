@@ -24,11 +24,11 @@ import io.dropwizard.hibernate.AbstractDAO;
  */
 public class PostService extends AbstractDAO<Post> {
 	private final ProfileService profileService;
-	private final PostMediaService postMediaService;
+	private final MediaService postMediaService;
 
 	public PostService(final SessionFactory factory,
 					   final ProfileService service,
-					   final PostMediaService postMedia) {
+					   final MediaService postMedia) {
         super(factory);
         this.profileService = service;
         this.postMediaService = postMedia;

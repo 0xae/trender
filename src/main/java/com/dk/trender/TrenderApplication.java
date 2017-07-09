@@ -20,7 +20,7 @@ import com.dk.trender.resources.ProfileResource;
 import com.dk.trender.resources.ApiResource;
 import com.dk.trender.service.IndexService;
 import com.dk.trender.service.ListingService;
-import com.dk.trender.service.PostMediaService;
+import com.dk.trender.service.MediaService;
 import com.dk.trender.service.PostService;
 import com.dk.trender.service.ProfileService;
 
@@ -72,10 +72,10 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		SessionFactory sessionFactory = hibernateBundle.getSessionFactory();
 		ProfileService profileService = new ProfileService(sessionFactory);
 		ListingService listingService = new ListingService(sessionFactory);
-		PostMediaService postMediaService = new PostMediaService(sessionFactory);
-		PostService postService = new PostService(sessionFactory, profileService, postMediaService);
+		MediaService mediaService = new MediaService(sessionFactory);
+		PostService postService = new PostService(sessionFactory, profileService, mediaService);
 
-		env.jersey().register(new ApiResource(postService, new IndexService()));
+		env.jersey().register(new ApiResource(postService, new IndexService(mediaService)));
 		env.jersey().register(new ListingResource(listingService));
 		env.jersey().register(new ProfileResource(profileService));
 		env.jersey().register(new PostResource(postService));
