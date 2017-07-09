@@ -99,10 +99,16 @@ public class ApiResource {
 	@UnitOfWork
 	@Path("/media/recent")
 	public List<PostMedia> getMostRecent(@QueryParam("fid") @NotNull String fId,
+										 @QueryParam("since") Optional<String> since,
 										 @QueryParam("type") Optional<String> type) {
-		return postService.getRecentPostMedia(type.or("*"), fId);
+		LocalDateTime sinceDate = new LocalDateTime().minusHours(24);
+		if (since.isPresent()) {
+			sinceDate = new LocalDateTime(since.get().replace(' ', 'T'));
+		}
+
+		return postService.getRecentPostMedia(sinceDate, type.or("*"), fId);
 	}
-	
+
 	@GET
 	@UnitOfWork
 	@Path("/media/index")

@@ -7,7 +7,7 @@ from hashlib import md5
 
 
 class MediaSpider(scrapy.Spider):
-    name = 'steemit_posts_media'
+    name = 'steemit_media'
 
     def start_requests(self):
         r = requests.get('http://127.0.0.1:5000/api/media/index')
@@ -36,14 +36,14 @@ def saveAll(objs, post):
     for o in objs:
         data = dumps(o)
         url = 'http://127.0.0.1:5000/api/media/post?fid=%s' % (post['fId'],)
-        p = req.post(url, data=data, headers={'Content-type': 'application/json'})
+        p = req.post(url, data=data,
+                     headers={'Content-type': 'application/json'})
         l.append(p)
 
     return req.map(l)
 
 
 def _get_video(url):
-    # XXX: strftime works on unix systems only
     # TODO: get video description
     vtype = "youtube-video"
     obj = {
@@ -59,7 +59,6 @@ def _get_video(url):
 
 
 def _get_image(url):
-    # XXX: strftime works on unix systems only
     # TODO: get image description
     obj = {
         "description": "<no>",

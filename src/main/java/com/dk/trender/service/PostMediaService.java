@@ -1,5 +1,7 @@
 package com.dk.trender.service;
 
+import static org.joda.time.format.DateTimeFormat.forPattern;
+
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -13,7 +15,7 @@ public class PostMediaService extends AbstractDAO<PostMedia> {
 	public PostMediaService(SessionFactory sessionFactory) {
 		super(sessionFactory);
 	}
-	
+
 	public PostMedia addPostMedia(Post p, PostMedia media) {
 		final LocalDateTime today = new LocalDateTime();
     	media.setPostId(p.getId());
@@ -21,22 +23,24 @@ public class PostMediaService extends AbstractDAO<PostMedia> {
 		media.setTime(today);
         return persist(media);
 	}
-	
-	public List<PostMedia> getRecentPostMedia(String type, String postFid) {	
+
+	public List<PostMedia> getRecentPostMedia(LocalDateTime since, String type, String postFid) {	
 		final String sql = 
 			"from PostMedia "+
 			"where (:type='*' or type=:type) "+
 			"and (:postFid='everybody' or post_id=(from Post where facebook_id=:postFid)) "+
+			"and time > to_timestamp(:since, 'YYYY-MM-dd HH24:MI:ss') "+
 			"order by time DESC ";
 
 		return currentSession()
 				   .createQuery(sql, PostMedia.class)
 				   .setParameter("type", type)
+				   .setParameter("since", forPattern("YYYY-MM-dd HH:mm:ss").print(since))
 				   .setParameter("postFid", postFid)
 				   .setMaxResults(30)
 				   .getResultList();
     }
-	
+
 	public List<PostMedia> getAllPostMedia(long postId, String type) {	
 		final String sql = 
 			"from PostMedia "+
@@ -51,5 +55,4 @@ public class PostMediaService extends AbstractDAO<PostMedia> {
 				   .setMaxResults(30)
 				   .getResultList();		
     }
-
 }
