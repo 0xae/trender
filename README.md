@@ -107,7 +107,7 @@ that's it
 
 # A Geek amusings
 * [geeking.co](http://geeking.co/)
-* [nerdist.com][http://nerdist.com/]
+* [nerdist.com](http://nerdist.com/)
 * [soundcloud/subwayssounds](https://soundcloud.com/subwayssounds)
 
 we're up all night to get lucky 
