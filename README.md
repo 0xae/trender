@@ -72,7 +72,7 @@ that's it
     bittorrent architecture & checkout tornet
     
 ## Links
-### storage
+### Storage
 * [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
 
 ### Multimedia websites
