@@ -35,7 +35,7 @@ and querying the system for dynamic information.
 currently the api is written in java with the dropwizard library
 and i love it.
 
-### Trending/Text Analysis/Search/Trending Engine (soon)
+### Trending/Text Analysis/Search (soon)
 search servers, ml & nlp tools. this would be the core of the stuff,
 in here we want to use SNLP (Sanford Natural Language Processing [Group]) to detect
 trends using sentiment analysis and some kind of word turnover rate. full text search
