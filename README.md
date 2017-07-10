@@ -110,7 +110,7 @@ that's it
 * [south korea trending posts on steemit](https://steemit.com/trending/kr)
 * [github markdown](https://guides.github.com/features/mastering-markdown/)
 
-# A Geek amusings
+### A Geek amusings
 * [geeking.co](http://geeking.co/)
 * [nerdist.com](http://nerdist.com/)
 * [soundcloud/subwayssounds](https://soundcloud.com/subwayssounds)
