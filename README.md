@@ -76,8 +76,8 @@ that's it
 * [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
 * [Hibernate User Guide](http://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#architecture-overview)
 ### Scrapy & Friends
-[Scrapy](https://docs.scrapy.org/en/latest/topics)
-[grequests](https://pypi.python.org/pypi/grequests)
+* [Scrapy](https://docs.scrapy.org/en/latest/topics)
+* [grequests](https://pypi.python.org/pypi/grequests)
 
 ### Multimedia websites
 * [UK Tv Guide](http://www.tvguide.co.uk/)
