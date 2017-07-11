@@ -3,6 +3,7 @@
 build/
 bin/
 target/
+cache/
 
 # OS Files #
 .DS_Store

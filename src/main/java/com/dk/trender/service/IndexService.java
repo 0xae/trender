@@ -36,12 +36,6 @@ public class IndexService {
 			}
 		}
 	}
-	
-	public boolean canBeenIndexed(IndexItem item) {
-		final String fId = item.getfId();
-		return !queue.contains(item) &&
-				mediaService.getPostMediaCount(fId, "*") < MAX_MEDIA_COUNT;
-	}
 
 	public List<IndexItem> retrieveIndex() {
 		List<IndexItem> buf = new LinkedList<>();
@@ -52,8 +46,14 @@ public class IndexService {
 		}
 		return buf;
 	}
-	
+
 	public int indexSize() {
 		return queue.size();
+	}
+
+	private boolean canBeenIndexed(IndexItem item) {
+		final String fId = item.getfId();
+		return !queue.contains(item) &&
+				mediaService.getPostMediaCount(fId, "*") < MAX_MEDIA_COUNT;
 	}
 }
