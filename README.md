@@ -59,7 +59,7 @@ that's it
 - [ ] Dropwizard Metrics ?
 - [ ] Rich Descriptive and Analytical API
 - [ ] Fix posts timestamp (ajust and better test the TimeParser class)
-- [ ] migrate all js scripts to happy python scrappy scripts
+- [ ] migrate all js spiders to scrapy 
 
 ## Ideas
     
@@ -74,6 +74,10 @@ that's it
 ## Links
 ### Storage
 * [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
+* [Hibernate User Guide](http://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#architecture-overview)
+### Scrapy & Friends
+* [Scrapy](https://docs.scrapy.org/en/latest/topics)
+* [grequests](https://pypi.python.org/pypi/grequests)
 
 ### Multimedia websites
 * [UK Tv Guide](http://www.tvguide.co.uk/)
@@ -105,8 +109,9 @@ that's it
 * [math-aware search engine](https://github.com/approach0/search-engine)
 * [south korea trending posts on steemit](https://steemit.com/trending/kr)
 * [github markdown](https://guides.github.com/features/mastering-markdown/)
+* [crushthestreet.com](https://crushthestreet.com)
 
-# A Geek amusings
+### A Geek amusings
 * [geeking.co](http://geeking.co/)
 * [nerdist.com](http://nerdist.com/)
 * [soundcloud/subwayssounds](https://soundcloud.com/subwayssounds)
