@@ -31,7 +31,7 @@ public class IndexService {
 
 	public void addToIndex(List<IndexItem> items) {
 		for (final IndexItem item : items) {
-			if (canBeenIndexed(item)) {
+			if (canBeIndexed(item)) {
 				queue.offer(item);
 			}
 		}
@@ -51,7 +51,7 @@ public class IndexService {
 		return queue.size();
 	}
 
-	private boolean canBeenIndexed(IndexItem item) {
+	private boolean canBeIndexed(IndexItem item) {
 		final String fId = item.getfId();
 		return !queue.contains(item) &&
 				mediaService.getPostMediaCount(fId, "*") < MAX_MEDIA_COUNT;
