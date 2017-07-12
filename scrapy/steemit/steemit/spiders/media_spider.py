@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from json import dumps
-from datetime import datetime
-import grequests as req
 import requests
 from hashlib import md5
 
@@ -44,7 +41,6 @@ def _get_video(url):
         "title": "youtube-video",
         "image_urls": [url],
     }
-
     return obj
 
 

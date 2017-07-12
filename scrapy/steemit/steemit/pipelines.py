@@ -9,7 +9,6 @@ class MediaPipeline(object):
     def process_item(self, item, spider):
         d = item['data']
         cache = item['images']
-        print '>>> ', cache
         d['_cache'] = cache
         item['data'] = dumps(item['data'])
         url = 'http://127.0.0.1:5000/api/media/post?fid=%s' % (item['_fid'], )
