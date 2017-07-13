@@ -5,11 +5,13 @@ import static org.joda.time.format.DateTimeFormat.forPattern;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotNull;
 
@@ -20,7 +22,7 @@ import com.dk.trender.core.IndexItem;
 import com.dk.trender.core.PostMedia;
 
 public class IndexService {
-	private final Queue<IndexItem> queue;
+	private final Queue<Set<IndexItem>> queue;
 	private final MediaService mediaService;
 	public static int MAX_MEDIA_COUNT = 10;
 
@@ -29,22 +31,24 @@ public class IndexService {
 		this.mediaService = service;
 	}
 
+	/*
+	 * TODO: adopt a functional style
+	 */
 	public void addToIndex(List<IndexItem> items) {
+		final Set<IndexItem> set = new HashSet<>();
 		for (final IndexItem item : items) {
 			if (canBeIndexed(item)) {
-				queue.offer(item);
+				set.add(item);
 			}
 		}
+		
+		queue.offer(set);
 	}
 
 	public List<IndexItem> retrieveIndex() {
-		List<IndexItem> buf = new LinkedList<>();
-		IndexItem c;
-		int t=0;
-		while ((c=queue.poll()) != null && (++t < 10)) {
-			buf.add(c);			
-		}
-		return buf;
+		return queue.poll()
+					.stream()
+					.collect(Collectors.toList());
 	}
 
 	public int indexSize() {
@@ -53,7 +57,6 @@ public class IndexService {
 
 	private boolean canBeIndexed(IndexItem item) {
 		final String fId = item.getfId();
-		return !queue.contains(item) &&
-				mediaService.getPostMediaCount(fId, "*") < MAX_MEDIA_COUNT;
+		return mediaService.getPostMediaCount(fId, "*") < MAX_MEDIA_COUNT;
 	}
 }
