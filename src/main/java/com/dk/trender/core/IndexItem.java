@@ -33,17 +33,17 @@ public class IndexItem {
 	public long getPostId() {
 		return postId;
 	}
-	
+
 	@JsonProperty
 	public void setPostId(long postId) {
 		this.postId = postId;
 	}
-	
+
 	@JsonProperty
 	public Set<String> getLinks() {
 		return links;
 	}
-	
+
 	@JsonProperty
 	public void setLinks(Set<String> links) {
 		this.links = links;
