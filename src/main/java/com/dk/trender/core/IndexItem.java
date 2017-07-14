@@ -1,7 +1,7 @@
 package com.dk.trender.core;
 
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 

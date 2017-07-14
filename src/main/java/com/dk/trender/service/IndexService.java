@@ -1,6 +1,5 @@
 package com.dk.trender.service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;

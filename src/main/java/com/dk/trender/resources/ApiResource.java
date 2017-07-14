@@ -119,7 +119,7 @@ public class ApiResource {
 	@POST
 	@UnitOfWork
 	@Path("/media/index")
-	public void indexThesePosts(@NotEmpty List<IndexItem> urls) {
+	public void indexMedia(@NotEmpty List<IndexItem> urls) {
 		indexService.addToIndex(urls);
 	}
 }
