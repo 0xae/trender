@@ -19,40 +19,38 @@ class MediaSpider(scrapy.Spider):
         videos = response.css('article .videoWrapper::attr("style")') \
                          .re(r'\((.*)\)')
         images = response.css('article div img::attr("src")').extract()
-        media = map(_get_video, videos)
-        media.extend(map(_get_image, images))
+        media = map(self._get_video, videos)
+        media.extend(map(self._get_image, images))
         post = response.meta['item']
 
         for obj in media:
             obj["_fid"] = post['fId']
             yield obj
 
+    def _get_video(self, url):
+        # TODO: get video description
+        vtype = "youtube-video"
+        data = {"url": url}
+        obj = {
+            "description": "<no>",
+            "type": vtype,
+            "data": data,
+            "mediaRef": md5(url).hexdigest(),
+            "postId": 0,
+            "title": "youtube-video",
+            "image_urls": [url],
+        }
+        return obj
 
-def _get_video(url):
-    # TODO: get video description
-    vtype = "youtube-video"
-    data = {"url": url}
-    obj = {
-        "description": "<no>",
-        "type": vtype,
-        "data": data,
-        "mediaRef": md5(url).hexdigest(),
-        "postId": 0,
-        "title": "youtube-video",
-        "image_urls": [url],
-    }
-    return obj
-
-
-def _get_image(url):
-    # TODO: get image description
-    data = {"url": url}
-    obj = {
-        "description": "<no>",
-        "type": "image",
-        "title": "image",
-        "data": data,
-        "mediaRef": md5(url).hexdigest(),
-        "image_urls": [url]
-    }
-    return obj
+    def _get_image(self, url):
+        # TODO: get image description
+        data = {"url": url}
+        obj = {
+            "description": "<no>",
+            "type": "image",
+            "title": "image",
+            "data": data,
+            "mediaRef": md5(url).hexdigest(),
+            "image_urls": [url]
+        }
+        return obj
