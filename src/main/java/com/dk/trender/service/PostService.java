@@ -150,12 +150,6 @@ public class PostService extends AbstractDAO<Post> {
 		return update;
 	}
 
-    /**
-     * XXX: move lines 50,57 to Post class
-     * @param post
-     * @param profile
-     * @return
-     */
     private Post create(Post post, Profile profile) {
     	post.setProfileId(profile.getId());
     	post.setListingId(profile.getListingId());
