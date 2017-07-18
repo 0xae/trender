@@ -58,7 +58,7 @@ that's it
 - [ ] Crawling API
 - [ ] Dropwizard Metrics ?
 - [ ] Rich Descriptive and Analytical API
-- [ ] Fix posts timestamp (ajust and better test the TimeParser class)
+- [ ] Enhance posts timestamp
 - [X] migrate all js spiders to scrapy 
 - [ ] twitter spider
 
