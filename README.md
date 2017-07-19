@@ -98,7 +98,7 @@ that's it
 * [RNN Effectiveness](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
 * [IBM Watson](http://watson-developer-cloud.github.io/java-sdk/)
 
-### General Stuff    
+### Random Stuff    
 * [Random UK post code generator](https://www.doogal.co.uk/PostcodeGenerator.php)
 * [Reddit Atlas](https://www.reddit.com/r/RedditAtlas/)
 * [Project Atlas](https://draemm.li/various/place-atlas/)
