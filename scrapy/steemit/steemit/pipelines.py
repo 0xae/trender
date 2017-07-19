@@ -9,12 +9,15 @@ class MediaPipeline(object):
     def process_item(self, item, spider):
         d = item['data']
         cache = item['images']
-        d['_cache'] = cache
+        d['_cache'] = cache[0]['url'] if cache else None
+
         item['data'] = dumps(item['data'])
         url = 'http://127.0.0.1:5000/api/media/post?fid=%s' % (item['_fid'], )
+
         del item['_fid']
         del item['image_urls']
         del item['images']
+
         data = dumps(item)
         p = req.post(url, data=data,
                      headers={'Content-type': 'application/json'})

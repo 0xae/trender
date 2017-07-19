@@ -64,7 +64,7 @@ ITEM_PIPELINES = {
     'steemit.pipelines.MediaPipeline': 30,
 }
 
-IMAGES_STORE = '/home/ayrton/env/git/trender/cache'
+IMAGES_STORE = '/opt/lampp/htdocs/trender/media'
 
 # Days to keep the images
 IMAGES_EXPIRES = 30
