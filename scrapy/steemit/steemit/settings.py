@@ -60,7 +60,8 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'scrapy.pipelines.images.ImagesPipeline': 10,
+    # 'scrapy.pipelines.images.ImagesPipeline': 10,
+    'steemit.pipelines.MediaImagesPipeline': 10,
     'steemit.pipelines.MediaPipeline': 30,
 }
 

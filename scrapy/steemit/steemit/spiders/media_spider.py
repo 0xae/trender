@@ -42,8 +42,10 @@ class MediaSpider(scrapy.Spider):
         }
         return obj
 
-    def _get_image(self, url):
+    def _get_image(self, rawurl):
         # TODO: get image description
+        sep = rawurl.find('0x0')
+        url = rawurl[sep+4:] if sep > -1 else rawurl
         data = {"url": url}
         obj = {
             "description": "<no>",
