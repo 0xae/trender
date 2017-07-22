@@ -1,5 +1,7 @@
 package com.dk.trender.core;
 
+import static org.joda.time.format.DateTimeFormat.forPattern;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -129,6 +131,13 @@ public class PostMedia {
 	@JsonProperty
 	public void setTime(LocalDateTime time) {
 		this.time = time;
+	}
+	
+	@JsonProperty
+	public String getTimeFmt() {
+//		return forPattern("YYYY-MM-ddTHH:mm:ss")
+//			  .print(time);
+		return time.toString();
 	}
 
 	@JsonProperty
