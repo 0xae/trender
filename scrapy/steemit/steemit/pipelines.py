@@ -25,7 +25,7 @@ class MediaPipeline(object):
 
 class MediaImagesPipeline(ImagesPipeline):
     def get_media_requests(self, item, info):
-        for image_url in item['image_urls']:
+        for image_url in item.get('image_urls', []):
             yield scrapy.Request(image_url)
 
     def item_completed(self, results, item, info):
