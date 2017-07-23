@@ -74,6 +74,7 @@ create table z_post_media (
         timestamp timestamp not null,
         data jsonb not null,
         post_id bigint not null references z_post(id),
+        source varchar(150),
         indexed_at timestamp not null,
 
         UNIQUE(ref)

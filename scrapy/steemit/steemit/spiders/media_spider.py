@@ -35,6 +35,7 @@ class MediaSpider(scrapy.Spider):
             "description": "<no>",
             "type": vtype,
             "data": data,
+            "source": "https://steemit.com",
             "mediaRef": md5(url).hexdigest(),
             "postId": 0,
             "title": "youtube-video",
@@ -51,6 +52,7 @@ class MediaSpider(scrapy.Spider):
             "description": "<no>",
             "type": "image",
             "title": "image",
+            "source": "https://steemit.com",
             "data": data,
             "mediaRef": md5(url).hexdigest(),
             "image_urls": [url]

@@ -42,6 +42,10 @@ public class PostMedia {
 	private String type;
 
 	@NotEmpty
+	@Column(name="source", nullable=false)
+	private String source;	
+	
+	@NotEmpty
 	@Column(name="data", nullable=false)
     @ColumnTransformer(write="?::jsonb")
 	private String data;
@@ -52,6 +56,16 @@ public class PostMedia {
 	@NotEmpty
 	@Column(name="ref", nullable=false, updatable=false)
 	private String mediaRef;
+	
+	@JsonProperty
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	@JsonProperty
+	public String getSource() {
+		return source;
+	}
 
 	@JsonProperty
 	public void setMediaRef(String mediaId) {
