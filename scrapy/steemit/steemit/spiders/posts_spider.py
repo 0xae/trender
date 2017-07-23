@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import scrapy
-import time 
+from dateutil import parser
 from hashlib import md5
 from json import dumps
 import grequests as req
-# https://steemit.com/@ayrton
-
+import datetime
+from random import randint
 
 # Default image for pictures withou one
 DEFAULT_IMG = '<uk>'
@@ -15,7 +15,7 @@ class PostSpider(scrapy.Spider):
     name = 'steemit_posts'
 
     def start_requests(self):
-        url = "https://steemit.com/trending"
+        url = "https://steemit.com/created"
         yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
@@ -55,9 +55,12 @@ class PostSpider(scrapy.Spider):
                             '.PostSummary__footer ' +
                             '.VotesAndComments__votes::text').extract_first()
 
-            post_comments = art.css(
-                            '.PostSummary__footer ' +
-                            '.VotesAndComments__comments a::text').extract()
+            # post_comments = art.css(
+            #                 '.PostSummary__footer ' +
+            #                 '.VotesAndComments__comments a::text').extract()
+
+            date = parser.parse(post_time)
+            timestamp = date.strftime('%Y-%m-%dT%H:%M:%S')
 
             post = {
                 "description": post_description,
@@ -68,8 +71,7 @@ class PostSpider(scrapy.Spider):
                 },
                 "postReaction":
                 {"countLikes": int(post_votes if post_votes.strip() else 0)},
-                "timestamp": int(time.mktime(
-                    time.strptime(post_time, '%m/%d/%Y, %H:%M:%S %p'))),
+                "timestamp": timestamp,
                 "timming": post_time,
                 "type": "post",
                 "picture": image,
@@ -87,6 +89,16 @@ class PostSpider(scrapy.Spider):
 
             create_post(post_req)
             yield post_req
+
+        links = response.css('ul.Topics a::attr("href")').extract()
+        next_page = '/tags'
+        while next_page == '/tags':
+            idx = randint(0, len(links)-1)
+            next_page = links[idx]
+
+        if next_page:
+            yield response \
+                .follow('https://steemit.com' + next_page, self.parse)
 
 
 def create_post(post):

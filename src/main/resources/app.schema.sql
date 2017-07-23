@@ -39,6 +39,7 @@ create table z_post (
         type varchar(100) not null,
         timming varchar(250) not null,
         picture text not null,
+        blob jsonb,
 
         -- ids
         facebook_id varchar(250) not null,

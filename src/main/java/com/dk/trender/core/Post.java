@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.persistence.ForeignKey;
 
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDateTime;
 
@@ -83,6 +84,10 @@ public class Post {
 	@Column(name="listing_id", updatable=false)
 	private long listingId;
 
+	@Column(name="blob")
+	@ColumnTransformer(write="?::jsonb")
+	private String blob;	
+	
 	@NotEmpty
 	@OneOf({"event", "post"})
 	@Column(name="type", nullable=false, updatable=false)
@@ -108,6 +113,16 @@ public class Post {
 
 	public Post() {
 		// TODO
+	}
+
+	@JsonProperty
+	public void setBlob(String blob) {
+		this.blob = blob;
+	}
+
+	@JsonProperty
+	public String getBlob() {
+		return blob;
 	}
 
 	@JsonProperty
@@ -253,6 +268,16 @@ public class Post {
 	@JsonProperty
 	public void setTimestamp(LocalDateTime timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	@JsonProperty
+	public void setTimestamp(String timestamp) {
+		this.timestamp = new LocalDateTime(timestamp);
+	}
+	
+	public static void main(String[] args) {
+		String fmt = "7/23/2017, 10:50:00 AM";
+		System.out.println(new LocalDateTime(fmt));
 	}
 
 	@JsonProperty
