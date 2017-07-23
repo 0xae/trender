@@ -1,6 +1,7 @@
 package com.dk.trender.resources;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -23,6 +24,7 @@ import com.dk.trender.core.PostRequest;
 import com.dk.trender.service.IndexService;
 import com.dk.trender.service.PostService;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 
 import io.dropwizard.hibernate.UnitOfWork;
 
@@ -96,8 +98,10 @@ public class ApiResource {
 	@GET
 	@UnitOfWork
 	@Path("/media/index/stats")
-	public int getIndexSize() {
-		return indexService.indexSize();
+	public Map<String, String> getIndexSize() {
+		return ImmutableMap.<String,String>builder()
+				.put("queue_size", indexService.indexSize()+"")
+				.build();
 	}
 
 	@GET
@@ -105,13 +109,14 @@ public class ApiResource {
 	@Path("/media/recent")
 	public List<PostMedia> getMostRecent(@QueryParam("fid") @NotNull String fId,
 										 @QueryParam("since") Optional<String> since,
-										 @QueryParam("type") Optional<String> type) {
+										 @QueryParam("type") Optional<String> type,
+										 @QueryParam("o") Optional<Integer> offset) {
 		LocalDateTime sinceDate = new LocalDateTime().minusHours(24);
-		if (since.isPresent()) {
+		if (since.isPresent() && !since.get().equals("")) {
 			sinceDate = new LocalDateTime(since.get().replace(' ', 'T'));
 		}
 
-		return postService.getRecentPostMedia(sinceDate, type.or("*"), fId);
+		return postService.getRecentPostMedia(sinceDate, type.or("*"), fId, offset.or(0));
 	}
 
 	@GET

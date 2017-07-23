@@ -2,9 +2,12 @@ package com.dk.trender.core;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -42,7 +45,7 @@ public class PostMedia {
 	@NotEmpty
 	@Column(name="source", nullable=false)
 	private String source;	
-	
+
 	@NotEmpty
 	@Column(name="data", nullable=false)
     @ColumnTransformer(write="?::jsonb")
@@ -57,6 +60,38 @@ public class PostMedia {
 	@NotEmpty
 	@Column(name="ref", nullable=false, updatable=false)
 	private String mediaRef;
+
+	@ManyToOne
+	@JoinColumn(name="post_id", insertable=false, 
+				updatable=false, 
+				foreignKey=@ForeignKey(name="post_id_fkey"))
+	private Post post;
+
+	@ManyToOne
+	@JoinColumn(name="listing_id", insertable=false, 
+				updatable=false, 
+				foreignKey=@ForeignKey(name="listing_id_fkey"))
+	private Listing listing;
+
+	@JsonProperty
+	public void setListing(Listing listing) {
+		this.listing = listing;
+	}
+	
+	@JsonProperty
+	public Listing getListing() {
+		return listing;
+	}
+	
+	@JsonProperty
+	public void setPost(Post post) {
+		this.post = post;
+	}
+	
+	@JsonProperty
+	public Post getPost() {
+		return post;
+	}
 
 	@JsonProperty
 	public void setListingId(long listingId) {

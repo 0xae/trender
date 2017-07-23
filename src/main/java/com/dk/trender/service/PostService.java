@@ -48,8 +48,8 @@ public class PostService extends AbstractDAO<Post> {
     	return postMediaService.getAllPostMedia(postId, type);
     }
 
-    public List<PostMedia> getRecentPostMedia(LocalDateTime since, String type, String postFid) {    	
-    	return postMediaService.getRecentPostMedia(since, type, postFid);
+    public List<PostMedia> getRecentPostMedia(LocalDateTime since, String type, String postFid, int offset) {    	
+    	return postMediaService.getRecentPostMedia(since, type, postFid, offset);
     }
 
     /**

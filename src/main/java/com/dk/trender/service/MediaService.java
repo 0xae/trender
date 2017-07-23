@@ -20,12 +20,11 @@ public class MediaService extends AbstractDAO<PostMedia> {
 		final LocalDateTime today = new LocalDateTime();
     	media.setPostId(p.getId());
 		media.setIndexedAt(today);
-		media.setListingId(p.getListingId());
-		media.setTime(p.getTimestamp());
+		media.setTime(today);
         return persist(media);
 	}
 
-	public List<PostMedia> getRecentPostMedia(LocalDateTime since, String type, String postFid) {	
+	public List<PostMedia> getRecentPostMedia(LocalDateTime since, String type, String postFid, int offset) {	
 		final String sql = 
 			"from PostMedia "+
 			"where (:type='*' or type=:type) "+
@@ -39,6 +38,7 @@ public class MediaService extends AbstractDAO<PostMedia> {
 				   .setParameter("since", forPattern("YYYY-MM-dd HH:mm:ss").print(since))
 				   .setParameter("postFid", postFid)
 				   .setMaxResults(30)
+				   .setFirstResult(offset)
 				   .getResultList();
     }
 	

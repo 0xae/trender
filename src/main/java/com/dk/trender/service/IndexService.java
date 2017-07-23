@@ -1,5 +1,6 @@
 package com.dk.trender.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
@@ -29,6 +30,10 @@ public class IndexService {
 	}
 
 	public List<IndexItem> retrieveIndex() {
+		if (queue.isEmpty()) {
+			return Collections.emptyList();
+		} 
+		
 		return queue.poll()
 					.stream()
 					.collect(Collectors.toList());
