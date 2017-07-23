@@ -54,6 +54,9 @@ class PostSpider(scrapy.Spider):
                             '.PostSummary__footer ' +
                             '.VotesAndComments__votes::text').extract_first()
 
+            post_tag = art.css('.PostSummary__time_author_category ' +
+                               '.vcard strong a::text').extract_first()
+
             # post_comments = art.css(
             #                 '.PostSummary__footer ' +
             #                 '.VotesAndComments__comments a::text').extract()
@@ -84,6 +87,9 @@ class PostSpider(scrapy.Spider):
                     "title": post_author,
                     "link": 'https://steemit.com' + post_author_link,
                     "username": post_author
+                },
+                "listing": {
+                    "name": post_tag
                 }
             }
 

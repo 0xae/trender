@@ -20,7 +20,8 @@ public class MediaService extends AbstractDAO<PostMedia> {
 		final LocalDateTime today = new LocalDateTime();
     	media.setPostId(p.getId());
 		media.setIndexedAt(today);
-		media.setTime(today);
+		media.setListingId(p.getListingId());
+		media.setTime(p.getTimestamp());
         return persist(media);
 	}
 

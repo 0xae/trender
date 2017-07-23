@@ -41,6 +41,7 @@ create table z_post (
         picture text not null,
         blob jsonb,
         source varchar(150),
+        tags varchar[],
 
         -- ids
         facebook_id varchar(250) not null,
@@ -74,6 +75,7 @@ create table z_post_media (
         timestamp timestamp not null,
         data jsonb not null,
         post_id bigint not null references z_post(id),
+        listing_id bigint not null references z_listing(id),
         source varchar(150),
         indexed_at timestamp not null,
 

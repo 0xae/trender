@@ -1,18 +1,20 @@
 package com.dk.trender.service;
 
+import static org.joda.time.format.DateTimeFormat.forPattern;
+
 import java.util.List;
-import java.util.Optional;
 
 import javax.ws.rs.NotFoundException;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.exception.ConstraintViolationException;
 import org.joda.time.LocalDateTime;
-import static org.joda.time.format.DateTimeFormat.forPattern;
 
+import com.dk.trender.core.Listing;
 import com.dk.trender.core.Post;
 import com.dk.trender.core.PostMedia;
 import com.dk.trender.core.PostRequest;
+import com.dk.trender.core.PostRequest.ListingDetails;
 import com.dk.trender.core.Profile;
 
 import io.dropwizard.hibernate.AbstractDAO;
@@ -25,13 +27,16 @@ import io.dropwizard.hibernate.AbstractDAO;
 public class PostService extends AbstractDAO<Post> {
 	private final ProfileService profileService;
 	private final MediaService postMediaService;
+	private final ListingService listingSvc;
 
 	public PostService(final SessionFactory factory,
 					   final ProfileService service,
-					   final MediaService postMedia) {
+					   final MediaService postMedia,
+					   ListingService listingSvc) {
         super(factory);
         this.profileService = service;
         this.postMediaService = postMedia;
+        this.listingSvc = listingSvc;
     }
 	
     public PostMedia addPostMedia(PostMedia media, String fid) {
@@ -46,7 +51,7 @@ public class PostService extends AbstractDAO<Post> {
     public List<PostMedia> getRecentPostMedia(LocalDateTime since, String type, String postFid) {    	
     	return postMediaService.getRecentPostMedia(since, type, postFid);
     }
-    
+
     /**
      * TODO: log this
      * @param request
@@ -54,15 +59,36 @@ public class PostService extends AbstractDAO<Post> {
      */
     public Post addPost(PostRequest request) {
 		final Profile profile = profileService.findOrCreate(request.getProfile());
+		final Listing listing = findOrCreateListing(request.getListing());
+		final Post post = request.getPost();
+
 		try {
-			return create(request.getPost(), profile);			
+			post.setProfileId(profile.getId());
+			post.setListingId(listing.getId());
+			post.setIndexedAt(new LocalDateTime());
+	    	return persist(post);
 		} catch (ConstraintViolationException e) {
 			currentSession().getTransaction().rollback();
 			updatePostActivity(request.getPost());
 			return request.getPost();
 		}
     }
-
+    
+    private Listing findOrCreateListing(ListingDetails details) {
+    	if (details.getId() > 0) {
+    		return listingSvc.findById(details.getId());
+    	} else {
+    		try {
+    			return listingSvc.findByName(details.getName());
+    		} catch (javax.persistence.NoResultException notFound) {
+        		final Listing l  = new Listing();
+        		l.setTitle(details.getName());
+        		l.setDescription("#"+details.getName());
+        		return listingSvc.create(l);
+    		}
+    	}
+    }
+    
     @SuppressWarnings("unchecked")
     public List<Post> findAll() {
     	return list(namedQuery("post.findAll"));
@@ -150,10 +176,4 @@ public class PostService extends AbstractDAO<Post> {
 		return update;
 	}
 
-    private Post create(Post post, Profile profile) {
-    	post.setProfileId(profile.getId());
-    	post.setListingId(profile.getListingId());
-		post.setIndexedAt(new LocalDateTime());
-    	return persist(post);
-    }
 }

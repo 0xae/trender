@@ -1,7 +1,5 @@
 package com.dk.trender.core;
 
-import static org.joda.time.format.DateTimeFormat.forPattern;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -53,10 +51,23 @@ public class PostMedia {
 	@Column(name="post_id", nullable=false, updatable=false)
 	private long postId;
 
+	@Column(name="listing_id", nullable=false, updatable=false)
+	private long listingId;	
+
 	@NotEmpty
 	@Column(name="ref", nullable=false, updatable=false)
 	private String mediaRef;
-	
+
+	@JsonProperty
+	public void setListingId(long listingId) {
+		this.listingId = listingId;
+	}
+
+	@JsonProperty
+	public long getListingId() {
+		return listingId;
+	}	
+
 	@JsonProperty
 	public void setSource(String source) {
 		this.source = source;

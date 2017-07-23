@@ -3,9 +3,11 @@ package com.dk.trender.service;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import org.joda.time.LocalDateTime;
 
 import com.dk.trender.core.Listing;
+import com.dk.trender.core.PostRequest.ListingDetails;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
@@ -29,6 +31,12 @@ public class ListingService extends AbstractDAO<Listing> {
     					 .setParameter("id", id)
 			    		 .getSingleResult();
     }
+    
+    public Listing findByName(String name) {
+    	return (Listing) namedQuery("listing.findByName")
+    					 .setParameter("name", name.toLowerCase().trim())
+			    		 .getSingleResult();
+    }    
 
     @SuppressWarnings("unchecked")
     public List<Listing> findAll() {

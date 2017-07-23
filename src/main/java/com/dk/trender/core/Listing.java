@@ -12,7 +12,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.joda.time.LocalDateTime;
-
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
@@ -37,6 +37,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 	    query = "from Listing where id=:id"
 	),
 	@NamedQuery(
+	    name = "listing.findByName",
+	    query = "from Listing where title=:name"
+	),
+	@NamedQuery(
 	    name = "listing.updateTitle",
 	    query = "update Listing set title=:title where id=:id"
 	),
@@ -52,6 +56,7 @@ public class Listing {
 
 	@NotEmpty
 	@Column(name="title", nullable=false)
+	@ColumnTransformer(write="trim(lower(?))")
 	private String title;
 
 	@Column(name="description")

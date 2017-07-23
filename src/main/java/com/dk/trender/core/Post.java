@@ -1,7 +1,13 @@
 package com.dk.trender.core;
 
 import javax.persistence.Entity;
+
+import java.util.List;
+
 import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Converter;
+import javax.persistence.Converts;
 import javax.persistence.Embedded;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +25,7 @@ import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDateTime;
 
+import com.dk.trender.core.mapper.ArrayToListConverter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.dropwizard.validation.OneOf;
@@ -90,11 +97,25 @@ public class Post {
 	@Column(name="blob")
 	@ColumnTransformer(write="?::jsonb")
 	private String blob;	
-	
+
 	@NotEmpty
 	@OneOf({"event", "post"})
 	@Column(name="type", nullable=false, updatable=false)
 	private String type;
+
+//	@Column(name="tags", nullable=false, updatable=false)
+//    @Convert(converter = ArrayToListConverter.class)
+//	private List<String> tags;	
+//
+//	@JsonProperty
+//	public void setTags(List<String> tags) {
+//		this.tags = tags;
+//	}
+//
+//	@JsonProperty
+//	public List<String> getTags() {
+//		return tags;
+//	}
 
 	@Valid
 	@NotNull
