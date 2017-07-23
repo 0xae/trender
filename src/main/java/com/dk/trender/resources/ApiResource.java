@@ -46,11 +46,16 @@ public class ApiResource {
 	@GET
 	@UnitOfWork
 	@Path("/post/recent")
-	public List<Post> getRecentPosts(@QueryParam("since") @NotEmpty String minTime,
+	public List<Post> getRecentPosts(@QueryParam("since") Optional<String> minTime,
 									 @QueryParam("limit") @NotNull Integer limit,
 									 @QueryParam("offset") Optional<Integer> offset,
 									 @QueryParam("o") Optional<String> sortOrder) {
-		final LocalDateTime time = new LocalDateTime(minTime.replace(' ', 'T'));
+		final LocalDateTime time;
+		if (minTime.isPresent()) {
+			time = new LocalDateTime(minTime.get().replace(' ', 'T'));
+		} else {
+			time = new LocalDateTime().minusMinutes(5);
+		}
 		return postService.findPostsNewerThan(time, limit, offset.or(0), sortOrder.or("asc"));
 	}
 
