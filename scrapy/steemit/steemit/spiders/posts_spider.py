@@ -4,7 +4,6 @@ from dateutil import parser
 from hashlib import md5
 from json import dumps
 import grequests as req
-import datetime
 from random import randint
 
 # Default image for pictures withou one
@@ -75,6 +74,7 @@ class PostSpider(scrapy.Spider):
                 "timming": post_time,
                 "type": "post",
                 "picture": image,
+                "source": "https://steemit.com",
                 "facebookId": md5(post_url).hexdigest(),
             }
 
@@ -87,7 +87,7 @@ class PostSpider(scrapy.Spider):
                 }
             }
 
-            create_post(post_req)
+            self._create_post(post_req)
             yield post_req
 
         links = response.css('ul.Topics a::attr("href")').extract()
@@ -100,11 +100,10 @@ class PostSpider(scrapy.Spider):
             yield response \
                 .follow('https://steemit.com' + next_page, self.parse)
 
+    def _create_post(self, post):
+        url = 'http://127.0.0.1:5000/api/post/new'
+        data = dumps(post)
+        p = req.post(url, data=data,
+                headers={'Content-type': 'application/json'})
 
-def create_post(post):
-    url = 'http://127.0.0.1:5000/api/post/new'
-    data = dumps(post)
-    p = req.post(url, data=data,
-            headers={'Content-type': 'application/json'})
-
-    return req.map([p])
+        return req.map([p])

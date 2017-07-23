@@ -40,6 +40,7 @@ create table z_post (
         timming varchar(250) not null,
         picture text not null,
         blob jsonb,
+        source varchar(150),
 
         -- ids
         facebook_id varchar(250) not null,

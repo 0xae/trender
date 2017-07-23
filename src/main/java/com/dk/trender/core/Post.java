@@ -71,6 +71,9 @@ public class Post {
 	@Column(name="cover_html", updatable=false)
 	private String coverHtml;
 
+	@Column(name="source", updatable=false)
+	private String source;	
+
 	@Column(name="time", updatable=false, nullable=false)
 	private LocalDateTime timestamp;
 
@@ -113,6 +116,16 @@ public class Post {
 
 	public Post() {
 		// TODO
+	}
+	
+	@JsonProperty
+	public void setSource(String source) {
+		this.source = source;
+	}
+	
+	@JsonProperty
+	public String getSource() {
+		return source;
 	}
 
 	@JsonProperty
