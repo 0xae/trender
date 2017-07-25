@@ -24,13 +24,16 @@ public class MediaService extends AbstractDAO<PostMedia> {
         return persist(media);
 	}
 
-	public List<PostMedia> getRecentPostMedia(LocalDateTime since, String type, String postFid, int offset) {	
+	public List<PostMedia> getRecentPostMedia(LocalDateTime since, 
+											  String type, 
+											  String postFid, 
+											  int offset) {
 		final String sql = 
-			"from PostMedia "+
-			"where (:type='*' or type=:type) "+
-			"and (:postFid='everybody' or post_id=(from Post where facebook_id=:postFid)) "+
-			"and time > to_timestamp(:since, 'YYYY-MM-dd HH24:MI:ss') "+
-			"order by time DESC ";
+			"from PostMedia " +
+			"where (:type='*' or type=:type) " +
+			"and (:postFid='everybody' or post_id=(from Post where facebook_id=:postFid)) " +
+			"and time > to_timestamp(:since, 'YYYY-MM-dd HH24:MI:ss') " +
+			"order by time ASC ";
 
 		return currentSession()
 				   .createQuery(sql, PostMedia.class)
@@ -41,7 +44,7 @@ public class MediaService extends AbstractDAO<PostMedia> {
 				   .setFirstResult(offset)
 				   .getResultList();
     }
-	
+
 	public int getPostMediaCount(String postFid, String type) {	
 		final String sql = 
 			"select count(1) as totalItems from PostMedia "+

@@ -72,7 +72,7 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		MediaService mediaService = new MediaService(sessionFactory);
 		PostService postService = new PostService(sessionFactory, profileService, mediaService, listingService);
 
-		env.jersey().register(new ApiResource(postService, new IndexService(mediaService)));
+		env.jersey().register(new ApiResource(postService, new IndexService(mediaService), listingService));
 		env.jersey().register(new NoResultExceptionExceptionMapper(env.metrics()));
 		env.jersey().register(new ConstraintViolationExceptionMapper());
 	}

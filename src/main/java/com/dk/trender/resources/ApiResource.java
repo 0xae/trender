@@ -22,6 +22,8 @@ import com.dk.trender.core.Post;
 import com.dk.trender.core.PostMedia;
 import com.dk.trender.core.PostRequest;
 import com.dk.trender.service.IndexService;
+import com.dk.trender.service.ListingService;
+import com.dk.trender.service.ListingService.ListRank;
 import com.dk.trender.service.PostService;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
@@ -38,11 +40,15 @@ import io.dropwizard.hibernate.UnitOfWork;
 @Produces(MediaType.APPLICATION_JSON)
 public class ApiResource {
 	private final PostService postService;
+	private final ListingService listingService;
 	private final IndexService indexService;
 
-	public ApiResource(PostService postService, IndexService indexService) {
+	public ApiResource(PostService postService, 
+					   IndexService indexService,
+					   ListingService listingService) {
 		this.postService = postService;
 		this.indexService = indexService;
+		this.listingService = listingService;
 	}
 
 	@GET
@@ -58,6 +64,7 @@ public class ApiResource {
 		} else {
 			time = new LocalDateTime().minusMinutes(5);
 		}
+
 		return postService.findPostsNewerThan(time, limit, offset.or(0), sortOrder.or("asc"));
 	}
 
@@ -66,10 +73,11 @@ public class ApiResource {
 	@Path("/post/search")
 	public List<Post> searchPost(@QueryParam("q") @NotEmpty String query,
 								 @QueryParam("start") @NotEmpty String startO,
-								 @QueryParam("end") @NotEmpty String endO) {
+								 @QueryParam("end") @NotEmpty String endO,
+								 @QueryParam("listing") Optional<String> listing) {
 		final LocalDateTime start = new LocalDateTime(startO);
 		final LocalDateTime end = new LocalDateTime(endO);
-		return postService.searchPosts(query, start, end);
+		return postService.searchPosts(query, start, end, listing.or("general"));
 	}
 
 	@POST
@@ -112,6 +120,7 @@ public class ApiResource {
 										 @QueryParam("type") Optional<String> type,
 										 @QueryParam("o") Optional<Integer> offset) {
 		LocalDateTime sinceDate = new LocalDateTime().minusHours(24);
+
 		if (since.isPresent() && !since.get().equals("")) {
 			sinceDate = new LocalDateTime(since.get().replace(' ', 'T'));
 		}
@@ -126,6 +135,13 @@ public class ApiResource {
 		return indexService.retrieveIndex();
 	}
 
+	@GET
+	@UnitOfWork
+	@Path("/listing/rank")
+	public List<ListRank> getListRank() {
+		return listingService.getListingRank(40, 0);
+	}
+	
 	@POST
 	@UnitOfWork
 	@Path("/media/index")

@@ -38,9 +38,10 @@ public class PostService extends AbstractDAO<Post> {
         this.postMediaService = postMedia;
         this.listingSvc = listingSvc;
     }
-	
+
     public PostMedia addPostMedia(PostMedia media, String fid) {
     	final Post p = findByFacebookId(fid);
+    	media.setListingId(p.getListingId());
     	return postMediaService.addPostMedia(p, media);
     }
 
@@ -73,7 +74,7 @@ public class PostService extends AbstractDAO<Post> {
 			return request.getPost();
 		}
     }
-    
+
     private Listing findOrCreateListing(ListingDetails details) {
     	if (details.getId() > 0) {
     		return listingSvc.findById(details.getId());
@@ -88,7 +89,7 @@ public class PostService extends AbstractDAO<Post> {
     		}
     	}
     }
-    
+
     @SuppressWarnings("unchecked")
     public List<Post> findAll() {
     	return list(namedQuery("post.findAll"));
@@ -134,16 +135,24 @@ public class PostService extends AbstractDAO<Post> {
 	 * @param end
 	 * @return
 	 */
-	public List<Post> searchPosts(String query, LocalDateTime start, LocalDateTime end) {
-		final String sql = 
+	public List<Post> searchPosts(String query, 
+								  LocalDateTime start, 
+								  LocalDateTime end,
+								  String listingName) {
+
+		Listing listing = listingSvc.findByName(listingName);
+
+		String sql =  
 				"from Post where description like concat('%',:query,'%') " +
 				"and time >=  to_timestamp(:start, 'YYYY-MM-dd') "+
 				"and time <=  to_timestamp(:end, 'YYYY-MM-dd')  "+
+				"and listing_id = :listingId "+
 				"order by time DESC ";
 
 		return currentSession()
 				   .createQuery(sql, Post.class)
 				   .setParameter("query", query)
+				   .setParameter("listing_id", listing.getId())
 				   .setParameter("start", forPattern("YYYY-MM-dd").print(start))
 				   .setParameter("end", forPattern("YYYY-MM-dd").print(end))
 				   .setMaxResults(30)
