@@ -26,6 +26,7 @@ This is alpha release and probably wont come to beta seas until Xstmas.
 ## Architecture
 
 ### [Trender Apps](https://github.com/0xae/trender-apps)
+Fast, beautifull and interactive apps, featuring videos, pictures, tweets and news
 frontend consumption, manifold of consumers/producers,
 crawlers, spiders, ajax, videos, etc
 
