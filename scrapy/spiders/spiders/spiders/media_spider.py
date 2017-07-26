@@ -8,7 +8,7 @@ class MediaSpider(scrapy.Spider):
     name = 'steemit_media'
 
     def start_requests(self):
-        r = requests.get('http://127.0.0.1:5000/api/media/index/t:timeline')
+        r = requests.get('http://127.0.0.1:5000/api/media/index')
         data = r.json()
         for item in data:
             r = scrapy.Request(url=item['links'][0], callback=self.parse)

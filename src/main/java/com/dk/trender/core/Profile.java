@@ -61,7 +61,7 @@ public class Profile {
 
 	@Column(name="listing_id", nullable=false, updatable=false)
 	private long listingId;
-	
+
 	@NotEmpty
 	@NaturalId
 	@Column(name="username", nullable=false, unique=true)

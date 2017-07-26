@@ -104,15 +104,6 @@ public class ApiResource {
 
 	@GET
 	@UnitOfWork
-	@Path("/media/index/stats")
-	public Map<String, String> getIndexSize() {
-		return ImmutableMap.<String,String>builder()
-				.put("queue_size", indexService.indexSize()+"")
-				.build();
-	}
-
-	@GET
-	@UnitOfWork
 	@Path("/media/recent")
 	public List<PostMedia> getMostRecent(@QueryParam("fid") @NotNull String fId,
 										 @QueryParam("since") Optional<String> since,
@@ -129,22 +120,23 @@ public class ApiResource {
 
 	@GET
 	@UnitOfWork
-	@Path("/media/index")
-	public List<IndexItem> getPostsInIndex() {
-		return indexService.retrieveIndex();
-	}
+	@Path("/media/index/stats")
+	public Map<String, Integer> getStats() {
+		return indexService.stats();
+	}	
 
 	@GET
 	@UnitOfWork
-	@Path("/listing/rank")
-	public List<ListRank> getListRank() {
-		return listingService.getListingRank(40, 0);
+	@Path("/media/index/{name}")
+	public List<IndexItem> getPostsInIndex(@PathParam("name") String indexName) {
+		return indexService.retrieveIndex(indexName);
 	}
 	
 	@POST
 	@UnitOfWork
-	@Path("/media/index")
-	public void indexMedia(@NotEmpty List<IndexItem> urls) {
-		indexService.addToIndex(urls);
+	@Path("/media/index/{name}")
+	public void indexMedia(@PathParam("name") String indexName,
+						   @NotEmpty List<IndexItem> urls) {
+		indexService.addToIndex(indexName, urls);
 	}
 }
