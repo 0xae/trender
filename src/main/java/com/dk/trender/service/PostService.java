@@ -135,27 +135,30 @@ public class PostService extends AbstractDAO<Post> {
 	 * @param end
 	 * @return
 	 */
-	public List<Post> searchPosts(String query, 
+	public List<Post> searchPosts(String query,
+								  int limit,
+								  int offset,
 								  LocalDateTime start, 
-								  LocalDateTime end,
-								  String listingName) {
+								  LocalDateTime end) {
 
-		Listing listing = listingSvc.findByName(listingName);
+//		Listing listing = listingSvc.findByName(listingName);
 
 		String sql =  
 				"from Post where description like concat('%',:query,'%') " +
-				"and time >=  to_timestamp(:start, 'YYYY-MM-dd') "+
-				"and time <=  to_timestamp(:end, 'YYYY-MM-dd')  "+
-				"and listing_id = :listingId "+
+//				"and time >=  to_timestamp(:start, 'YYYY-MM-dd') "+
+//				"and time <=  to_timestamp(:end, 'YYYY-MM-dd')  "+
+//				"and listing_id = :listingId "+
 				"order by time DESC ";
+
 
 		return currentSession()
 				   .createQuery(sql, Post.class)
 				   .setParameter("query", query)
-				   .setParameter("listing_id", listing.getId())
-				   .setParameter("start", forPattern("YYYY-MM-dd").print(start))
-				   .setParameter("end", forPattern("YYYY-MM-dd").print(end))
-				   .setMaxResults(30)
+//				   .setParameter("listing_id", listing.getId())
+//				   .setParameter("start", forPattern("YYYY-MM-dd").print(start))
+//				   .setParameter("end", forPattern("YYYY-MM-dd").print(end))
+				   .setMaxResults(Math.min(30, limit))
+				   .setFirstResult(offset)
 				   .getResultList();
 	}
 

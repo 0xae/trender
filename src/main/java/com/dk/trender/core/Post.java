@@ -308,11 +308,6 @@ public class Post {
 	public void setTimestamp(String timestamp) {
 		this.timestamp = new LocalDateTime(timestamp);
 	}
-	
-	public static void main(String[] args) {
-		String fmt = "7/23/2017, 10:50:00 AM";
-		System.out.println(new LocalDateTime(fmt));
-	}
 
 	@JsonProperty
 	public String getType() {

@@ -71,13 +71,12 @@ public class ApiResource {
 	@GET
 	@UnitOfWork
 	@Path("/post/search")
-	public List<Post> searchPost(@QueryParam("q") @NotEmpty String query,
-								 @QueryParam("start") @NotEmpty String startO,
-								 @QueryParam("end") @NotEmpty String endO,
-								 @QueryParam("listing") Optional<String> listing) {
-		final LocalDateTime start = new LocalDateTime(startO);
-		final LocalDateTime end = new LocalDateTime(endO);
-		return postService.searchPosts(query, start, end, listing.or("general"));
+	public List<Post> searchPost(@QueryParam("q") @NotEmpty String query) {
+		LocalDateTime end = new LocalDateTime();
+		LocalDateTime start = end.minusMinutes(30);
+		int limit = 30;
+		int offset = 0;
+		return postService.searchPosts(query, limit, offset, start, end);
 	}
 
 	@POST
