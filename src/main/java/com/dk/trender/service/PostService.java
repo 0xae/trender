@@ -150,7 +150,6 @@ public class PostService extends AbstractDAO<Post> {
 //				"and listing_id = :listingId "+
 				"order by time DESC ";
 
-
 		return currentSession()
 				   .createQuery(sql, Post.class)
 				   .setParameter("query", query)
