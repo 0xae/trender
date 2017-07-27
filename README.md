@@ -77,6 +77,7 @@ that's it
 ### Storage
 * [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
 * [Hibernate User Guide](http://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#architecture-overview)
+
 ### Scrapy & Friends
 * [Scrapy](https://docs.scrapy.org/en/latest/topics)
 * [grequests](https://pypi.python.org/pypi/grequests)
@@ -113,6 +114,12 @@ that's it
 * [south korea trending posts on steemit](https://steemit.com/trending/kr)
 * [github markdown](https://guides.github.com/features/mastering-markdown/)
 * [crushthestreet.com](https://crushthestreet.com)
+* [cnblogs.com (chinese)](https://www.cnblogs.com/)
+* [庄周梦蝶](http://fnil.net/)
+* [erlang article at cnblogs](http://www.cnblogs.com/me-sa/archive/2011/11/13/erlang0014.html)
+* [jvm article at cnblogs](http://www.cnblogs.com/-new/p/7244460.html)
+* [douban looks awesome](https://www.douban.com/people/killme2008/)
+
 
 ### A Geek amusings
 * [geeking.co](http://geeking.co/)
