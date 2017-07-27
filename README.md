@@ -94,6 +94,14 @@ that's it
 * [google word2vec](https://code.google.com/archive/p/word2vec/)
 * [Command-line JSON processor](https://github.com/stedolan/jq)
 
+### real-time streaming search
+* [awesome-streaming](https://github.com/manuzhang/awesome-streaming)
+* [jet.hazelcast](https://jet.hazelcast.org/introduction/)
+* [@rwalk straw](https://github.com/rwalk/straw)
+* [@rwalk blog post on straw](http://blog.ryanwalker.us/2015/11/building-streaming-search-platform.html)
+* [luwak](https://github.com/flaxsearch/luwak)
+* [real-time-full-text-search-with-luwak-and-samza](https://www.confluent.io/blog/real-time-full-text-search-with-luwak-and-samza/)
+
 ### Machine Learning
 * [CS 229 Machine Learning](http://cs229.stanford.edu/projects2013.html)
 * [Exploring LSTMS](http://blog.echen.me/2017/05/30/exploring-lstms/?imm_mid=0f2ce7&cmp=em-data-na-na-newsltr_20170614)
