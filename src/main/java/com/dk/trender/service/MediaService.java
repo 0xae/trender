@@ -26,12 +26,12 @@ public class MediaService extends AbstractDAO<PostMedia> {
 
 	public List<PostMedia> getRecentPostMedia(LocalDateTime since, 
 											  String type, 
-											  String postFid, 
+											  String ref, 
 											  int offset) {
 		final String sql = 
 			"from PostMedia " +
 			"where (:type='*' or type=:type) " +
-			"and (:postFid='everybody' or post_id=(from Post where facebook_id=:postFid)) " +
+			"and (:postFid='everybody' or post_id=(from Post where ref=:postFid)) " +
 			"and time > to_timestamp(:since, 'YYYY-MM-dd HH24:MI:ss') " +
 			"order by time ASC ";
 
@@ -39,13 +39,13 @@ public class MediaService extends AbstractDAO<PostMedia> {
 				   .createQuery(sql, PostMedia.class)
 				   .setParameter("type", type)
 				   .setParameter("since", forPattern("YYYY-MM-dd HH:mm:ss").print(since))
-				   .setParameter("postFid", postFid)
+				   .setParameter("postFid", ref)
 				   .setMaxResults(30)
 				   .setFirstResult(offset)
 				   .getResultList();
     }
 
-	public int getPostMediaCount(String postFid, String type) {	
+	public int getPostMediaCount(String postFid, String type) {
 		final String sql = 
 			"select count(1) as totalItems from PostMedia "+
 			"where (:type='*' or type=:type) "+
@@ -58,7 +58,7 @@ public class MediaService extends AbstractDAO<PostMedia> {
 				   .getFirstResult();
     }
 
-	public List<PostMedia> getAllPostMedia(long postId, String type) {	
+	public List<PostMedia> getAllPostMedia(long postId, String type) {
 		final String sql = 
 			"from PostMedia "+
 			"where post_id=:postId "+

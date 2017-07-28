@@ -60,23 +60,20 @@ public class Post {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
 
+	@Column(name="blob")
+	@ColumnTransformer(write="?::jsonb")
+	private String blob;	
+
 	@NotEmpty
 	@Column(name="description", nullable=false)
 	private String description;
 
-	@NotEmpty
 	@Column(name="picture", nullable=false)
 	private String picture;
 
 	@NotEmpty
 	@Column(name="timming", nullable=false, updatable=false)
 	private String timming;
-
-	@Column(name="profile_id", nullable=false, updatable=false)
-	private long profileId;
-
-	@Column(name="cover_html", updatable=false)
-	private String coverHtml;
 
 	@Column(name="source", updatable=false)
 	private String source;	
@@ -89,33 +86,11 @@ public class Post {
 
 	@NotEmpty
 	@Column(name="facebook_id", unique=true, updatable=false)
-	private String facebookId;
-
-	@Column(name="listing_id", updatable=false)
-	private long listingId;
-
-	@Column(name="blob")
-	@ColumnTransformer(write="?::jsonb")
-	private String blob;	
+	private String ref;
 
 	@NotEmpty
-	@OneOf({"event", "post"})
 	@Column(name="type", nullable=false, updatable=false)
 	private String type;
-
-//	@Column(name="tags", nullable=false, updatable=false)
-//    @Convert(converter = ArrayToListConverter.class)
-//	private List<String> tags;	
-//
-//	@JsonProperty
-//	public void setTags(List<String> tags) {
-//		this.tags = tags;
-//	}
-//
-//	@JsonProperty
-//	public List<String> getTags() {
-//		return tags;
-//	}
 
 	@Valid
 	@NotNull
@@ -126,6 +101,12 @@ public class Post {
 	@NotNull
 	@Embedded
 	private PostLink postLink;
+
+	@Column(name="profile_id", nullable=false, updatable=false)
+	private long profileId;
+
+	@Column(name="listing_id", updatable=false)
+	private long listingId;	
 
 	@ManyToOne
 	@JoinColumn(name="listing_id", insertable=false, updatable=false, foreignKey=@ForeignKey(name="listing_id_fkey"))
@@ -138,12 +119,12 @@ public class Post {
 	public Post() {
 		// TODO
 	}
-	
+
 	@JsonProperty
 	public void setSource(String source) {
 		this.source = source;
 	}
-	
+
 	@JsonProperty
 	public String getSource() {
 		return source;
@@ -210,16 +191,6 @@ public class Post {
 	}
 
 	@JsonProperty
-	public void setCoverHtml(String coverHtml) {
-		this.coverHtml = coverHtml;
-	}
-
-	@JsonProperty
-	public String getCoverHtml() {
-		return coverHtml;
-	}
-
-	@JsonProperty
 	public long getProfileId() {
 		return profileId;
 	}
@@ -255,13 +226,13 @@ public class Post {
 	}
 
 	@JsonProperty
-	public String getFacebookId() {
-		return facebookId;
+	public String getRef() {
+		return ref;
 	}
 
 	@JsonProperty
-	public void setFacebookId(String facebookId) {
-		this.facebookId = facebookId;
+	public void setRef(String ref) {
+		this.ref = ref;
 	}
 
 	@JsonProperty

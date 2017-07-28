@@ -59,7 +59,7 @@ public class PostMedia {
 
 	@NotEmpty
 	@Column(name="ref", nullable=false, updatable=false)
-	private String mediaRef;
+	private String ref;
 
 	@ManyToOne
 	@JoinColumn(name="post_id", insertable=false, 
@@ -114,13 +114,13 @@ public class PostMedia {
 	}
 
 	@JsonProperty
-	public void setMediaRef(String mediaId) {
-		this.mediaRef = mediaId;
+	public void setRef(String ref) {
+		this.ref = ref;
 	}
 
 	@JsonProperty
-	public String getMediaRef() {
-		return mediaRef;
+	public String getRef() {
+		return ref;
 	}
 
 	@JsonProperty
@@ -195,8 +195,6 @@ public class PostMedia {
 	
 	@JsonProperty
 	public String getTimeFmt() {
-//		return forPattern("YYYY-MM-ddTHH:mm:ss")
-//			  .print(time);
 		return time.toString();
 	}
 

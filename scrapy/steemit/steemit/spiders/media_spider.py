@@ -24,7 +24,7 @@ class MediaSpider(scrapy.Spider):
         post = response.meta['item']
 
         for obj in media:
-            obj["_fid"] = post['fId']
+            obj["post_ref"] = post['ref']
             yield obj
 
     def _get_video(self, url):
@@ -36,7 +36,7 @@ class MediaSpider(scrapy.Spider):
             "type": vtype,
             "data": data,
             "source": "https://steemit.com",
-            "mediaRef": md5(url).hexdigest(),
+            "ref": md5(url).hexdigest(),
             "postId": 0,
             "title": "youtube-video",
             "image_urls": [url],
@@ -54,7 +54,7 @@ class MediaSpider(scrapy.Spider):
             "title": "image",
             "source": "https://steemit.com",
             "data": data,
-            "mediaRef": md5(url).hexdigest(),
+            "ref": md5(url).hexdigest(),
             "image_urls": [url]
         }
         return obj

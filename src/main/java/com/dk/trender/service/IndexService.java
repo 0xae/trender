@@ -34,6 +34,7 @@ public class IndexService {
 		Queue<Set<IndexItem>> queue = Optional
 									  .ofNullable(map.get(indexName))
 									  .orElse(new ConcurrentLinkedQueue<>());
+
 		queue.offer(set);		
 		map.put(indexName, queue);
 	}
@@ -54,7 +55,7 @@ public class IndexService {
 	}
 
 	private boolean canBeIndexed(IndexItem item) {
-		final String fId = item.getfId();
-		return mediaService.getPostMediaCount(fId, "*") < MAX_MEDIA_COUNT;
+		final String ref = item.getRef();
+		return mediaService.getPostMediaCount(ref, "*") < MAX_MEDIA_COUNT;
 	}
 }

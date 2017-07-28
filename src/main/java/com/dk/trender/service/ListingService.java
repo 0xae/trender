@@ -12,9 +12,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.exception.ConstraintViolationException;
 import org.joda.time.LocalDateTime;
 
+import com.dk.trender.api.PostRequest.ListingDetails;
 import com.dk.trender.core.Listing;
 import com.dk.trender.core.Post;
-import com.dk.trender.core.PostRequest.ListingDetails;
 
 import io.dropwizard.hibernate.AbstractDAO;
 

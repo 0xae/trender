@@ -1,7 +1,9 @@
-package com.dk.trender.core;
+package com.dk.trender.api;
 
 import javax.validation.constraints.NotNull;
 
+import com.dk.trender.core.Post;
+import com.dk.trender.core.Profile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PostRequest {
@@ -10,19 +12,19 @@ public class PostRequest {
 
 	@NotNull
 	private Profile profile;
-	
+
 	@NotNull
 	private ListingDetails listing;
 
 	public PostRequest() {
 		// TODO
 	}
-	
+
 	@JsonProperty
 	public void setListing(ListingDetails listing) {
 		this.listing = listing;
 	}
-	
+
 	@JsonProperty
 	public ListingDetails getListing() {
 		return listing;
@@ -47,7 +49,7 @@ public class PostRequest {
 	public void setProfile(Profile profile) {
 		this.profile = profile;
 	}
-	
+
 	public static class ListingDetails {
 		private long id;
 		private String name;

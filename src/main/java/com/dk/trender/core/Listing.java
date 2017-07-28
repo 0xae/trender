@@ -124,7 +124,7 @@ public class Listing {
 	public LocalDateTime getLastActivity() {
 		return lastActivity;
 	}
-	
+
 	@JsonProperty
 	public void setLastUpdate(LocalDateTime lastUpdate) {
 		this.lastUpdate = lastUpdate;

@@ -17,10 +17,10 @@ import javax.ws.rs.core.MediaType;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDateTime;
 
+import com.dk.trender.api.PostRequest;
 import com.dk.trender.core.IndexItem;
 import com.dk.trender.core.Post;
 import com.dk.trender.core.PostMedia;
-import com.dk.trender.core.PostRequest;
 import com.dk.trender.service.IndexService;
 import com.dk.trender.service.ListingService;
 import com.dk.trender.service.ListingService.ListRank;
@@ -64,7 +64,6 @@ public class ApiResource {
 		} else {
 			time = new LocalDateTime().minusMinutes(5);
 		}
-
 		return postService.findPostsNewerThan(time, limit, offset.or(0), sortOrder.or("asc"));
 	}
 
@@ -96,26 +95,24 @@ public class ApiResource {
 
 	@POST
 	@UnitOfWork
-	@Path("/media/post")
-	public PostMedia addPostMedia(@Valid PostMedia request,
-								  @QueryParam("fid") @NotNull String fId) {
-		return postService.addPostMedia(request, fId);
+	@Path("/media/post/{ref}")
+	public PostMedia addPostMedia(@PathParam("ref") @NotEmpty String ref,
+								  @Valid PostMedia request) {
+		return postService.addPostMedia(request, ref);
 	}
 
 	@GET
 	@UnitOfWork
 	@Path("/media/recent")
-	public List<PostMedia> getMostRecent(@QueryParam("fid") @NotNull String fId,
+	public List<PostMedia> getMostRecent(@QueryParam("ref") @NotNull String ref,
 										 @QueryParam("since") Optional<String> since,
 										 @QueryParam("type") Optional<String> type,
 										 @QueryParam("o") Optional<Integer> offset) {
 		LocalDateTime sinceDate = new LocalDateTime().minusHours(24);
-
 		if (since.isPresent() && !since.get().equals("")) {
 			sinceDate = new LocalDateTime(since.get().replace(' ', 'T'));
 		}
-
-		return postService.getRecentPostMedia(sinceDate, type.or("*"), fId, offset.or(0));
+		return postService.getRecentPostMedia(sinceDate, type.or("*"), ref, offset.or(0));
 	}
 
 	@GET
@@ -123,20 +120,20 @@ public class ApiResource {
 	@Path("/media/index/stats")
 	public Map<String, Integer> getStats() {
 		return indexService.stats();
-	}	
+	}
 
 	@GET
 	@UnitOfWork
 	@Path("/media/index/{name}")
-	public List<IndexItem> getPostsInIndex(@PathParam("name") String indexName) {
+	public List<IndexItem> getPostsInIndex(@PathParam("name") @NotEmpty String indexName) {
 		return indexService.retrieveIndex(indexName);
 	}
-	
+
 	@POST
 	@UnitOfWork
 	@Path("/media/index/{name}")
-	public void indexMedia(@PathParam("name") String indexName,
-						   @NotEmpty List<IndexItem> urls) {
+	public void indexMedia(@PathParam("name") @NotEmpty String indexName,
+						   @NotEmpty @Valid List<IndexItem> urls) {
 		indexService.addToIndex(indexName, urls);
 	}
 }

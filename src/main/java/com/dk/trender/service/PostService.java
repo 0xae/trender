@@ -10,11 +10,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.exception.ConstraintViolationException;
 import org.joda.time.LocalDateTime;
 
+import com.dk.trender.api.PostRequest;
+import com.dk.trender.api.PostRequest.ListingDetails;
 import com.dk.trender.core.Listing;
 import com.dk.trender.core.Post;
 import com.dk.trender.core.PostMedia;
-import com.dk.trender.core.PostRequest;
-import com.dk.trender.core.PostRequest.ListingDetails;
 import com.dk.trender.core.Profile;
 
 import io.dropwizard.hibernate.AbstractDAO;
@@ -40,7 +40,7 @@ public class PostService extends AbstractDAO<Post> {
     }
 
     public PostMedia addPostMedia(PostMedia media, String fid) {
-    	final Post p = findByFacebookId(fid);
+    	final Post p = findByRef(fid);
     	media.setListingId(p.getListingId());
     	return postMediaService.addPostMedia(p, media);
     }
@@ -49,8 +49,8 @@ public class PostService extends AbstractDAO<Post> {
     	return postMediaService.getAllPostMedia(postId, type);
     }
 
-    public List<PostMedia> getRecentPostMedia(LocalDateTime since, String type, String postFid, int offset) {    	
-    	return postMediaService.getRecentPostMedia(since, type, postFid, offset);
+    public List<PostMedia> getRecentPostMedia(LocalDateTime since, String type, String ref, int offset) {    	
+    	return postMediaService.getRecentPostMedia(since, type, ref, offset);
     }
 
     /**
@@ -120,7 +120,7 @@ public class PostService extends AbstractDAO<Post> {
     	return p;
     }
 
-	public Post findByFacebookId(final String facebookId) {
+	public Post findByRef(final String facebookId) {
 		return (Post) currentSession()
 					  .getNamedQuery("post.findByFacebook")
 				      .setParameter("facebookId", facebookId)
@@ -167,7 +167,7 @@ public class PostService extends AbstractDAO<Post> {
 	 * @return
 	 */
 	private Post updatePostActivity(Post newPost) {
-		final Post update = findByFacebookId(newPost.getFacebookId());
+		final Post update = findByRef(newPost.getRef());
 		final long newLikes = newPost.getPostReaction().getCountLikes();
 		final long oldLikes = update.getPostReaction().getCountLikes();
 
@@ -186,5 +186,4 @@ public class PostService extends AbstractDAO<Post> {
 
 		return update;
 	}
-
 }

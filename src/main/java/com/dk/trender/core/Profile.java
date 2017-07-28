@@ -79,12 +79,12 @@ public class Profile {
 	public Profile() {
 		// TODO
 	}
-	
+
 	@JsonProperty
 	public void setListingId(long listingId) {
 		this.listingId = listingId;
 	}
-	
+
 	@JsonProperty
 	public long getListingId() {
 		return listingId;
@@ -100,7 +100,7 @@ public class Profile {
 	public void setLikes(int count) {
 		this.likes = count;
 	}
-	
+
 	@JsonProperty
 	public int getLikes() {
 		return likes;
@@ -114,7 +114,7 @@ public class Profile {
 	public long getId() {
 		return id;
 	}
-	
+
 	@JsonProperty
 	public String getTitle() {
 		return title;

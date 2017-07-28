@@ -61,6 +61,7 @@ class PostSpider(scrapy.Spider):
             #                 '.PostSummary__footer ' +
             #                 '.VotesAndComments__comments a::text').extract()
 
+            # FIXME: handle this correctly
             date = parser.parse(post_time)
             timestamp = date.strftime('%Y-%m-%dT%H:%M:%S')
 
@@ -78,7 +79,7 @@ class PostSpider(scrapy.Spider):
                 "type": "post",
                 "picture": image,
                 "source": "https://steemit.com",
-                "facebookId": md5(post_url).hexdigest(),
+                "ref": md5(post_url).hexdigest()
             }
 
             post_req = {

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class IndexItem {
 	@NotEmpty
-	private String fId;
+	private String ref;
 
 	@NotNull
 	private Long postId;
@@ -20,39 +20,39 @@ public class IndexItem {
 	private Set<String> links;
 	
 	@JsonProperty
-	public String getfId() {
-		return fId;
-	}
-	
-	@JsonProperty
-	public void setfId(String fId) {
-		this.fId = fId;
-	}
-	
-	@JsonProperty
-	public long getPostId() {
-		return postId;
+	public void setRef(String r) {
+		this.ref = r;
 	}
 
+	@JsonProperty
+	public String getRef() {
+		return ref;
+	}
+	
 	@JsonProperty
 	public void setPostId(long postId) {
 		this.postId = postId;
 	}
 
 	@JsonProperty
-	public Set<String> getLinks() {
-		return links;
+	public long getPostId() {
+		return postId;
 	}
 
 	@JsonProperty
 	public void setLinks(Set<String> links) {
 		this.links = links;
 	}
+	
+	@JsonProperty
+	public Set<String> getLinks() {
+		return links;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		return prime * 1 + ((fId == null) ? 0 : fId.hashCode());
+		return prime * 1 + ((ref == null) ? 0 : ref.hashCode());
 	}
 
 	@Override
@@ -61,6 +61,6 @@ public class IndexItem {
 			return true;
 		if (obj == null || getClass() != obj.getClass())
 			return false;
-		return Objects.equals(this.fId, ((IndexItem) obj).fId);
+		return Objects.equals(this.ref, ((IndexItem) obj).ref);
 	}
 }

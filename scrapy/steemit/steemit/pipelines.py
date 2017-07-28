@@ -11,9 +11,10 @@ import scrapy
 class MediaPipeline(object):
     def process_item(self, item, spider):
         item['data'] = dumps(item['data'])
-        url = 'http://127.0.0.1:5000/api/media/post?fid=%s' % (item['_fid'], )
+        url = 'http://127.0.0.1:5000/api/media/post/%s' % (
+                item['post_ref'], )
 
-        del item['_fid']
+        del item['post_ref']
         del item['image_urls']
 
         data = dumps(item)
