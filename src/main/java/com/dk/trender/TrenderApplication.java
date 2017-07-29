@@ -50,8 +50,7 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 		cors.setInitParameter(CrossOriginFilter.CHAIN_PREFLIGHT_PARAM, Boolean.FALSE.toString());
 
-		PostService postService = new PostService();
-
+		final PostService postService = new PostService();
 		env.jersey().register(new ApiResource(postService));
 	}
 

@@ -15,17 +15,18 @@ import com.google.common.base.Objects;
  */
 public class Post {	
     private @NotEmpty String id;
-	private @NotEmpty String description;
+	private String description;
 	private String picture;
 	private @NotNull LocalDateTime timestamp;
 	private @NotEmpty String type;
 	private @NotEmpty String authorName;
 	private String authorPicture;
-	private @NotEmpty String source;	
+	private @NotEmpty String source;
 	private @NotEmpty String link;
-	private String data = "{}";	
+	private @NotNull String data = "{}";
 
 	public Post() {
+		// TODO
 	}
 
 	@JsonProperty
@@ -45,8 +46,9 @@ public class Post {
 	}
 
 	@JsonProperty
-	public void setDescription(String description) {
+	public Post setDescription(String description) {
 		this.description = description;
+		return this;
 	}
 
 	@JsonProperty
@@ -61,19 +63,21 @@ public class Post {
 	}
 
 	@JsonProperty
-	public void setTimestamp(LocalDateTime timestamp) {
+	public Post setTimestamp(LocalDateTime timestamp) {
 		this.timestamp = timestamp;
+		return this;
 	}
 
 	@JsonProperty
-	public void setTimestamp(String timestamp) {
+	public Post setTimestamp(String timestamp) {
 		this.timestamp = new LocalDateTime(timestamp);
+		return this;
 	}
 
 	@JsonProperty
 	public LocalDateTime getTimestamp() {
 		return timestamp;
-	}	
+	}
 
 	@JsonProperty
 	public String getType() {
@@ -81,8 +85,9 @@ public class Post {
 	}
 
 	@JsonProperty
-	public void setType(String type) {
+	public Post setType(String type) {
 		this.type = type;
+		return this;
 	}
 
 	@JsonProperty
