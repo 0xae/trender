@@ -1,258 +1,42 @@
 package com.dk.trender.core;
 
-import javax.persistence.Entity;
-
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Converter;
-import javax.persistence.Converts;
-import javax.persistence.Embedded;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.persistence.ForeignKey;
 
-import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDateTime;
 
-import com.dk.trender.core.mapper.ArrayToListConverter;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import io.dropwizard.validation.OneOf;
+import com.google.common.base.Objects;
 
 /**
  * 
  * @author ayrton
  * @date 2017-03-31 14:11:42
  */
-@Entity
-@Table(name="z_post")
-@NamedQueries({
-	@NamedQuery(
-	    name="post.findAll",
-	    query="from Post"
-	),
-	@NamedQuery(
-	    name="post.updateLike",
-	    query="update Post p set count_likes=:likes where id = :id"
-	),
-	@NamedQuery(
-	    name="post.updatePicture",
-	    query="update Post p set picture=:pic where facebook_id = :facebook_id"
-	),
-	@NamedQuery(
-	    name="post.findByFacebook",
-	    query="from Post where facebook_id = :facebookId"
-	)
-})
-public class Post {
-	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long id;
-
-	@Column(name="blob")
-	@ColumnTransformer(write="?::jsonb")
-	private String blob;	
-
-	@NotEmpty
-	@Column(name="description", nullable=false)
-	private String description;
-
-	@Column(name="picture", nullable=false)
+public class Post {	
+    private @NotEmpty String id;
+	private @NotEmpty String description;
 	private String picture;
-
-	@NotEmpty
-	@Column(name="timming", nullable=false, updatable=false)
-	private String timming;
-
-	@Column(name="source", updatable=false)
-	private String source;	
-
-	@Column(name="time", updatable=false, nullable=false)
-	private LocalDateTime timestamp;
-
-	@Column(name="indexed_at", updatable=false)
-	private LocalDateTime indexedAt;
-
-	@NotEmpty
-	@Column(name="facebook_id", unique=true, updatable=false)
-	private String ref;
-
-	@NotEmpty
-	@Column(name="type", nullable=false, updatable=false)
-	private String type;
-
-	@Valid
-	@NotNull
-	@Embedded
-	private PostReaction postReaction;
-
-	@Valid
-	@NotNull
-	@Embedded
-	private PostLink postLink;
-
-	@Column(name="profile_id", nullable=false, updatable=false)
-	private long profileId;
-
-	@Column(name="listing_id", updatable=false)
-	private long listingId;	
-
-	@ManyToOne
-	@JoinColumn(name="listing_id", insertable=false, updatable=false, foreignKey=@ForeignKey(name="listing_id_fkey"))
-	private Listing listing;
-
-	@ManyToOne
-	@JoinColumn(name="profile_id", insertable=false, updatable=false, foreignKey=@ForeignKey(name="profile_id_fkey"))
-	private Profile author;
+	private @NotNull LocalDateTime timestamp;
+	private @NotEmpty String type;
+	private @NotEmpty String authorName;
+	private String authorPicture;
+	private @NotEmpty String source;	
+	private @NotEmpty String link;
+	private String data = "{}";	
 
 	public Post() {
-		// TODO
 	}
 
 	@JsonProperty
-	public void setSource(String source) {
-		this.source = source;
-	}
-
-	@JsonProperty
-	public String getSource() {
-		return source;
-	}
-
-	@JsonProperty
-	public void setBlob(String blob) {
-		this.blob = blob;
-	}
-
-	@JsonProperty
-	public String getBlob() {
-		return blob;
-	}
-
-	@JsonProperty
-	public void setPicture(String picture) {
-		this.picture = picture;
-	}
-	
-	@JsonProperty
-	public String getPicture() {
-		return picture;
-	}	
-
-	@JsonProperty
-	public void setListing(Listing listing) {
-		this.listing = listing;
-	}
-
-	@JsonProperty
-	public Listing getListing() {
-		return listing;
-	}
-
-	@JsonProperty
-	public void setAuthor(Profile profile) {
-		this.author = profile;
-	}
-
-	@JsonProperty
-	public Profile getAuthor() {
-		return author;
-	}
-
-	@JsonProperty
-	public void setIndexedAt(LocalDateTime indexedAt) {
-		this.indexedAt = indexedAt;
-	}
-
-	@JsonProperty
-	public LocalDateTime getIndexedAt() {
-		return indexedAt;
-	}
-
-	@JsonProperty
-	public void setTimming(String timming) {
-		this.timming = timming;
-	}
-
-	@JsonProperty
-	public String getTimming() {
-		return timming;
-	}
-
-	@JsonProperty
-	public long getProfileId() {
-		return profileId;
-	}
-
-	@JsonProperty
-	public void setProfileId(long profileId) {
-		this.profileId = profileId;
-	}
-
-	@JsonProperty
-	public PostLink getPostLink() {
-		return postLink;
-	}
-
-	@JsonProperty
-	public void setPostLink(PostLink postLink) {
-		this.postLink = postLink;
-	}
-
-	@JsonProperty
-	public long getListingId() {
-		return listingId;
-	}
-
-	@JsonProperty
-	public String getTimestampFmt() {
-		return timestamp.toString();
-	}
-
-	@JsonProperty
-	public void setListingId(long listingId) {
-		this.listingId = listingId;
-	}
-
-	@JsonProperty
-	public String getRef() {
-		return ref;
-	}
-
-	@JsonProperty
-	public void setRef(String ref) {
-		this.ref = ref;
-	}
-
-	@JsonProperty
-	public void setPostReaction(PostReaction postReaction) {
-		this.postReaction = postReaction;
-	}
-
-	@JsonProperty
-	public PostReaction getPostReaction() {
-		return postReaction;
-	}
-
-	@JsonProperty
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
 	@JsonProperty
-	public void setId(long id) {
+	public Post setId(String id) {
 		this.id = id;
+		return this;
 	}
 
 	@JsonProperty
@@ -266,8 +50,14 @@ public class Post {
 	}
 
 	@JsonProperty
-	public LocalDateTime getTimestamp() {
-		return timestamp;
+	public Post setPicture(String picture) {
+		this.picture = picture;
+		return this;
+	}
+
+	@JsonProperty
+	public String getPicture() {
+		return picture;
 	}
 
 	@JsonProperty
@@ -281,6 +71,11 @@ public class Post {
 	}
 
 	@JsonProperty
+	public LocalDateTime getTimestamp() {
+		return timestamp;
+	}	
+
+	@JsonProperty
 	public String getType() {
 		return type;
 	}
@@ -288,5 +83,85 @@ public class Post {
 	@JsonProperty
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	@JsonProperty
+	public Post setAuthorName(String name) {
+		this.authorName = name;
+		return this;
+	}
+
+	@JsonProperty
+	public String getAuthorName() {
+		return authorName;
+	}
+
+	@JsonProperty
+	public Post setAuthorPicture(String pic) {
+		this.authorPicture = pic;
+		return this;
+	}
+
+	@JsonProperty
+	public String getAuthorPicture() {
+		return authorPicture;
+	}	
+	
+	@JsonProperty
+	public Post setSource(String source) {
+		this.source = source;
+		return this;
+	}
+
+	@JsonProperty
+	public String getSource() {
+		return source;
+	}
+
+	@JsonProperty
+	public Post setLink(String link) {
+		this.link = link;
+		return this;
+	}
+
+	@JsonProperty
+	public String getLink() {
+		return link;
+	}
+
+	@JsonProperty
+	public Post setData(String blob) {
+		this.data = blob;
+		return this;
+	}
+
+	@JsonProperty
+	public String getData() {
+		return data;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	/**
+	 * XXX: what about an update?
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj){
+			return true;			
+		}
+
+		if (obj == null || getClass() != obj.getClass()){
+			return false;
+		}
+
+		final Post other = (Post) obj;
+		return Objects.equal(this.id, other.id);
 	}
 }

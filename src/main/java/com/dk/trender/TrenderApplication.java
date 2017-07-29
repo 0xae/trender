@@ -6,38 +6,24 @@ import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 
 import org.eclipse.jetty.servlets.CrossOriginFilter;
-import org.hibernate.SessionFactory;
 
-import com.dk.trender.core.Listing;
-import com.dk.trender.core.Post;
-import com.dk.trender.core.PostMedia;
-import com.dk.trender.core.Profile;
-import com.dk.trender.exceptions.ConstraintViolationExceptionMapper;
-import com.dk.trender.exceptions.NoResultExceptionExceptionMapper;
 import com.dk.trender.resources.ApiResource;
-import com.dk.trender.service.IndexService;
-import com.dk.trender.service.ListingService;
-import com.dk.trender.service.MediaService;
 import com.dk.trender.service.PostService;
-import com.dk.trender.service.ProfileService;
 
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.db.DataSourceFactory;
-import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
+/**
+ * 
+ * @author ayrton
+ * @date 2017-07-29 07:04:53
+ */
 public class TrenderApplication extends Application<TrenderConfiguration> {
-    private final HibernateBundle<TrenderConfiguration> hibernateBundle =
-    		new HibernateBundle<TrenderConfiguration>(Listing.class, Post.class, Profile.class, PostMedia.class) {
-			public DataSourceFactory getDataSourceFactory(TrenderConfiguration configuration) {
-				return configuration.getDatabase();
-			}
-        };
-
 	@Override
 	public void initialize(Bootstrap<TrenderConfiguration> bootstrap) {
 		bootstrap.setConfigurationSourceProvider(
@@ -52,8 +38,6 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 	            return configuration.getDatabase();
 			}
 	    });
-
-		bootstrap.addBundle(hibernateBundle);
 	}
 
 	@Override
@@ -66,15 +50,9 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 		cors.setInitParameter(CrossOriginFilter.CHAIN_PREFLIGHT_PARAM, Boolean.FALSE.toString());
 
-		SessionFactory sessionFactory = hibernateBundle.getSessionFactory();
-		ProfileService profileService = new ProfileService(sessionFactory);
-		ListingService listingService = new ListingService(sessionFactory);
-		MediaService mediaService = new MediaService(sessionFactory);
-		PostService postService = new PostService(sessionFactory, profileService, mediaService, listingService);
+		PostService postService = new PostService();
 
-		env.jersey().register(new ApiResource(postService, new IndexService(mediaService), listingService));
-		env.jersey().register(new NoResultExceptionExceptionMapper(env.metrics()));
-		env.jersey().register(new ConstraintViolationExceptionMapper());
+		env.jersey().register(new ApiResource(postService));
 	}
 
     public static void main(String[] args) throws Exception {

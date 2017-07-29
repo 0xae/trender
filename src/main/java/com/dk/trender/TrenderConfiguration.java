@@ -18,7 +18,7 @@ import io.dropwizard.db.DataSourceFactory;
 public class TrenderConfiguration extends Configuration {
     @NotEmpty
 	private String authorizationPrefix;
-	    
+
 	@JsonProperty
 	public String getAuthorizationPrefix() {
 		return authorizationPrefix;
