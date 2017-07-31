@@ -27,6 +27,7 @@ class BBCSpider(scrapy.Spider):
             try:
                 post = self.parse_article(art, response)
                 queue.append(post)
+                yield post
                 # print dumps(post, indent=4)
             except AttributeError:
                 continue
