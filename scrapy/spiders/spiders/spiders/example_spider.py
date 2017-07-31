@@ -4,8 +4,8 @@ import requests
 from hashlib import md5
 
 
-class WikipediaSpider(scrapy.Spider):
-    name = 'wikipedia_posts'
+class BBCSpider(scrapy.Spider):
+    name = 'example_posts'
 
     def start_requests(self):
         r = requests.get('http://127.0.0.1:5000/api/media/index/' + INDEX_NAME)

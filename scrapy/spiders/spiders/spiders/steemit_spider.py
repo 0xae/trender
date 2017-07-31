@@ -3,14 +3,14 @@ import scrapy
 from dateutil import parser
 from hashlib import md5
 from json import dumps
-import grequests as req
 from random import randint
+from ..trender import format_date, create_post
 
 # Default image for pictures withou one
 DEFAULT_IMG = '<uk>'
 
 
-class PostSpider(scrapy.Spider):
+class SteemitSpider(scrapy.Spider):
     name = 'steemit_posts'
 
     def start_requests(self):
@@ -19,15 +19,23 @@ class PostSpider(scrapy.Spider):
 
     def parse(self, response):
         articles = response.css('article')
+        request = []
 
         for art in articles:
             image_node = art.css('.PostSummary__image::attr("style")') \
                         .re(r'\((.*)\)')
             image = image_node[0] if image_node else DEFAULT_IMG
 
-            post_url = art.css(
-                    '.PostSummary__header h3.entry-title a::attr("href")'
-                   )[1].extract()
+            try:
+                post_url = art.css(
+                        '.PostSummary__header h3.entry-title a::attr("href")'
+                       )[1].extract()
+            except IndexError:
+                print art.extract()
+                print art.css(
+                        '.PostSummary__header h3.entry-title a::attr("href")'
+                       )
+                raise
 
             post_url = 'https://steemit.com' + art.css(
                     '.PostSummary__header h3.entry-title a::attr("href")'
@@ -54,32 +62,51 @@ class PostSpider(scrapy.Spider):
                             '.PostSummary__footer ' +
                             '.VotesAndComments__votes::text').extract_first()
 
-            post_tag = art.css('.PostSummary__time_author_category ' +
-                               '.vcard strong a::text').extract_first()
+            post_tags = art.css('.PostSummary__time_author_category ' +
+                                '.vcard strong a::text').extract()
+
+            post_tags.append('steemit')
 
             post_comments = art.css(
                             '.PostSummary__footer ' +
-                            '.VotesAndComments__comments a::text').extract()
+                            '.VotesAndComments__comments a::text'
+                            ).extract_first()
 
-            date = parser.parse(post_time)
-            timestamp = date.strftime('%Y-%m-%dT%H:%M:%S')
+            post_payout = "".join(
+                             art.css('.Voting .FormattedAsset span::text')
+                            .extract())
+
+            author_reputation = art.css('.author .Reputation::text') \
+                .extract_first()
+
+            timestamp = format_date(parser.parse(post_time))
+
+            post_data = {
+                "comments": int(post_comments if post_comments.strip() else 0),
+                "votes": int(post_votes if post_votes.strip() else 0),
+                "payout": post_payout,
+                "author_reputation": author_reputation,
+                "author_link":  'https://steemit.com'+post_author_link
+            }
 
             post = {
                 "id": md5(post_url).hexdigest(),
                 "description": post_description,
-                "type": "post",
+                "type": "steemit-post",
                 "authorName": post_author,
                 "source": "steemit.com",
                 "link": post_url,
-                "location" : "worlwide",
+                "location": "worlwide",
                 "timestamp": timestamp,
-                "picture": image,
-                "data" : postData
-                "category": [post_tag]
+                "picture": image if image else DEFAULT_IMG,
+                "data": dumps(post_data),
+                "category": post_tags
             }
 
-            self._create_post(post)
-            yield post_req
+            request.append(post)
+            yield post
+
+        create_post(request)
 
         links = response.css('ul.Topics a::attr("href")').extract()
         next_page = '/tags'
@@ -90,11 +117,3 @@ class PostSpider(scrapy.Spider):
         if next_page:
             yield response \
                 .follow('https://steemit.com' + next_page, self.parse)
-
-    def _create_post(self, post):
-        url = 'http://127.0.0.1:5000/api/post/new'
-        data = dumps(post)
-        p = req.post(url, data=data,
-                headers={'Content-type': 'application/json'})
-
-        return req.map([p])

@@ -4,27 +4,27 @@ from hashlib import md5
 from json import dumps
 from datetime import datetime
 import grequests as greq
+from scrapy import Selector
 
 INDEX_NAME = 't:twitter'
-NO_PICTURE = 'nopicture.png'
+DEFAULT_IMG = '<uk>'
 
 
 class TwitterSpider(scrapy.Spider):
     name = 'twitter_posts'
 
     def start_requests(self):
-        # data = r.json()
-        # for item in data:
         start_links = [
-            # 'https://twitter.com/XHNews',
-            # 'https://twitter.com/ftrain',
-            # 'https://twitter.com/_gamemix_',
-            # 'https://twitter.com/bobbyclee',
-            # 'https://twitter.com/lopp',
-            # 'https://twitter.com/AyrtonGsZ',
-            # 'https://twitter.com/search?q=bitcoin&src=typd',
-            # 'https://twitter.com/search?q=cryptocurrency&src=typd',
-            # 'https://twitter.com/search?q=news&src=typd',
+            'https://twitter.com/XHNews',
+            'https://twitter.com/ftrain',
+            'https://twitter.com/_gamemix_',
+            'https://twitter.com/bobbyclee',
+            'https://twitter.com/lopp',
+            'https://twitter.com/AyrtonGsZ',
+            'https://twitter.com/nytimes/status/891722728683786240',
+            'https://twitter.com/search?q=bitcoin&src=typd',
+            'https://twitter.com/search?q=cryptocurrency&src=typd',
+            'https://twitter.com/search?q=news&src=typd',
             'https://twitter.com/search?f=news&vertical=default&q=cryptocurrency&src=typd'
         ]
 
@@ -34,14 +34,17 @@ class TwitterSpider(scrapy.Spider):
 
     def parse(self, response):
         tweets = response.css('.stream-items li.stream-item')
+        ary = []
         for tw in tweets:
-            post_req = self._domToPost(tw)
-            self._createPost(post_req)
-            yield post_req
+            post = self._domToPost(tw)
+            ary.append(post)
+            yield post
 
-    def _createPost(self, post_req):
+        self._createPost(ary)
+
+    def _createPost(self, ary):
         url = 'http://127.0.0.1:5000/api/post/new'
-        data = dumps(post_req)
+        data = dumps(ary)
         p = greq.post(url, data=data,
              headers={'Content-type': 'application/json'})
         greq.map([p])
@@ -49,16 +52,10 @@ class TwitterSpider(scrapy.Spider):
     def _domToPost(self, tw):
         account = tw.css('.content a.account-group')[0]
 
-        author = {
-            "title": account.css('.FullNameGroup .fullname::text')
-            .extract_first(),
-            "link": 'https://twitter.com' + account
-            .css('::attr("href")')
-            .extract_first(),
-            "username": 'tw/' + account.css('::attr("data-user-id")')
-            .extract_first(),
-            "picture": account.css('.avatar::attr("src")').extract_first()
-        }
+        tweet_id = tw.css('::attr("data-item-id")').extract_first()
+
+        tweet_username = tw.css('.content .username b::text') \
+            .extract_first()
 
         post_images = tw.css('.content .AdaptiveMediaOuterContainer ' +
                              'img::attr("src")') \
@@ -72,8 +69,7 @@ class TwitterSpider(scrapy.Spider):
             tw.css('.tweet::attr("data-permalink-path")') \
             .extract_first()
 
-        post_description = tw.css('.tweet-text') \
-            .extract_first()
+        post_description = self.get_tweet_description(tw)
 
         ts = tw.css('.tweet-timestamp ' +
                     'span._timestamp::attr("data-time-ms")') \
@@ -82,18 +78,38 @@ class TwitterSpider(scrapy.Spider):
         post_date = datetime.utcfromtimestamp(long(ts)/1000.0) \
             .strftime('%Y-%m-%dT%H:%M:%S')
 
-        timming = tw.css('.tweet-timestamp::attr("title")') \
+        replies = tw.css('.ProfileTweet-actionCountForPresentation')[0] \
+            .css('::text') \
+            .extract_first()
+        retweet = tw.css('.ProfileTweet-actionCountForPresentation')[1] \
+            .css('::text') \
+            .extract_first()
+        love = tw.css('.ProfileTweet-actionCountForPresentation')[2] \
+            .css('::text') \
             .extract_first()
 
         tweet_data = {
-            "who": author["title"],
+            "who": account.css('.FullNameGroup .fullname::text')
+            .extract_first(),
+            "username": tweet_username,
             "action": "tweet",
-            "replies": 0,
-            "retweets": 0,
-            "love": 0,
+            "replies": int(replies if replies else 0),
+            "retweets": int(retweet if retweet else 0),
+            "love": int(love if love else 0),
             "images": post_images,
-            "videos": post_videos
+            "videos": post_videos,
+            "tweetID": tweet_id
         }
+
+        tw.css('.content .ProfileTweet-actionCountForPresentation::text') \
+            .extract()
+
+        post_image = account.css('.avatar::attr("src")').extract_first()
+
+        post_tags = tw.css('.tweet-text a.twitter-hashtag b::text') \
+            .extract()
+
+        post_tags.append('twitter')
 
         if tw.css('.context .js-retweet-text a').extract_first():
             tweet_data["action"] = "retweet"
@@ -102,28 +118,44 @@ class TwitterSpider(scrapy.Spider):
             tweet_data["who"] = tw.css('.context .tweet-context::text')
 
         post = {
+            "id": md5(post_url).hexdigest(),
             "description": post_description,
-            "blob": dumps(tweet_data),
-            "postLink": {
-                "viewLink": post_url,
-                "commentLink": post_url,
-            },
-            "postReaction": {},
+            "type": "twitter-post",
+            "authorName": account.css('.FullNameGroup .fullname::text')
+            .extract_first(),
+            "authorPicture": account.css('.avatar::attr("src")')
+            .extract_first(),
+            "source": "twitter.com",
+            "link": post_url,
+            "location": "worlwide",
             "timestamp": post_date,
-            "timming": timming,
-            "type": "tweet",
-            "picture": author["picture"],
-            "source": "https://twitter.com",
-            "ref": md5(post_url).hexdigest(),
+            "picture": post_image if post_image else DEFAULT_IMG,
+            "data": dumps(tweet_data),
+            "category": post_tags
         }
 
-        post_req = {
-            "post": post,
-            "profile": author,
-            "listing": {
-                "name": INDEX_NAME
-            }
-        }
+        return post
 
-        return post_req
+    def get_tweet_description(self, node):
+        html = node.css('.tweet-text').extract_first()
 
+        for link in node.css('.tweet-text a'):
+            ltype = link.css('::attr("class")').extract()[0].split()
+            lhtml = link.extract()
+            try:
+                if 'twitter-hashtag' in ltype or 'twitter-cashtag' in ltype:
+                    first = link.css('b::text').extract_first()
+                    hashtag = first if first else link.css('b strong::text').extract_first()
+                    html = html.replace(lhtml, '#'+hashtag)
+                elif 'twitter-timeline-link' in ltype:
+                    html = html.replace(lhtml,
+                                        link.css('::attr("data-expanded-url")')
+                                        .extract_first())
+            except TypeError:
+                continue
+
+        ret = Selector(text=html, type="html") \
+            .css("::text") \
+            .extract_first()
+
+        return ret

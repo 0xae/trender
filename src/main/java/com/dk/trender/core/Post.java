@@ -1,9 +1,14 @@
 package com.dk.trender.core;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
@@ -13,17 +18,20 @@ import com.google.common.base.Objects;
  * @author ayrton
  * @date 2017-03-31 14:11:42
  */
-public class Post {	
+public class Post {
     private @NotEmpty String id;
-	private String description;
-	private String picture;
-	private @NotNull LocalDateTime timestamp;
 	private @NotEmpty String type;
 	private @NotEmpty String authorName;
-	private String authorPicture;
 	private @NotEmpty String source;
 	private @NotEmpty String link;
+	private @NotEmpty String description = "";
+	private @NotEmpty String location = "worldwide";
+	private @NotNull LocalDateTime timestamp;
+
+	private @NotNull String authorPicture = "";
+	private @NotNull String picture = "";
 	private @NotNull String data = "{}";
+	private @NotNull List<String> category = Collections.emptyList();
 
 	public Post() {
 		// TODO
@@ -50,6 +58,16 @@ public class Post {
 		this.description = description;
 		return this;
 	}
+	
+	@JsonProperty
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	
+	@JsonProperty
+	public String getLocation() {
+		return location;
+	}
 
 	@JsonProperty
 	public Post setPicture(String picture) {
@@ -69,8 +87,8 @@ public class Post {
 	}
 
 	@JsonProperty
-	public Post setTimestamp(String timestamp) {
-		this.timestamp = new LocalDateTime(timestamp);
+	public Post setTimestamp(String ts) {
+		this.timestamp = new LocalDateTime(ts.replace(" ", "T"));
 		return this;
 	}
 
@@ -79,6 +97,13 @@ public class Post {
 		return timestamp;
 	}
 
+ 	@JsonProperty
+ 	public String formatTs() {
+		return DateTimeFormat.forPattern("YYY-MM-d HH:mm:ss")
+		.print(timestamp)
+		.replace(' ', 'T');
+ 	}
+	
 	@JsonProperty
 	public String getType() {
 		return type;
@@ -110,7 +135,7 @@ public class Post {
 	@JsonProperty
 	public String getAuthorPicture() {
 		return authorPicture;
-	}	
+	}
 	
 	@JsonProperty
 	public Post setSource(String source) {
@@ -143,6 +168,23 @@ public class Post {
 	@JsonProperty
 	public String getData() {
 		return data;
+	}
+	
+	@JsonProperty
+	public void setCategory(List<String> category) {
+		this.category = category.stream()
+				.map(this::norm)
+				.collect(Collectors.toList());
+	}
+	
+	public String norm(String tag) {
+		return tag.toLowerCase()
+				.trim();
+	}
+
+	@JsonProperty
+	public List<String> getCategory() {
+		return category;
 	}
 
 	@Override

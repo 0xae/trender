@@ -1,5 +1,7 @@
 package com.dk.trender.resources;
 
+import java.util.List;
+
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -7,10 +9,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.dk.trender.core.Post;
 import com.dk.trender.service.PostService;
-
-import io.dropwizard.hibernate.UnitOfWork;
 
 /**
  * 
@@ -28,9 +30,9 @@ public class ApiResource {
 	}
 
 	@POST
-	@UnitOfWork
 	@Path("/post/new")
-	public Post create(@Valid Post request) {
-		return request;
+	public void create(@NotEmpty List<Post> request) {
+		postService.create(request);
 	}
 }
+
