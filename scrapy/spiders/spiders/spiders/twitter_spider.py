@@ -32,13 +32,13 @@ class TwitterSpider(scrapy.Spider):
 
     def parse(self, response):
         tweets = response.css('.stream-items li.stream-item')
-        ary = []
+        queue = []
         for tw in tweets:
             post = self._domToPost(tw)
-            ary.append(post)
+            queue.append(post)
             yield post
 
-        create_post(ary)
+        create_post(queue)
 
     def _domToPost(self, tw):
         account = tw.css('.content a.account-group')[0]

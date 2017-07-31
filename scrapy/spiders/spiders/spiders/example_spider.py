@@ -3,6 +3,7 @@ import scrapy
 import requests
 from hashlib import md5
 
+INDEX_NAME = ''
 
 class BBCSpider(scrapy.Spider):
     name = 'example_posts'

@@ -19,7 +19,7 @@ class SteemitSpider(scrapy.Spider):
 
     def parse(self, response):
         articles = response.css('article')
-        request = []
+        queue = []
 
         for art in articles:
             image_node = art.css('.PostSummary__image::attr("style")') \
@@ -31,11 +31,7 @@ class SteemitSpider(scrapy.Spider):
                         '.PostSummary__header h3.entry-title a::attr("href")'
                        )[1].extract()
             except IndexError:
-                print art.extract()
-                print art.css(
-                        '.PostSummary__header h3.entry-title a::attr("href")'
-                       )
-                raise
+                continue
 
             post_url = 'https://steemit.com' + art.css(
                     '.PostSummary__header h3.entry-title a::attr("href")'
@@ -103,10 +99,10 @@ class SteemitSpider(scrapy.Spider):
                 "category": post_tags
             }
 
-            request.append(post)
+            queue.append(post)
             yield post
 
-        create_post(request)
+        create_post(queue)
 
         links = response.css('ul.Topics a::attr("href")').extract()
         next_page = '/tags'

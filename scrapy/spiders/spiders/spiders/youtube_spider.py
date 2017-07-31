@@ -33,8 +33,13 @@ class YoutubeSpider(scrapy.Spider):
 
     def parse(self, response):
         videos = response.css('#results ol.item-section li div.yt-lockup')
-        request = map(self.get_youtube_post, videos)
-        create_post(request)
+        queue = []
+        for v in videos:
+            post = self.get_youtube_post(v)
+            queue.append(post)
+            yield post
+
+        create_post(queue)
 
     def get_youtube_post(self, node):
         video_id = node.css('::attr("data-context-item-id")') \
