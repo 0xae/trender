@@ -3,10 +3,9 @@ import scrapy
 from hashlib import md5
 from json import dumps
 from datetime import datetime
-import grequests as greq
 from scrapy import Selector
+from ..trender import format_date, create_post
 
-INDEX_NAME = 't:twitter'
 DEFAULT_IMG = '<uk>'
 
 
@@ -39,14 +38,7 @@ class TwitterSpider(scrapy.Spider):
             ary.append(post)
             yield post
 
-        self._createPost(ary)
-
-    def _createPost(self, ary):
-        url = 'http://127.0.0.1:5000/api/post/new'
-        data = dumps(ary)
-        p = greq.post(url, data=data,
-             headers={'Content-type': 'application/json'})
-        greq.map([p])
+        create_post(ary)
 
     def _domToPost(self, tw):
         account = tw.css('.content a.account-group')[0]
@@ -74,8 +66,7 @@ class TwitterSpider(scrapy.Spider):
                     'span._timestamp::attr("data-time-ms")') \
             .extract_first()
 
-        post_date = datetime.utcfromtimestamp(long(ts)/1000.0) \
-            .strftime('%Y-%m-%dT%H:%M:%S')
+        post_date = format_date(datetime.utcfromtimestamp(long(ts)/1000.0))
 
         replies = tw.css('.ProfileTweet-actionCountForPresentation')[0] \
             .css('::text') \
