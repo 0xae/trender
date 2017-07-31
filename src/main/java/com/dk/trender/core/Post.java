@@ -176,11 +176,6 @@ public class Post {
 				.map(this::norm)
 				.collect(Collectors.toList());
 	}
-	
-	public String norm(String tag) {
-		return tag.toLowerCase()
-				.trim();
-	}
 
 	@JsonProperty
 	public List<String> getCategory() {
@@ -211,4 +206,9 @@ public class Post {
 		final Post other = (Post) obj;
 		return Objects.equal(this.id, other.id);
 	}
+	
+	private String norm(String tag) {
+		return tag.toLowerCase()
+				.trim();
+	}	
 }
