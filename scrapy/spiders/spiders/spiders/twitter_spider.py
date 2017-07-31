@@ -21,7 +21,6 @@ class TwitterSpider(scrapy.Spider):
             'https://twitter.com/bobbyclee',
             'https://twitter.com/lopp',
             'https://twitter.com/AyrtonGsZ',
-            'https://twitter.com/nytimes/status/891722728683786240',
             'https://twitter.com/search?q=bitcoin&src=typd',
             'https://twitter.com/search?q=cryptocurrency&src=typd',
             'https://twitter.com/search?q=news&src=typd',
