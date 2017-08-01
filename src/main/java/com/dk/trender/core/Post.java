@@ -103,7 +103,7 @@ public class Post {
 		.print(timestamp)
 		.replace(' ', 'T');
  	}
-	
+
 	@JsonProperty
 	public String getType() {
 		return type;
@@ -136,7 +136,7 @@ public class Post {
 	public String getAuthorPicture() {
 		return authorPicture;
 	}
-	
+
 	@JsonProperty
 	public Post setSource(String source) {
 		this.source = source;
@@ -169,7 +169,7 @@ public class Post {
 	public String getData() {
 		return data;
 	}
-	
+
 	@JsonProperty
 	public void setCategory(List<String> category) {
 		this.category = category.stream()
@@ -206,7 +206,7 @@ public class Post {
 		final Post other = (Post) obj;
 		return Objects.equal(this.id, other.id);
 	}
-	
+
 	private String norm(String tag) {
 		return tag.toLowerCase()
 				.trim();

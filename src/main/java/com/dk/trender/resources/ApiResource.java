@@ -24,14 +24,13 @@ import com.dk.trender.service.PostService;
 @Produces(MediaType.APPLICATION_JSON)
 public class ApiResource {
 	private final PostService postService;
-
 	public ApiResource(PostService postService) {
 		this.postService = postService;
 	}
 
 	@POST
 	@Path("/post/new")
-	public void create(@NotEmpty List<Post> request) {
+	public void create(@NotEmpty @Valid List<Post> request) {
 		postService.create(request);
 	}
 }
