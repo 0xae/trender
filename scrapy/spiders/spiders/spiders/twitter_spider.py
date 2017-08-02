@@ -23,7 +23,9 @@ class TwitterSpider(scrapy.Spider):
             'https://twitter.com/search?q=bitcoin&src=typd',
             'https://twitter.com/search?q=cryptocurrency&src=typd',
             'https://twitter.com/search?q=news&src=typd',
-            'https://twitter.com/search?f=news&vertical=default&q=cryptocurrency&src=typd'
+            'https://twitter.com/search?f=news&vertical=default&q=cryptocurrency&src=typd',
+            'https://twitter.com/ForbesInvestor',
+            'https://twitter.com/search?f=news&vertical=default&q=rick+and+morty&src=typd',
         ]
 
         for url in start_links:

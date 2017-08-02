@@ -79,7 +79,7 @@ class PostSpider(scrapy.Spider):
             }
 
             self._create_post(post)
-            yield post_req
+            yield post
 
         links = response.css('ul.Topics a::attr("href")').extract()
         next_page = '/tags'
