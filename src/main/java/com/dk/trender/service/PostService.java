@@ -10,11 +10,17 @@ import org.apache.solr.common.SolrInputDocument;
 
 import com.dk.trender.core.Post;
 
+/**
+ * 
+ * @author ayrton
+ * TODO: move solr and solrUp to dw service
+ *       and remove this horrible leak
+ */
 public class PostService {
 	private static final String URL = "http://localhost:8983/solr/trender";
 	private ConcurrentUpdateSolrClient solrUp;
 	private SolrClient solr;
-
+	
 	public PostService() {
 		solr = new HttpSolrClient
 				.Builder(URL)
@@ -49,7 +55,7 @@ public class PostService {
 			
 			docs.add(doc);
 		}
-		
+
 		try {
 			solrUp.add(docs);
 			solrUp.commit();

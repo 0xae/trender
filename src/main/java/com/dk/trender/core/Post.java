@@ -58,12 +58,12 @@ public class Post {
 		this.description = description;
 		return this;
 	}
-	
+
 	@JsonProperty
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	
+
 	@JsonProperty
 	public String getLocation() {
 		return location;
@@ -199,7 +199,7 @@ public class Post {
 			return true;			
 		}
 
-		if (obj == null || getClass() != obj.getClass()){
+		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
 
