@@ -48,9 +48,8 @@ class BBCSpider(scrapy.Spider):
             .extract_first() \
             .strip()
 
-        post_url = link + \
-            node.css('div.media__content ' +
-                     'a.media__link::attr("href")') \
+        post_url = node.css('div.media__content ' +
+                            'a.media__link::attr("href")') \
             .extract_first()
 
         post_category_url = node.css('div.media__content ' +
@@ -60,7 +59,8 @@ class BBCSpider(scrapy.Spider):
         post_category_url = link + post_category_url
 
         if post_url.startswith('/'):
-            post_url = link + post_url
+            # skip the /
+            post_url = link + post_url[1:]
 
         category = node.css('div.media__content ' +
                             'a.media__tag::text') \

@@ -23,6 +23,7 @@ public class Post {
 	private @NotEmpty String type;
 	private @NotEmpty String authorName;
 	private @NotEmpty String source;
+
 	private @NotEmpty String link;
 	private @NotEmpty String description = "";
 	private @NotEmpty String location = "worldwide";
@@ -100,8 +101,8 @@ public class Post {
  	@JsonProperty
  	public String formatTs() {
 		return DateTimeFormat.forPattern("YYY-MM-d HH:mm:ss")
-		.print(timestamp)
-		.replace(' ', 'T');
+				.print(timestamp)
+				.replace(' ', 'T');
  	}
 
 	@JsonProperty
@@ -203,8 +204,8 @@ public class Post {
 			return false;
 		}
 
-		final Post other = (Post) obj;
-		return Objects.equal(this.id, other.id);
+		final Post that = (Post) obj;
+		return Objects.equal(this.id, that.id);
 	}
 
 	private String norm(String tag) {

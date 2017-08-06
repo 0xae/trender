@@ -20,7 +20,7 @@ public class PostService {
 	private static final String URL = "http://localhost:8983/solr/trender";
 	private ConcurrentUpdateSolrClient solrUp;
 	private SolrClient solr;
-	
+
 	public PostService() {
 		solr = new HttpSolrClient
 				.Builder(URL)
@@ -46,13 +46,13 @@ public class PostService {
 			doc.addField("description", p.getDescription());
 			doc.addField("timestamp", p.formatTs());
 			doc.addField("location", p.getLocation());
-			
+
 			// the optional fellas
 			doc.addField("authorPicture", p.getAuthorPicture());
 			doc.addField("picture", p.getPicture());
 			doc.addField("data", p.getData());
-			doc.addField("category", p.getCategory());		
-			
+			doc.addField("category", p.getCategory());
+
 			docs.add(doc);
 		}
 

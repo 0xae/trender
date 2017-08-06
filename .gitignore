@@ -4,6 +4,11 @@ build/
 bin/
 target/
 cache/
+dist/
+eggs/
+spiders.egg-info/
+twistd.pid
+trendersearch.egg-info
 
 # OS Files #
 .DS_Store
