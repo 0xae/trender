@@ -21,10 +21,9 @@ public class ArrayToListConverter implements AttributeConverter<List<String>, Ob
 
     @Override
     public List<String> convertToEntityAttribute(Object dbData) {
-
-        List<String> rst = new ArrayList<>();
+    	List<String> rst = new ArrayList<>();
         try {
-            String[] elements = (String[]) ((Jdbc4Array) dbData).getArray();
+            String[] elements = (String[]) ((PostgreSQLTextArray) dbData).getArray();
             for (String element : elements) {
                 rst.add(element);
             }

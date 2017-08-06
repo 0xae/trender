@@ -5,7 +5,7 @@ from hashlib import md5
 
 INDEX_NAME = ''
 
-class BBCSpider(scrapy.Spider):
+class ExampleSpider(scrapy.Spider):
     name = 'example_posts'
 
     def start_requests(self):

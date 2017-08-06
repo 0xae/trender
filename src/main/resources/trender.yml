@@ -11,7 +11,7 @@ database:
   password: 
 
   # the JDBC URL
-  url: jdbc:postgresql://localhost:5432/trender
+  url: jdbc:postgresql://localhost:5432/trenderdb
 
   # any properties specific to your JDBC driver:
   properties:
