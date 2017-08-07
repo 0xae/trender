@@ -1,10 +1,7 @@
 package com.dk.trender.core;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.StringJoiner;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.ColumnTransformer;
@@ -39,13 +35,14 @@ public class Channel {
 	@Column(name="topic", nullable=false)
 	private String topic;
 
+	@NotEmpty
 	@Column(name="post_types", nullable=false)
 	@ColumnTransformer(write="regexp_split_to_array(?, ',')",
 					   read="array_to_string(post_types, ',')")
 	private String postTypes;
 
 	@NotNull
-	@Column(name="creation_date", nullable=false)
+	@Column(name="creation_date", nullable=false, updatable=false)
 	private LocalDateTime creationDate = new LocalDateTime();
 
 	@JsonProperty
@@ -57,7 +54,7 @@ public class Channel {
 	public long getId() {
 		return id;
 	}	
-	
+
 	@JsonProperty
 	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
@@ -104,7 +101,7 @@ public class Channel {
 	}
 
 	@JsonProperty
-	public void setSpiders(List<String> s) {
+	public void setSpiders(@NotEmpty List<String> s) {
 		this.postTypes = String.join(",", s);
 	}
 }

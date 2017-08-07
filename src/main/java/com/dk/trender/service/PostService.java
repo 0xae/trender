@@ -3,9 +3,7 @@ package com.dk.trender.service;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.impl.ConcurrentUpdateSolrClient;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.common.SolrInputDocument;
 
 import com.dk.trender.core.Post;
@@ -17,20 +15,10 @@ import com.dk.trender.core.Post;
  *       and remove this horrible leak
  */
 public class PostService {
-	private static final String URL = "http://localhost:8983/solr/trender";
 	private ConcurrentUpdateSolrClient solrUp;
-	private SolrClient solr;
 
-	public PostService() {
-		solr = new HttpSolrClient
-				.Builder(URL)
-				.build();
-
-		solrUp = new ConcurrentUpdateSolrClient
-				.Builder(URL)
-				.withQueueSize(10)
-				.withThreadCount(4)
-				.build();
+	public PostService(ConcurrentUpdateSolrClient s) {
+		solrUp = s;
 	}
 
 	public void create(List<Post> posts) {

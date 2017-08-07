@@ -9,6 +9,7 @@ import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.hibernate.SessionFactory;
 
 import com.dk.trender.core.Channel;
+import com.dk.trender.core.managed.ManagedSolr;
 import com.dk.trender.resources.ApiResource;
 import com.dk.trender.service.ChannelService;
 import com.dk.trender.service.PostService;
@@ -64,17 +65,16 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		cors.setInitParameter(CrossOriginFilter.CHAIN_PREFLIGHT_PARAM, Boolean.FALSE.toString());
 
 		SessionFactory sessionFactory = hibernateBundle.getSessionFactory();
-		PostService postService = new PostService();
+		ManagedSolr managedSolr = new ManagedSolr();
+
+		PostService postService = new PostService(managedSolr.getSolr());
 		ChannelService channelService = new ChannelService(sessionFactory);			
+
 		env.jersey().register(new ApiResource(postService, channelService));
+		env.lifecycle().manage(managedSolr);
 	}
 
     public static void main(String[] args) throws Exception {
-    	try {
-    		new TrenderApplication().run("server", "src/main/resources/trender.yml");    		
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		throw e;
-    	}
+		new TrenderApplication().run(args);    		
 	}
 }

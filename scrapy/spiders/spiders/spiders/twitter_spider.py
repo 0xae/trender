@@ -5,6 +5,8 @@ from json import dumps
 from datetime import datetime
 from scrapy import Selector
 from ..trender import format_date, create_post
+from urllib import quote_plus
+
 
 DEFAULT_IMG = '<uk>'
 
@@ -13,19 +15,24 @@ class TwitterSpider(scrapy.Spider):
     name = 'twitter_posts'
 
     def start_requests(self):
+        # start_links = [
+        #     'https://twitter.com/XHNews',
+        #     'https://twitter.com/ftrain',
+        #     'https://twitter.com/_gamemix_',
+        #     'https://twitter.com/bobbyclee',
+        #     'https://twitter.com/lopp',
+        #     'https://twitter.com/AyrtonGsZ',
+        #     'https://twitter.com/search?q=bitcoin&src=typd',
+        #     'https://twitter.com/search?q=cryptocurrency&src=typd',
+        #     'https://twitter.com/search?q=news&src=typd',
+        #     'https://twitter.com/search?f=news&vertical=default&q=cryptocurrency&src=typd',
+        #     'https://twitter.com/ForbesInvestor',
+        #     'https://twitter.com/search?f=news&vertical=default&q=rick+and+morty&src=typd',
+        # ]
+        tweetTopic = quote_plus(self.topic if self.topic else 'news')
         start_links = [
-            'https://twitter.com/XHNews',
-            'https://twitter.com/ftrain',
-            'https://twitter.com/_gamemix_',
-            'https://twitter.com/bobbyclee',
-            'https://twitter.com/lopp',
-            'https://twitter.com/AyrtonGsZ',
-            'https://twitter.com/search?q=bitcoin&src=typd',
-            'https://twitter.com/search?q=cryptocurrency&src=typd',
-            'https://twitter.com/search?q=news&src=typd',
-            'https://twitter.com/search?f=news&vertical=default&q=cryptocurrency&src=typd',
-            'https://twitter.com/ForbesInvestor',
-            'https://twitter.com/search?f=news&vertical=default&q=rick+and+morty&src=typd',
+             'https://twitter.com/search?' +
+             'f=news&vertical=default&q=%s&src=typd' % tweetTopic,
         ]
 
         for url in start_links:

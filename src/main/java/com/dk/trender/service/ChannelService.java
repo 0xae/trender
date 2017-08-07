@@ -3,8 +3,6 @@ package com.dk.trender.service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.ws.rs.NotFoundException;
-
 import org.hibernate.SessionFactory;
 
 import com.dk.trender.core.Channel;
@@ -17,21 +15,20 @@ public class ChannelService  extends AbstractDAO<Channel> {
 	}
 
 	public Channel findById(long id) {
-		 return  Optional
+		 return Optional
 				.ofNullable(get(id))
-				.orElseThrow(() -> {
-					throw new NotFoundException();
-				});
+				.get();
 	}
 
 	public List<Channel> findAll() {
+		String query = "from Channel order by creation_date desc";
 		return currentSession()
-			  .createQuery("from Channel", Channel.class)
+			  .createQuery(query, Channel.class)
 			  .getResultList();
 	}
 
 	public Channel create(Channel obj) {
-		return persist(obj);				
+		return persist(obj);
 	}
 
 	public Channel update(Channel obj) {

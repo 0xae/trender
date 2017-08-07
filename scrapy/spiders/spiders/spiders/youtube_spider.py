@@ -5,31 +5,27 @@ from json import dumps
 from dateparser import parse as parse_date
 from datetime import datetime
 from ..trender import create_post, format_date
+from urllib import quote_plus
 
 
 class YoutubeSpider(scrapy.Spider):
     name = 'youtube_posts'
 
     def start_requests(self):
+        youtubeTopic = quote_plus(self.topic if self.topic else 'news')
+
         start_links = [
-            'https://www.youtube.com/results?search_query=ethereum',
-            'https://www.youtube.com/results?search_query=bitcoin',
-            'https://www.youtube.com/results?search_query=china+news',
-            'https://www.youtube.com/results?search_query=asia+news',
-            'https://www.youtube.com/results?q=stock+market&sp=EgIIBFAU',
-            'https://www.youtube.com/results?q=rick+and+morty&sp=EgIIBFAU'
+            'https://www.youtube.com/results?search_query=%s' % youtubeTopic,
+            # 'https://www.youtube.com/results?search_query=bitcoin',
+            # 'https://www.youtube.com/results?search_query=china+news',
+            # 'https://www.youtube.com/results?search_query=asia+news',
+            # 'https://www.youtube.com/results?q=stock+market&sp=EgIIBFAU',
+            # 'https://www.youtube.com/results?q=rick+and+morty&sp=EgIIBFAU'
         ]
 
         for url in start_links:
             r = scrapy.Request(url=url, callback=self.parse)
             yield r
-
-        # r = requests.get('http://127.0.0.1:5000/api/media/index/' + INDEX_NAME)
-        # data = r.json()
-        # for item in data:
-        #     r = scrapy.Request(url=item['links'][0], callback=self.parse)
-        #     r.meta['item'] = item
-        #     yield r
 
     def parse(self, response):
         videos = response.css('#results ol.item-section li div.yt-lockup')

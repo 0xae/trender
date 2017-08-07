@@ -1,4 +1,5 @@
 pip install scrapy
 pip install dateparser
+pip install twisted
 enable cors on solr http://opensourceconnections.com/blog/2015/03/26/going-cross-origin-with-solr/
 
