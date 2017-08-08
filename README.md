@@ -102,11 +102,13 @@ that's it
 * [luwak](https://github.com/flaxsearch/luwak)
 * [real-time-full-text-search-with-luwak-and-samza](https://www.confluent.io/blog/real-time-full-text-search-with-luwak-and-samza/)
 
-### Machine Learning
+### Artificial intelligence
 * [CS 229 Machine Learning](http://cs229.stanford.edu/projects2013.html)
 * [Exploring LSTMS](http://blog.echen.me/2017/05/30/exploring-lstms/?imm_mid=0f2ce7&cmp=em-data-na-na-newsltr_20170614)
 * [RNN Effectiveness](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
 * [IBM Watson](http://watson-developer-cloud.github.io/java-sdk/)
+* [Facebook ai-negociator-bots](/https://code.facebook.com/posts/1686672014972296/deal-or-no-deal-training-ai-bots-to-negotiate/)
+* [Quora QMF](https://github.com/quora/qmf)
 
 ### Random Stuff    
 * [Random UK post code generator](https://www.doogal.co.uk/PostcodeGenerator.php)
