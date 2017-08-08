@@ -7,17 +7,16 @@ import sys
 
 
 def get_spider_name(t):
-    n = ''
+    """ returns the real scrapy spider name """
     if t in ('youtube-post', 'twitter-post',
              'bbc-post', 'steemit-post'):
-        n = t.replace('-', '_') + 's'
+        return t.replace('-', '_') + 's'
     else:
         raise ValueError('Unexpected post-type %s' % t)
 
-    return n
-
 
 def callback():
+    """ send the indexing work to scrapy  """
     r = requests.get('http://127.0.0.1:5000/api/channel')
     data = r.json()
 

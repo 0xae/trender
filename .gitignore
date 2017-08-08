@@ -6,6 +6,7 @@ target/
 cache/
 dist/
 eggs/
+dbs/
 spiders.egg-info/
 twistd.pid
 trendersearch.egg-info
