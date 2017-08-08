@@ -14,12 +14,9 @@ This is alpha release and probably wont come to beta seas until Xstmas.
     Dropwizard rocks
     Master hibernate
     Build a simple but cool artificial-inteligence to detect trends
-    Machine Learning
-    Programming
-    Having Fun
+    Programming & Fun
     Put my Solr and Lucene experience to the top
     Learn more about search/realtime technologies 
-    Prove that hibernate can be great if used right ;)
     How far can my thinkpad go ?
     A cool app for myself
 
@@ -50,18 +47,14 @@ that's it
 
 ## Tasks
 
-- [ ] Media content (music, videos, picture, links, etc) API 
-- [ ] Trending algorithm and API
-- [ ] Links management API
 - [ ] Natural Language Processing
-- [ ] Searching
-- [ ] Full Test Coverage
-- [ ] Crawling API
 - [ ] Dropwizard Metrics ?
-- [ ] Rich Descriptive and Analytical API
-- [ ] Enhance posts timestamp
-- [X] migrate all js spiders to scrapy 
-- [ ] twitter spider
+- [ ] Trending API
+- [ ] Crawling API
+- [ ] Discovery API
+- [ ] Searching API
+- [ ] Searching infraestructure optimization (solr)
+- [X] Scrapy crawling infraestructure
 
 ## Ideas
     
