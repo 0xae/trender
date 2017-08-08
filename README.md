@@ -110,6 +110,7 @@ that's it
 * [Facebook ai-negociator-bots](/https://code.facebook.com/posts/1686672014972296/deal-or-no-deal-training-ai-bots-to-negotiate/)
 * [Quora QMF](https://github.com/quora/qmf)
 * [Facebook DeepText](https://code.facebook.com/posts/181565595577955/introducing-deeptext-facebook-s-text-understanding-engine/)
+* [Facebook ParlAI](https://code.facebook.com/posts/266433647155520/parlai-a-new-software-platform-for-dialog-research/)
 
 ### Random Stuff    
 * [Random UK post code generator](https://www.doogal.co.uk/PostcodeGenerator.php)
