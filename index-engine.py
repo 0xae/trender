@@ -3,22 +3,17 @@ from twisted.internet import task
 from twisted.internet import reactor
 from urllib import quote_plus
 import requests
-
-queue = []
+import sys
 
 
 def get_spider_name(t):
     n = ''
-    if t == 'youtube-post':
-        n = 'youtube_posts'
-    elif t == 'twitter-post':
-        n = 'twitter_posts'
-    elif t == 'bbc-post':
-        n = 'bbc_posts'
-    elif t == 'steemit-post':
-        n = 'steemit_posts'
+    if t in ('youtube-post', 'twitter-post',
+             'bbc-post', 'steemit-post'):
+        n = t.replace('-', '_') + 's'
     else:
         raise ValueError('Unexpected post-type %s' % t)
+
     return n
 
 
@@ -29,14 +24,11 @@ def callback():
     for item in data:
         for s in item['spiders']:
             spider_name = get_spider_name(s)
-            print 'Indexing #%s with %s' % (item['topic'], spider_name)
 
             r = requests.post('http://localhost:6800/schedule.json',
-                data={'project': 'spiders',
-                      'spider': spider_name,
-                      'topic': quote_plus(item['topic'])})
-
-    print "========"
+                    data={'project': 'spiders',
+                          'spider': spider_name,
+                          'topic': quote_plus(item['topic'])})
 
 
 def loopDone(result):
@@ -49,11 +41,16 @@ def loopFailed(fail):
     reactor.stop()
 
 
-loop = task.LoopingCall(callback)
+if __name__ == "__main__":
+    minutes = 5
+    if len(sys.argv) > 1:
+        minutes = int(sys.argv[1])
 
-MINUTES = 5
-defer = loop.start(60 * MINUTES)
-defer.addCallback(loopDone)
-defer.addErrback(loopFailed)
+    print "Indexing interval: %dmn" % minutes
 
-reactor.run()
+    loop = task.LoopingCall(callback)
+    defer = loop.start(60 * minutes)
+    defer.addCallback(loopDone)
+    defer.addErrback(loopFailed)
+
+    reactor.run()
