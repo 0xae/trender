@@ -14,12 +14,9 @@ This is alpha release and probably wont come to beta seas until Xstmas.
     Dropwizard rocks
     Master hibernate
     Build a simple but cool artificial-inteligence to detect trends
-    Machine Learning
-    Programming
-    Having Fun
+    Programming & Fun
     Put my Solr and Lucene experience to the top
     Learn more about search/realtime technologies 
-    Prove that hibernate can be great if used right ;)
     How far can my thinkpad go ?
     A cool app for myself
 
@@ -50,18 +47,14 @@ that's it
 
 ## Tasks
 
-- [ ] Media content (music, videos, picture, links, etc) API 
-- [ ] Trending algorithm and API
-- [ ] Links management API
 - [ ] Natural Language Processing
-- [ ] Searching
-- [ ] Full Test Coverage
-- [ ] Crawling API
 - [ ] Dropwizard Metrics ?
-- [ ] Rich Descriptive and Analytical API
-- [ ] Enhance posts timestamp
-- [X] migrate all js spiders to scrapy 
-- [ ] twitter spider
+- [ ] Trending API
+- [ ] Crawling API
+- [ ] Discovery API
+- [ ] Searching API
+- [ ] Searching infraestructure optimization (solr)
+- [X] Scrapy crawling infraestructure
 
 ## Ideas
     
@@ -89,9 +82,6 @@ that's it
 * [Webtorrent IO](https://webtorrent.io/intro)
 
 ### Text/Data Processing
-* [The Stanford NLP Group](https://nlp.stanford.edu/)
-* [Learning words (google word2vec)](https://opensource.googleblog.com/2013/08/learning-meaning-behind-words.html)
-* [google word2vec](https://code.google.com/archive/p/word2vec/)
 * [Command-line JSON processor](https://github.com/stedolan/jq)
 
 ### real-time streaming search
@@ -102,11 +92,18 @@ that's it
 * [luwak](https://github.com/flaxsearch/luwak)
 * [real-time-full-text-search-with-luwak-and-samza](https://www.confluent.io/blog/real-time-full-text-search-with-luwak-and-samza/)
 
-### Machine Learning
+### Artificial intelligence / Machine Learning
+* [The Stanford NLP Group](https://nlp.stanford.edu/)
+* [Learning words (google word2vec)](https://opensource.googleblog.com/2013/08/learning-meaning-behind-words.html)
+* [google word2vec](https://code.google.com/archive/p/word2vec/)
 * [CS 229 Machine Learning](http://cs229.stanford.edu/projects2013.html)
 * [Exploring LSTMS](http://blog.echen.me/2017/05/30/exploring-lstms/?imm_mid=0f2ce7&cmp=em-data-na-na-newsltr_20170614)
 * [RNN Effectiveness](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
 * [IBM Watson](http://watson-developer-cloud.github.io/java-sdk/)
+* [Facebook ai-negociator-bots](/https://code.facebook.com/posts/1686672014972296/deal-or-no-deal-training-ai-bots-to-negotiate/)
+* [Quora QMF](https://github.com/quora/qmf)
+* [Facebook DeepText](https://code.facebook.com/posts/181565595577955/introducing-deeptext-facebook-s-text-understanding-engine/)
+* [Facebook ParlAI](https://code.facebook.com/posts/266433647155520/parlai-a-new-software-platform-for-dialog-research/)
 
 ### Random Stuff    
 * [Random UK post code generator](https://www.doogal.co.uk/PostcodeGenerator.php)
@@ -127,7 +124,6 @@ that's it
 * [erlang article at cnblogs](http://www.cnblogs.com/me-sa/archive/2011/11/13/erlang0014.html)
 * [jvm article at cnblogs](http://www.cnblogs.com/-new/p/7244460.html)
 * [douban looks awesome](https://www.douban.com/people/killme2008/)
-
 
 ### A Geek amusings
 * [geeking.co](http://geeking.co/)
