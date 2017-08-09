@@ -53,7 +53,7 @@ public class Channel {
 	@JsonProperty
 	public long getId() {
 		return id;
-	}	
+	}
 
 	@JsonProperty
 	public void setCreationDate(LocalDateTime creationDate) {
