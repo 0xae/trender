@@ -58,6 +58,7 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 	public void run(TrenderConfiguration conf, Environment env) throws Exception {
 		final FilterRegistration.Dynamic cors = 
 			env.servlets().addFilter("CORS", CrossOriginFilter.class);
+
 		cors.setInitParameter("allowedOrigins", "*");
 		cors.setInitParameter("allowedHeaders", "*");
 		cors.setInitParameter("allowedMethods", "OPTIONS, GET, PUT, POST, DELETE, HEAD");
@@ -74,7 +75,7 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		env.lifecycle().manage(managedSolr);
 	}
 
-    public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
 		new TrenderApplication().run(args);    		
 	}
 }

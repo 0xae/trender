@@ -13,6 +13,7 @@ class YoutubeSpider(scrapy.Spider):
 
     def start_requests(self):
         youtubeTopic = quote_plus(self.topic if self.topic else 'news')
+        self.youtubeTopic = youtubeTopic
 
         start_links = [
             'https://www.youtube.com/results?search_query=%s' % youtubeTopic,
@@ -97,7 +98,7 @@ class YoutubeSpider(scrapy.Spider):
             "timestamp": video_date,
             "picture": video_image,
             "data": dumps(video_data),
-            "category": ['youtube', 'video']
+            "category": ['youtube', 'video', self.youtubeTopic]
         }
 
         return post

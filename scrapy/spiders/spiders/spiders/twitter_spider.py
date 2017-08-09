@@ -29,10 +29,10 @@ class TwitterSpider(scrapy.Spider):
         #     'https://twitter.com/ForbesInvestor',
         #     'https://twitter.com/search?f=news&vertical=default&q=rick+and+morty&src=typd',
         # ]
-        tweetTopic = quote_plus(self.topic if self.topic else 'news')
+        self.tweetTopic = quote_plus(self.topic if self.topic else 'news')
         start_links = [
              'https://twitter.com/search?' +
-             'f=news&vertical=default&q=%s&src=typd' % tweetTopic,
+             'f=news&vertical=default&q=%s&src=typd' % self.tweetTopic,
         ]
 
         for url in start_links:
@@ -109,6 +109,7 @@ class TwitterSpider(scrapy.Spider):
             .extract()
 
         post_tags.append('twitter')
+        post_tags.append(self.tweetTopic)
 
         if tw.css('.context .js-retweet-text a').extract_first():
             tweet_data["action"] = "retweet"
