@@ -81,6 +81,10 @@ that's it
 * [My5](https://www.my5.tv)
 * [Webtorrent IO](https://webtorrent.io/intro)
 
+
+### API
+* [openweathermap](https://openweathermap.org/city/3374333)
+
 ### Text/Data Processing
 * [Command-line JSON processor](https://github.com/stedolan/jq)
 
