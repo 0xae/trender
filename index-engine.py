@@ -15,16 +15,28 @@ def get_spider_name(t):
         raise ValueError('Unexpected post-type %s' % t)
 
 
+def get_conf():
+    if len(sys.argv) == 3:
+        host = sys.argv[1]
+        interval = int(sys.argv[2])
+    else:
+        print "Usage: index-engine.py <host> <interval>"
+        sys.exit(1)
+
+    return (host, interval)
+
+
 def callback():
     """ send the indexing work to scrapy  """
-    r = requests.get('http://127.0.0.1:5000/api/channel')
+    host, _ = get_conf()
+    r = requests.get('http://%s:5000/api/channel' % host)
     data = r.json()
 
     for item in data:
         for s in item['spiders']:
             spider_name = get_spider_name(s)
 
-            r = requests.post('http://localhost:6800/schedule.json',
+            r = requests.post('http://%s:6800/schedule.json' % host,
                     data={'project': 'spiders',
                           'spider': spider_name,
                           'topic': quote_plus(item['topic'])})
@@ -41,14 +53,11 @@ def loopFailed(fail):
 
 
 if __name__ == "__main__":
-    minutes = 5
-    if len(sys.argv) > 1:
-        minutes = int(sys.argv[1])
-
-    print "Indexing interval: %dmn" % minutes
+    _, interval = get_conf()
+    print "Indexing interval: %dmn" % interval
 
     loop = task.LoopingCall(callback)
-    defer = loop.start(60 * minutes)
+    defer = loop.start(60 * interval)
     defer.addCallback(loopDone)
     defer.addErrback(loopFailed)
 
