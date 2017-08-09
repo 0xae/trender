@@ -50,7 +50,7 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 	            return configuration.getDatabase();
 			}
 	    });
-		
+
 		bootstrap.addBundle(hibernateBundle);
     }
 

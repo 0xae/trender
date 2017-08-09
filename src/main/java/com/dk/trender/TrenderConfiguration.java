@@ -8,7 +8,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.dropwizard.Configuration;
-import io.dropwizard.client.HttpClientConfiguration;
 
 import io.dropwizard.db.DataSourceFactory;
 
@@ -18,20 +17,6 @@ import io.dropwizard.db.DataSourceFactory;
  * @date 2017-03-31 01:11:38
  */
 public class TrenderConfiguration extends Configuration {
-    @Valid
-    @NotNull
-    private HttpClientConfiguration httpClient = new HttpClientConfiguration();
-
-    @JsonProperty("httpClient")
-    public HttpClientConfiguration getHttpClientConfiguration() {
-        return httpClient;
-    }
-
-    @JsonProperty("httpClient")
-    public void setHttpClientConfiguration(HttpClientConfiguration httpClient) {
-        this.httpClient = httpClient;
-    }
-
 	@NotEmpty
 	private String authorizationPrefix;
 
