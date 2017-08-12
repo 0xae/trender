@@ -136,5 +136,8 @@ that's it
 * [geeking.co](http://geeking.co/)
 * [nerdist.com](http://nerdist.com/)
 * [soundcloud/subwayssounds](https://soundcloud.com/subwayssounds)
+* dystopian
+* cyberpunk
+* serial experiments of lain
 
 we're up all night to get lucky 
