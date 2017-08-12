@@ -80,7 +80,7 @@ that's it
 * [Youtube API](https://www.youtube.com/yt/dev/demos.html#/sentiment)
 * [My5](https://www.my5.tv)
 * [Webtorrent IO](https://webtorrent.io/intro)
-
+* [DTube](https://steemit.com/video/@heimindanger/introducing-dtube-a-decentralized-video-platform-using-steem-and-ipfs)
 
 ### API
 * [openweathermap](https://openweathermap.org/city/3374333)
