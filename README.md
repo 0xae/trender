@@ -146,5 +146,6 @@ that's it
 * [Morpheus Cat](https://funnyjunk.com/funny_pictures/3499636/Morpheus+cat/)
 * [OMG Ubuntu on Pinterest](https://www.pinterest.com/pin/527836018817053853/)
 * [gratuitous-cyberpunk](http://gratuitous-cyberpunk-sex.tumblr.com/)
+* [awesome-gophers](https://github.com/ashleymcnamara/gophers)
 
 we're up all night to get lucky 
