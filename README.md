@@ -146,5 +146,6 @@ that's it
 * [funnyjunk.com](https://funnyjunk.com/)
 * [lain on kinopoisk](https://plus.kinopoisk.ru/film/321835/)
 * [Morpheus Cat](https://funnyjunk.com/funny_pictures/3499636/Morpheus+cat/)
+* [OMG Ubuntu on Pinterest](https://www.pinterest.com/pin/527836018817053853/)
 
 we're up all night to get lucky 
