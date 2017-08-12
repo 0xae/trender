@@ -1,13 +1,11 @@
-# An exquisite newsfeed
+# an exquisite newsfeed
 
 This is a rest app that stores, analyzes and provides a query api to retrieve<br/>
 most recent  activities, listing, trendings topics, and all sort of aggregated behavioral information<br/>
 happenning.<br/>
 
 The idea is to build something akin to [Trending Topics](https://github.com/datawrangling/trendingtopics), but with a much simpler and faster and cheaper architecture, that runs fine on localhost.<br/>
-The **trender** platform crawls, stores and makes use of search technologies and leverages the power<br/> of PostgreSQL to provide you accurate, diverse and descriptive information on realtime or at least near to realtime about what's happening with informations that you feed it, for example data from facebook, twitter, wikipedia, etc, etc.<br/>
-
-This is alpha release and probably wont come to beta seas until Xstmas.
+The **trender** platform crawls, stores and makes use of search technologies, spiders, databases and artificial inteligence to produce ~accurate, diverse and descriptive information on realtime or at least near to realtime about what's happening in the world. it does so by collecting data from various sources like google, facebook, youtube, twitter, wikipedia, blogs, websites, communities, forums, etc and elegantly aggregating them on the newsfeed.<br/>
 
 ## Motivation
 
