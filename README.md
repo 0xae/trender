@@ -108,6 +108,7 @@ that's it
 * [Quora QMF](https://github.com/quora/qmf)
 * [Facebook DeepText](https://code.facebook.com/posts/181565595577955/introducing-deeptext-facebook-s-text-understanding-engine/)
 * [Facebook ParlAI](https://code.facebook.com/posts/266433647155520/parlai-a-new-software-platform-for-dialog-research/)
+* [OpenAI](https://openai.com/)
 
 ### Random Stuff    
 * [Random UK post code generator](https://www.doogal.co.uk/PostcodeGenerator.php)
