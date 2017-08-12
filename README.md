@@ -131,6 +131,7 @@ that's it
 * [erlang article at cnblogs](http://www.cnblogs.com/me-sa/archive/2011/11/13/erlang0014.html)
 * [jvm article at cnblogs](http://www.cnblogs.com/-new/p/7244460.html)
 * [douban looks awesome](https://www.douban.com/people/killme2008/)
+* [Government Types](https://www.pinterest.com/pin/521432463090231883/)
 
 ### A Geek amusings
 * [geeking.co](http://geeking.co/)
@@ -139,5 +140,6 @@ that's it
 * dystopian
 * cyberpunk
 * serial experiments of lain
-
+* [dystopian novels](https://www.pinterest.com/pin/484559241149258473/)
+* [cyverpunky room](http://i.imgur.com/5wHPuYU.jpg)
 we're up all night to get lucky 
