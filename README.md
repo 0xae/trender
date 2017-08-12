@@ -147,5 +147,6 @@ that's it
 * [OMG Ubuntu on Pinterest](https://www.pinterest.com/pin/527836018817053853/)
 * [gratuitous-cyberpunk](http://gratuitous-cyberpunk-sex.tumblr.com/)
 * [awesome-gophers](https://github.com/ashleymcnamara/gophers)
+* [clojure in detail (chinese)](http://blog.fnil.net/blog/9a8d68348d52bc45c6a1273a272d9f52/)
 
 we're up all night to get lucky 
