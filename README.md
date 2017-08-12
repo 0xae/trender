@@ -81,6 +81,7 @@ that's it
 * [My5](https://www.my5.tv)
 * [Webtorrent IO](https://webtorrent.io/intro)
 * [DTube](https://steemit.com/video/@heimindanger/introducing-dtube-a-decentralized-video-platform-using-steem-and-ipfs)
+* [Awesome russion youtube](https://plus.kinopoisk.ru/)
 
 ### API
 * [openweathermap](https://openweathermap.org/city/3374333)
