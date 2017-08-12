@@ -143,4 +143,6 @@ that's it
 * [dystopian novels](https://www.pinterest.com/pin/484559241149258473/)
 * [cyverpunky room](http://i.imgur.com/5wHPuYU.jpg)
 * [what is dystopia](https://www.pinterest.com/pin/AeekDsqi3kYucqTgTriJlm1dPD8rD68UnrZB83Tf3wZnZ-jPidNNh3A/)
+* [funnyjunk.com](https://funnyjunk.com/)
+* [lain on kinopoisk](https://plus.kinopoisk.ru/film/321835/)
 we're up all night to get lucky 
