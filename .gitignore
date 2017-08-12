@@ -57,6 +57,10 @@ tmp/**/*
 # Vi files
 *.swp
 *.swo
+*.swn
+*.swm
+*.swl
+*.swk
 *.log
 
 dependency-reduced-pom.xml
