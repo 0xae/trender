@@ -21,6 +21,7 @@
     <h2.version>1.4.193</h2.version>
     <solr.version>6.6.0</solr.version>
     <joda.version>2.9.4</joda.version>
+    <joda.time.hibernate>1.4</joda.time.hibernate>
   </properties>
 
   <repositories>
@@ -102,7 +103,7 @@
 	<dependency>
 	    <groupId>joda-time</groupId>
 	    <artifactId>joda-time-hibernate</artifactId>
-	    <version>1.4</version>
+	    <version>${joda.time.hibernate}</version>
 	</dependency>    
 	<dependency>
 	  <groupId>joda-time</groupId>
