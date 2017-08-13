@@ -1,13 +1,11 @@
-# An exquisite newsfeed
+# an exquisite newsfeed
 
 This is a rest app that stores, analyzes and provides a query api to retrieve<br/>
 most recent  activities, listing, trendings topics, and all sort of aggregated behavioral information<br/>
 happenning.<br/>
 
 The idea is to build something akin to [Trending Topics](https://github.com/datawrangling/trendingtopics), but with a much simpler and faster and cheaper architecture, that runs fine on localhost.<br/>
-The **trender** platform crawls, stores and makes use of search technologies and leverages the power<br/> of PostgreSQL to provide you accurate, diverse and descriptive information on realtime or at least near to realtime about what's happening with informations that you feed it, for example data from facebook, twitter, wikipedia, etc, etc.<br/>
-
-This is alpha release and probably wont come to beta seas until Xstmas.
+The **trender** platform crawls, stores and makes use of search technologies, spiders, databases and artificial inteligence to produce ~accurate, diverse and descriptive information on realtime or at least near to realtime about what's happening in the world. it does so by collecting data from various sources like google, facebook, youtube, twitter, wikipedia, blogs, websites, communities, forums, etc and elegantly aggregating them on the newsfeed.<br/>
 
 ## Motivation
 
@@ -80,7 +78,8 @@ that's it
 * [Youtube API](https://www.youtube.com/yt/dev/demos.html#/sentiment)
 * [My5](https://www.my5.tv)
 * [Webtorrent IO](https://webtorrent.io/intro)
-
+* [DTube](https://steemit.com/video/@heimindanger/introducing-dtube-a-decentralized-video-platform-using-steem-and-ipfs)
+* [Awesome russion youtube](https://plus.kinopoisk.ru/)
 
 ### API
 * [openweathermap](https://openweathermap.org/city/3374333)
@@ -108,6 +107,8 @@ that's it
 * [Quora QMF](https://github.com/quora/qmf)
 * [Facebook DeepText](https://code.facebook.com/posts/181565595577955/introducing-deeptext-facebook-s-text-understanding-engine/)
 * [Facebook ParlAI](https://code.facebook.com/posts/266433647155520/parlai-a-new-software-platform-for-dialog-research/)
+* [OpenAI](https://openai.com/)
+* [openai systems](https://openai.com/systems/)
 
 ### Random Stuff    
 * [Random UK post code generator](https://www.doogal.co.uk/PostcodeGenerator.php)
@@ -128,10 +129,24 @@ that's it
 * [erlang article at cnblogs](http://www.cnblogs.com/me-sa/archive/2011/11/13/erlang0014.html)
 * [jvm article at cnblogs](http://www.cnblogs.com/-new/p/7244460.html)
 * [douban looks awesome](https://www.douban.com/people/killme2008/)
+* [Government Types](https://www.pinterest.com/pin/521432463090231883/)
 
 ### A Geek amusings
 * [geeking.co](http://geeking.co/)
 * [nerdist.com](http://nerdist.com/)
 * [soundcloud/subwayssounds](https://soundcloud.com/subwayssounds)
+* dystopian
+* cyberpunk
+* serial experiments of lain
+* [dystopian novels](https://www.pinterest.com/pin/484559241149258473/)
+* [cyverpunky room](http://i.imgur.com/5wHPuYU.jpg)
+* [what is dystopia](https://www.pinterest.com/pin/AeekDsqi3kYucqTgTriJlm1dPD8rD68UnrZB83Tf3wZnZ-jPidNNh3A/)
+* [funnyjunk.com](https://funnyjunk.com/)
+* [lain on kinopoisk](https://plus.kinopoisk.ru/film/321835/)
+* [Morpheus Cat](https://funnyjunk.com/funny_pictures/3499636/Morpheus+cat/)
+* [OMG Ubuntu on Pinterest](https://www.pinterest.com/pin/527836018817053853/)
+* [gratuitous-cyberpunk](http://gratuitous-cyberpunk-sex.tumblr.com/)
+* [awesome-gophers](https://github.com/ashleymcnamara/gophers)
+* [clojure in detail (chinese)](http://blog.fnil.net/blog/9a8d68348d52bc45c6a1273a272d9f52/)
 
 we're up all night to get lucky 
