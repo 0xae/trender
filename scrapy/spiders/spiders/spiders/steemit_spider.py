@@ -5,6 +5,7 @@ from hashlib import md5
 from json import dumps
 from random import randint
 from ..trender import format_date, create_post
+from urllib import quote_plus
 
 # Default image for pictures withou one
 DEFAULT_IMG = '<uk>'
@@ -102,7 +103,9 @@ class SteemitSpider(scrapy.Spider):
             queue.append(post)
             yield post
 
-        create_post(queue)
+        topic = quote_plus(self.topic if self.topic else '')
+        dbg = "steemit/%s" % quote_plus(topic)
+        create_post(queue, debug=dbg)
 
         links = response.css('ul.Topics a::attr("href")').extract()
         next_page = '/tags'

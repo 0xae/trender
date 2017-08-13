@@ -9,6 +9,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -40,7 +41,8 @@ public class ApiResource {
 
 	@POST
 	@Path("/post/new")
-	public void createPost(@NotEmpty @Valid List<Post> request) {
+	public void createPost(@NotEmpty @Valid List<Post> request,
+						   @QueryParam("debug") String debug) {		
 		postService.create(request);
 	}
 

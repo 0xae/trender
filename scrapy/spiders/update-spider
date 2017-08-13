@@ -1,0 +1,4 @@
+#!/bin/bash
+python setup.py bdist_egg
+
+curl http://localhost:6800/addversion.json -F project=spiders -F version=r1  -F egg=@dist/spiders-0.1-py2.7.egg

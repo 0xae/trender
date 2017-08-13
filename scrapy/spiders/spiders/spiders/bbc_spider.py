@@ -4,6 +4,7 @@ from hashlib import md5
 from json import dumps
 from ..trender import create_post, format_date
 from datetime import datetime
+from urllib import quote_plus
 
 
 class BBCSpider(scrapy.Spider):
@@ -31,7 +32,8 @@ class BBCSpider(scrapy.Spider):
             except AttributeError:
                 continue
 
-        create_post(queue)
+        dbg = "bbc/%s" % quote_plus(self.topic if self.topic else '')
+        create_post(queue, debug=dbg)
 
     def parse_article(self, node, response):
         link = response.meta['link']

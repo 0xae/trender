@@ -36,7 +36,8 @@ class YoutubeSpider(scrapy.Spider):
             queue.append(post)
             yield post
 
-        create_post(queue)
+        dbg = "youtube/%s" % quote_plus(self.youtubeTopic)
+        create_post(queue, debug=dbg)
 
     def get_youtube_post(self, node):
         video_id = node.css('::attr("data-context-item-id")') \
