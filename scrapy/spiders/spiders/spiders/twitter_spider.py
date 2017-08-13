@@ -33,6 +33,12 @@ class TwitterSpider(scrapy.Spider):
         start_links = [
              'https://twitter.com/search?' +
              'f=news&vertical=default&q=%s&src=typd' % self.tweetTopic,
+             'https://twitter.com/AyrtonGsZ',
+             'https://twitter.com/XHNews',
+             'https://twitter.com/ftrain',
+             'https://twitter.com/_gamemix_',
+             'https://twitter.com/bobbyclee',
+             'https://twitter.com/lopp',
         ]
 
         for url in start_links:
