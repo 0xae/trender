@@ -42,12 +42,12 @@ def callback():
                           'topic': quote_plus(item['topic'])})
 
 
-def loopDone(result):
-    print("Loop Done")
+def loop_done(result):
+    print("Loop Done: ", result)
     reactor.stop()
 
 
-def loopFailed(fail):
+def loop_failed(fail):
     print(fail.getBriefTraceback())
     reactor.stop()
 
@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     loop = task.LoopingCall(callback)
     defer = loop.start(60 * interval)
-    defer.addCallback(loopDone)
-    defer.addErrback(loopFailed)
+    defer.addCallback(loop_done)
+    defer.addErrback(loop_failed)
 
     reactor.run()

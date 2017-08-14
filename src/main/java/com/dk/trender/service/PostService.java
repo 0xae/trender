@@ -11,14 +11,12 @@ import com.dk.trender.core.Post;
 /**
  * 
  * @author ayrton
- * TODO: move solr and solrUp to dw service
- *       and remove this horrible leak
  */
 public class PostService {
 	private ConcurrentUpdateSolrClient solrUp;
 
-	public PostService(ConcurrentUpdateSolrClient s) {
-		solrUp = s;
+	public PostService(ConcurrentUpdateSolrClient service) {
+		solrUp = service;
 	}
 
 	public void create(List<Post> posts) {
