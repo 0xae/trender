@@ -29,12 +29,11 @@ import io.dropwizard.setup.Environment;
  * @date 2017-07-29 07:04:53
  */
 public class TrenderApplication extends Application<TrenderConfiguration> {
-    private final HibernateBundle<TrenderConfiguration> hibernateBundle =
-    		new HibernateBundle<TrenderConfiguration>(Channel.class) {
-			public DataSourceFactory getDataSourceFactory(TrenderConfiguration configuration) {
-				return configuration.getDatabase();
-			}
-        };
+    final HibernateBundle<TrenderConfiguration> hibernateBundle = new HibernateBundle<TrenderConfiguration>(Channel.class) {
+		public DataSourceFactory getDataSourceFactory(TrenderConfiguration configuration) {
+			return configuration.getDatabase();
+		}
+    };
 
     @Override
 	public void initialize(Bootstrap<TrenderConfiguration> bootstrap) {
