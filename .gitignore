@@ -62,5 +62,7 @@ tmp/**/*
 *.swl
 *.swk
 *.log
+.idea/
+trender.iml
 
 dependency-reduced-pom.xml
