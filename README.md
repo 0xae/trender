@@ -3,6 +3,7 @@
 This is an app that aggregates the most recent and popular tweets, the most interesting videos from youtube,
 what's happening in the stock and crypto markets, the most recent news, activities and every relevant information happening in realtime on the internet. we also feature a live tv that aggregates videos and livestreams of anime, tv shows, news (again), music, films, and also funny, cool and enternaining cartoons. 
 Trender aggregates data from google, facebook, youtube, twitter, wikipedia, blogs, websites, communities, forums, etc and from this abundance of information and media it builds the ultimate media-internet-entertainment-news network.
+In a single sentence: trender aims to be frontpage of my internet.
 
 
 The idea is to build something akin to [Trending Topics](https://github.com/datawrangling/trendingtopics), but with a much simpler and faster and cheaper architecture, that runs fine on localhost.<br/>
