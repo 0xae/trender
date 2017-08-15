@@ -2,7 +2,8 @@
 
 This is an app that aggregates the most recent and popular tweets, the most interesting videos from youtube,
 what's happening in the stock and crypto markets, the most recent news, activities and every relevant information happening in realtime on the internet.
-Trender  aggregates data from google, facebook, youtube, twitter, wikipedia, blogs, websites, communities, forums, etc and elegantly aggregates them on the newsfeed.
+Trender aggregates data from google, facebook, youtube, twitter, wikipedia, blogs, websites, communities, forums, etc and from this abundance of information and media it builds the ultimate media-internet-entertainment-news network.
+
 
 The idea is to build something akin to [Trending Topics](https://github.com/datawrangling/trendingtopics), but with a much simpler and faster and cheaper architecture, that runs fine on localhost.<br/>
 The **trender** platform crawls, stores and makes use of search technologies, spiders, databases and artificial inteligence to produce ~accurate, diverse and descriptive information on realtime or at least near to realtime about what's happening in the world. it does so by collecting data from various sources like google, facebook, youtube, twitter, wikipedia, blogs, websites, communities, forums, etc and elegantly aggregating them on the newsfeed.<br/>
