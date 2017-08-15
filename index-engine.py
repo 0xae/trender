@@ -33,13 +33,16 @@ def callback():
     data = r.json()
 
     for item in data:
+        print "indexing: ", item['name']
         for s in item['spiders']:
             spider_name = get_spider_name(s)
 
             r = requests.post('http://%s:6800/schedule.json' % host,
-                    data={'project': 'spiders',
-                          'spider': spider_name,
-                          'topic': quote_plus(item['topic'])})
+                              data={'project': 'spiders',
+                                    'spider': spider_name,
+                                    'topic': quote_plus(item['topic'])})
+
+    print "done indexing\n=========\n"
 
 
 def loop_done(result):
