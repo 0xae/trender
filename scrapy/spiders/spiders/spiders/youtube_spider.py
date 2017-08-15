@@ -99,7 +99,7 @@ class YoutubeSpider(scrapy.Spider):
             "timestamp": video_date,
             "picture": video_image,
             "data": dumps(video_data),
-            "category": ['youtube', 'video', self.youtubeTopic]
+            "category": [self.youtubeTopic]
         }
 
         return post

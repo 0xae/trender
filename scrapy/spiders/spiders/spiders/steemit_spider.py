@@ -62,8 +62,6 @@ class SteemitSpider(scrapy.Spider):
             post_tags = art.css('.PostSummary__time_author_category ' +
                                 '.vcard strong a::text').extract()
 
-            post_tags.append('steemit')
-
             post_comments = art.css(
                             '.PostSummary__footer ' +
                             '.VotesAndComments__comments a::text'

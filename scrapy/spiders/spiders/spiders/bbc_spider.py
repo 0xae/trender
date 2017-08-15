@@ -69,12 +69,10 @@ class BBCSpider(scrapy.Spider):
             .extract_first()
 
         post_tags = []
-        post_tags.append('bbc')
-        post_tags.append('bbc news')
         post_tags.append('news')
         post_tags.append(category)
-        cats = category.split('&')
 
+        cats = category.split('&')
         if len(cats) > 1:
             post_tags.extend(map(unicode.strip, cats))
 

@@ -115,7 +115,6 @@ class TwitterSpider(scrapy.Spider):
         post_tags = tw.css('.tweet-text a.twitter-hashtag b::text') \
             .extract()
 
-        post_tags.append('twitter')
         post_tags.append(self.tweetTopic)
 
         if tw.css('.context .js-retweet-text a').extract_first():
