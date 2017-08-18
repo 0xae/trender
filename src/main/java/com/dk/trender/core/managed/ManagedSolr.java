@@ -7,7 +7,7 @@ import io.dropwizard.lifecycle.Managed;
 public class ManagedSolr implements Managed {
 	private static final String URL = "http://localhost:8983/solr/trender";
 	private ConcurrentUpdateSolrClient solrUp;
-	
+
 	public ManagedSolr() {
 		solrUp = new ConcurrentUpdateSolrClient
 				.Builder(URL)
