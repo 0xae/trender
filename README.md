@@ -90,6 +90,7 @@ that's it
 * [blockchain](https://blockchain.info)
 * [blockchair](https://blockchair.com)
 * [coinmarketcap](https://coinmarketcap.com)
+* [bravenewcoin](https://bravenewcoin.com)
 
 ### Text/Data Processing
 * [Command-line JSON processor](https://github.com/stedolan/jq)
