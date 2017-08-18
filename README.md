@@ -86,6 +86,9 @@ that's it
 ### API
 * [openweathermap](https://openweathermap.org/city/3374333)
 
+### Markets
+* [bitcoin blockchai](https://blockchain.info)
+
 ### Text/Data Processing
 * [Command-line JSON processor](https://github.com/stedolan/jq)
 
