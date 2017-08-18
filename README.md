@@ -87,7 +87,8 @@ that's it
 * [openweathermap](https://openweathermap.org/city/3374333)
 
 ### Markets
-* [bitcoin blockchai](https://blockchain.info)
+* [blockchain](https://blockchain.info)
+* [blockchair](https://blockchair.com)
 
 ### Text/Data Processing
 * [Command-line JSON processor](https://github.com/stedolan/jq)
