@@ -89,6 +89,7 @@ that's it
 ### Markets
 * [blockchain](https://blockchain.info)
 * [blockchair](https://blockchair.com)
+* [coinmarketcap](https://coinmarketcap.com)
 
 ### Text/Data Processing
 * [Command-line JSON processor](https://github.com/stedolan/jq)
