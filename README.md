@@ -92,6 +92,7 @@ that's it
 * [coinmarketcap](https://coinmarketcap.com)
 * [bravenewcoin](https://bravenewcoin.com)
 * [bitcoin developer guide](https://bitcoin.org/en/developer-guide)
+* [cryptocompare](https://www.cryptocompare.com)
 
 ### Text/Data Processing
 * [Command-line JSON processor](https://github.com/stedolan/jq)
