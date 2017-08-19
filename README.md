@@ -91,6 +91,7 @@ that's it
 * [blockchair](https://blockchair.com)
 * [coinmarketcap](https://coinmarketcap.com)
 * [bravenewcoin](https://bravenewcoin.com)
+* [bitcoin developer guide](https://bitcoin.org/en/developer-guide)
 
 ### Text/Data Processing
 * [Command-line JSON processor](https://github.com/stedolan/jq)
