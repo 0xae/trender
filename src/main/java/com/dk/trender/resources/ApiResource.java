@@ -42,7 +42,7 @@ public class ApiResource {
 	@POST
 	@Path("/post/new")
 	public void createPost(@NotEmpty @Valid List<Post> request,
-						   @QueryParam("debug") String debug) {		
+						   @QueryParam("debug") String debug) {
 		postService.create(request);
 	}
 
