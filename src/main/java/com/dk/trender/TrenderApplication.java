@@ -55,8 +55,8 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 
 	@Override
 	public void run(TrenderConfiguration conf, Environment env) throws Exception {
-		final FilterRegistration.Dynamic cors = 
-			env.servlets().addFilter("CORS", CrossOriginFilter.class);
+		final FilterRegistration.Dynamic cors = env.servlets()
+				.addFilter("CORS", CrossOriginFilter.class);
 
 		cors.setInitParameter("allowedOrigins", "*");
 		cors.setInitParameter("allowedHeaders", "*");

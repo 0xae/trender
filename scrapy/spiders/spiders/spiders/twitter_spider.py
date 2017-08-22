@@ -147,16 +147,17 @@ class TwitterSpider(scrapy.Spider):
 
         for link in node.css('.tweet-text a'):
             ltype = link.css('::attr("class")').extract()[0].split()
-            lhtml = link.extract()
+            lhtml = link.extract_first()
             try:
                 if 'twitter-hashtag' in ltype or 'twitter-cashtag' in ltype:
                     first = link.css('b::text').extract_first()
-                    hashtag = first if first else link.css('b strong::text').extract_first()
-                    html = html.replace(lhtml, '#'+hashtag)
-                elif 'twitter-timeline-link' in ltype:
-                    html = html.replace(lhtml,
-                                        link.css('::attr("data-expanded-url")')
-                                        .extract_first())
+                    hashtag = first if first else link.css('b strong::text') \
+                        .extract_first()
+                    html = html.replace(lhtml, ' #' + hashtag + ' ')
+                elif 'twitter-timeline-link' in ltype and lhtml:
+                    p = ' ' + link.css('::attr("data-expanded-url")') \
+                            .extract_first() + ' '
+                    html = html.replace(lhtml, p)
             except TypeError:
                 continue
 
