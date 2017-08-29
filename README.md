@@ -140,6 +140,7 @@ that's it
 * [jvm article at cnblogs](http://www.cnblogs.com/-new/p/7244460.html)
 * [douban looks awesome](https://www.douban.com/people/killme2008/)
 * [Government Types](https://www.pinterest.com/pin/521432463090231883/)
+* [Jp live musics](https://www.showroom-live.com/akb48_asuyoro)
 
 ### A Geek amusings
 * [geeking.co](http://geeking.co/)
