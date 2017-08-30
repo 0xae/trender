@@ -120,6 +120,9 @@ that's it
 * [OpenAI](https://openai.com/)
 * [openai systems](https://openai.com/systems/)
 
+### Blogs
+* [Nick Szabo](https://unenumerated.blogspot.com)
+
 ### Random Stuff    
 * [Random UK post code generator](https://www.doogal.co.uk/PostcodeGenerator.php)
 * [Reddit Atlas](https://www.reddit.com/r/RedditAtlas/)
