@@ -144,6 +144,8 @@ that's it
 * [douban looks awesome](https://www.douban.com/people/killme2008/)
 * [Government Types](https://www.pinterest.com/pin/521432463090231883/)
 * [Jp live musics](https://www.showroom-live.com/akb48_asuyoro)
+* [rotten tomatoes](https://www.rottentomatoes.com)
+* [imdb.com](http://www.imdb.com)
 
 ### A Geek amusings
 * [geeking.co](http://geeking.co/)
