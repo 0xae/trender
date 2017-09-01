@@ -124,6 +124,7 @@ that's it
 * [Nick Szabo](https://unenumerated.blogspot.com)
 
 ### Random Stuff    
+* [twitter.com/Channel4News](https://twitter.com/Channel4News)
 * [Random UK post code generator](https://www.doogal.co.uk/PostcodeGenerator.php)
 * [Reddit Atlas](https://www.reddit.com/r/RedditAtlas/)
 * [Project Atlas](https://draemm.li/various/place-atlas/)
