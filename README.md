@@ -75,6 +75,7 @@ that's it
 * [Scrapy](https://docs.scrapy.org/en/latest/topics)
 * [grequests](https://pypi.python.org/pypi/grequests)
 * [syntax-highlighter](https://github.com/syntaxhighlighter/)
+* [twitter-emoji](https://github.com/twitter/twemoji)
 
 ### Multimedia websites
 * [UK Tv Guide](http://www.tvguide.co.uk/)
