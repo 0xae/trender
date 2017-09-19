@@ -89,6 +89,7 @@ that's it
 * [openweathermap](https://openweathermap.org/city/3374333)
 
 ### Markets
+* [Oil Price](http://oilprice.com)
 * [blockchain](https://blockchain.info)
 * [blockchair](https://blockchair.com)
 * [coinmarketcap](https://coinmarketcap.com)
