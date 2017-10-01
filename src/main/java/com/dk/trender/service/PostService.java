@@ -59,32 +59,6 @@ public class PostService {
 		}
 	}
 
-	public List<Post> filter(String query, int limit, int start, String sort) {
-		SolrQuery sq = new SolrQuery();
-		List<Post> res = new ArrayList<>();
-
-		sq.set("q", query);
-		sq.set("facet", true);
-		sq.set("facet.field", "category", "type");
-		sq.set("rows", limit);
-		sq.set("start", start);
-		sq.set("sort", sort);
-
-		try {
-			QueryResponse response = solr.query(sq);
-			SolrDocumentList list = response.getResults();
-
-			log.info("found {} results for query '{}'", list.size(), query);
-			for (Iterator<SolrDocument> itr=list.iterator(); itr.hasNext(); ) {
-				Post p = Post.fromDoc(itr.next());
-				res.add(p);				
-			}
-			return res;
-		} catch (Exception e) {
-			throw new SolrExecutionException(e);
-		}
-	}
-	
 	public Post byId(String id) {
 		try {
 			SolrDocument doc = Optional

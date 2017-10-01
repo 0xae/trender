@@ -1,59 +1,60 @@
 package com.dk.trender.service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.persistence.NoResultException;
 
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.impl.ConcurrentUpdateSolrClient;
+import org.apache.solr.client.solrj.response.FacetField;
+import org.apache.solr.client.solrj.response.FacetField.Count;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dk.trender.core.Post;
 import com.dk.trender.core.Timeline;
+import com.dk.trender.exceptions.SolrExecutionException;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
+/**
+ * 
+ * @author ayrton
+ * @date 2017-10-01
+ * TODO: cache timelines
+ * XXX: sortBy should be by indexedAt
+ */
 public class TimelineService extends AbstractDAO<Timeline> {
-//	private static final Map<Long, Timeline> map = new ConcurrentHashMap<>();
 	private static final Logger log = LoggerFactory.getLogger(TimelineService.class);
-
-	// XXX: sortBy should be by indexedAt
 	private static final String SORT_ORDER = "timestamp asc";
-	
 	private static final int POSTS_PER_REQUEST = 50;
+	private final ConcurrentUpdateSolrClient solr;
 
-	private final PostService post;
-	
-	public TimelineService(SessionFactory sessionFactory, PostService post) {
+	public TimelineService(SessionFactory sessionFactory, 
+						   ConcurrentUpdateSolrClient solr) {
 		super(sessionFactory);
-		this.post = post;
+		this.solr = solr;
 	}
 
 	public Timeline byId(long id) {
-//		 Timeline t = Optional
-//				.ofNullable(map.get(id))
-//				.orElseGet(() -> {
-//					Timeline v = get(id);
-//					if (v == null)
-//						throw new NoResultException("Timeline not found");
-//					map.put(v.getId(), v);
-//					return v;
-//				});
-
 		 Timeline t = Optional
 				.ofNullable(get(id))
 				.orElseThrow(NoResultException::new);
 		 log.info("get timeline {}#{}", t.getId(), t.getName());
 		 return t;
 	}
-
+	
 	public Timeline create(Timeline obj) {	
 		Timeline t = persist(obj);
-//		map.put(t.getId(), t);
 		log.info("create timeline {}", t.getId(), t.getName());
 		return t;
 	}
@@ -61,7 +62,6 @@ public class TimelineService extends AbstractDAO<Timeline> {
 	public Timeline update(Timeline obj) {
 		obj.setUpdateDate(DateTime.now());
 		currentSession().update(obj);
-//		map.put(obj.getId(), obj);
 		log.info("update timeline {}#{}", obj.getId(), obj.getName());
 		return obj;
 	}
@@ -69,41 +69,93 @@ public class TimelineService extends AbstractDAO<Timeline> {
 	public Timeline delete(Timeline obj) {
 		obj.setIsActive(false);
 		currentSession().update(obj);
-//		map.remove(obj.getId());
 		log.info("delete timeline {}#{}", obj.getId(), obj.getName());
 		return obj;
 	}
 
-	public List<Timeline> all() {
+	public List<Timeline> all(String state) {
 		log.info("get timeline {}#{}");
-		return list(namedQuery("timeline.findAll"));
+		String query = "from Timeline t where :state='*' or state=:state";
+		Query<Timeline> q = currentSession().createQuery(query)
+							.setParameter("state", state);
+		return list(q);
+	}
+
+	public Timeline.Stream stream(String name, int limit) {
+		Timeline t = getTimeline(name);
+		return stream(t.getId(), limit);
 	}
 
 	public Timeline.Stream stream(long timelineId, int limit) {
 		Timeline t = byId(timelineId);
-
-		List<Post> posts = post.filter(
+		QueryResponse resp = query(
 			  t.getTopic(), Math.min(POSTS_PER_REQUEST, limit), 
 			  t.getIndex(), SORT_ORDER
 		);
 
+		List<Post> posts = toPosts(resp.getResults());
 		if (!posts.isEmpty()) {
 			int start = t.getIndex() + posts.size();
 			t.index(start);
 			update(t);			
 		}
 
-		return Timeline.Stream.of(t, posts);
+		Timeline.Stream stream = new Timeline.Stream(t, posts);
+
+		for (FacetField f : resp.getFacetFields()) {
+			for (Count pivot : f.getValues()) {
+				if (pivot.getCount() == 0) 
+					continue;
+				Timeline.Topic topic = new Timeline.Topic(pivot.getName(), (int)pivot.getCount());
+				stream.addTopic(f.getName(), topic);
+			}
+		}
+
+		return stream;
 	}
 
-	public Timeline.Stream fetch(long timelineId, int start, int limit) {
-		Timeline t = byId(timelineId);
+	private QueryResponse query(String query, int limit, int start, String sort) {
+		SolrQuery sq = new SolrQuery();
+		sq.set("q", query);
+		sq.set("facet", true);
+		sq.set("facet.field", "category", "type");
+		sq.set("rows", limit);
+		sq.set("start", start);
+		sq.set("sort", sort);
 
-		List<Post> list = post.filter(
-			  t.getTopic(), Math.min(POSTS_PER_REQUEST, limit), 
-			  start, SORT_ORDER
-		);		
-		
-		return Timeline.Stream.of(t, list);
-	}	
+		try {
+			return solr.query(sq);
+		} catch (Exception e) {
+			throw new SolrExecutionException(e);
+		}
+	}
+
+	public Timeline getTimeline(String name) {
+		try {
+			 Timeline t = (Timeline)currentSession()
+				 		.createQuery("from Timeline t where lower(trim(name))=lower(trim(:name))")
+				 		.setParameter("name", name)
+		 				.getSingleResult();
+			 log.info("get timeline {}#{}", t.getId(), t.getName());
+			 return t;
+		} catch (NoResultException e) {
+			log.info("creating timeline {}", name);
+			Timeline t = new Timeline();
+			t.setName(name);
+			t.setTopic(name);
+			t.setPostTypes("steemit-post,twitter-post,bbc-post,youtube-post");
+			t.setDescription(name + " timeline created by trender.");
+			t.setState("temp");
+			return create(t);
+		}
+	}
+
+	private List<Post> toPosts(SolrDocumentList list) {
+		List<Post> res = new ArrayList<>();
+		for (Iterator<SolrDocument> itr=list.iterator(); itr.hasNext(); ) {
+			Post p = Post.fromDoc(itr.next());
+			res.add(p);				
+		}
+		return res;		
+	}
 }

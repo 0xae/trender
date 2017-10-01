@@ -103,3 +103,17 @@ values(1, 'home', '*', '{steemit-post,twitter-post,bbc-post,youtube-post}', 'cre
 
 insert into z_timeline(id, name, topic, post_types, state, created_at)
 values(2, 'news', 'news', '{steemit-post,twitter-post,bbc-post,youtube-post}', 'created', now());
+
+create table z_media (
+        id bigserial primary key,
+        title text,
+        description text,
+        type varchar(50) not null,
+        timestamp timestamp not null,
+        data jsonb not null,
+        post_id varchar(150) not null,
+        source text,
+        cached_at text,
+        indexed_at timestamp not null default now()
+);
+

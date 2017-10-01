@@ -26,7 +26,7 @@ public class ManagedSolr implements Managed {
 			solrUp.close();
 	}
 
-	public ConcurrentUpdateSolrClient getSolr() {
+	public ConcurrentUpdateSolrClient getClient() {
 		return solrUp;
 	}
 }

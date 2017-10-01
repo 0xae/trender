@@ -69,8 +69,8 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		SessionFactory session = hibernateBundle.getSessionFactory();
 		ManagedSolr solr = new ManagedSolr();
 
-		PostService post = new PostService(solr.getSolr());
-		TimelineService timeline = new TimelineService(session, post);			
+		PostService post = new PostService(solr.getClient());
+		TimelineService timeline = new TimelineService(session, solr.getClient());			
 
 		env.jersey().register(new ApiResource(post, timeline));
 		env.jersey().register(new NoResultExceptionExceptionMapper(env.metrics()));

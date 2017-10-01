@@ -1,8 +1,10 @@
 package com.dk.trender.core;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,9 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.ColumnTransformer;
@@ -27,12 +26,6 @@ import io.dropwizard.validation.OneOf;
 
 @Entity
 @Table(name="z_timeline")
-@NamedQueries({
-    @NamedQuery(
-	    name = "timeline.findAll",
-	    query = "from Timeline t"
-    )
-})
 public class Timeline {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -185,7 +178,7 @@ public class Timeline {
 	public void setSpiders(@NotEmpty List<String> s) {
 		this.postTypes = String.join(",", s);
 	}
-	
+
 	@JsonProperty
 	public boolean isActive() {
 		return isActive;		
@@ -194,36 +187,71 @@ public class Timeline {
 	@JsonProperty
 	public void setIsActive(boolean flag) {
 		this.isActive = flag;		
-	}	
+	}
+
+	public static class Topic {
+		private String name;
+		private int score;
+
+		public Topic() {
+			// TODO Auto-generated constructor stub
+		}
+
+		public Topic(String name, int score) {
+			this.name = name;
+			this.score = score;
+		}		
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setScore(int score) {
+			this.score = score;
+		}
+
+		public int getScore() {
+			return score;
+		}
+	}
 
 	public static class Stream {
-		@NotNull
 		private Timeline timeline;
-		
-		@NotNull
-		private List<Post> posts;
-		
+		private List<Post> posts;		
+		private Map<String, List<Topic>> topics = new HashMap<>();
 		private int count;
-		
+
 		public Stream() {
 			// TODO Auto-generated constructor stub
 		}
 
-		public static Stream of(Timeline tl, List<Post> list) {
-			Objects.requireNonNull(tl);
-			Objects.requireNonNull(list);
-			Stream s = new Stream();
-			s.setTimeline(tl);
-			s.setPosts(list);
-			s.count = list.size();
-			return s;
+		public Stream (Timeline tl, List<Post> list) {
+			this.setTimeline(tl);
+			this.setPosts(list);
+			this.count = list.size();
+		}
+
+		public Stream addTopic(String key, Topic topic) {
+			List<Topic> ary = topics.getOrDefault(key, new ArrayList<>());
+			ary.add(topic);
+			topics.put(key, ary);
+			return this;
+		}
+
+		@JsonProperty
+		public Map<String, List<Topic>> getTopics() {
+			return topics;
 		}
 
 		@JsonProperty
 		public void setCount(int count) {
 			this.count = count;
 		}
-		
+
 		@JsonProperty
 		public int getCount() {
 			return count;
@@ -233,17 +261,17 @@ public class Timeline {
 		public void setPosts(List<Post> posts) {
 			this.posts = posts;
 		}
-		
+
 		@JsonProperty
 		public List<Post> getPosts() {
 			return posts;
 		}
-		
+
 		@JsonProperty
 		public void setTimeline(Timeline timeline) {
 			this.timeline = timeline;
 		}
-		
+
 		@JsonProperty
 		public Timeline getTimeline() {
 			return timeline;

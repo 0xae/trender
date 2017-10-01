@@ -60,7 +60,7 @@ public class ApiResource {
 	@Path("/post/{id}")
 	public Post getPost(@PathParam("id") @NotEmpty String id) {
 		return post.byId(id);
-	}	
+	}
 
 	@POST
 	@UnitOfWork
@@ -72,13 +72,15 @@ public class ApiResource {
 	@GET
 	@UnitOfWork
 	@Path("/timeline/")
-	public List<Timeline> getTimeline() {
-		return timeline.all();
+	public List<Timeline> getTimeline(@QueryParam("state") 
+									  @DefaultValue("created") 
+									  String state) {
+		return timeline.all(state);
 	}
 
 	@GET
 	@UnitOfWork
-	@Path("/timeline/{id}/stream")
+	@Path("/timeline/{id:\\d+}/stream")
 	public Timeline.Stream streamTimeline(@PathParam("id") long id,
 										 @QueryParam("limit") @DefaultValue("10") int limit) {
 		return timeline.stream(id, limit);
@@ -86,13 +88,21 @@ public class ApiResource {
 
 	@GET
 	@UnitOfWork
-	@Path("/timeline/{id}/more")
-	public Timeline.Stream loadTimeline(@PathParam("id") long id,
-			@QueryParam("start") @Min(0) int start,
-			@QueryParam("limit") @DefaultValue("10") int limit) {
-		return timeline.fetch(id, start, limit);
+	@Path("/topic/{name:\\w+}/stream")
+	public Timeline.Stream streamTimeline(@PathParam("name") String name,
+										 @QueryParam("limit") @DefaultValue("10") int limit) {
+		return timeline.stream(name, limit);
 	}
-	
+
+//	@GET
+//	@UnitOfWork
+//	@Path("/timeline/{id}/more")
+//	public Timeline.Stream loadTimeline(@PathParam("id") long id,
+//			@QueryParam("start") @Min(0) int start,
+//			@QueryParam("limit") @DefaultValue("10") int limit) {
+//		return timeline.fetch(id, start, limit);
+//	}
+
 	@GET
 	@UnitOfWork
 	@Path("/timeline/{id}")
