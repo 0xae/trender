@@ -79,17 +79,19 @@ public class ApiResource {
 	@GET
 	@UnitOfWork
 	@Path("/timeline/{id}/stream")
-	public Timeline.Stream streamTimeline(@PathParam("id") long id) {
-		return timeline.stream(id);
+	public Timeline.Stream streamTimeline(@PathParam("id") long id,
+										 @QueryParam("limit") @DefaultValue("10") int limit) {
+		return timeline.stream(id, limit);
 	}
 
 	@GET
 	@UnitOfWork
 	@Path("/timeline/{id}/more")
 	public Timeline.Stream loadTimeline(@PathParam("id") long id,
-			@QueryParam("start") @Min(0) int start) {
-		return timeline.fetch(id, start);
-	}	
+			@QueryParam("start") @Min(0) int start,
+			@QueryParam("limit") @DefaultValue("10") int limit) {
+		return timeline.fetch(id, start, limit);
+	}
 	
 	@GET
 	@UnitOfWork

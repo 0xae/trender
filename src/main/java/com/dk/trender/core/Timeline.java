@@ -203,6 +203,8 @@ public class Timeline {
 		@NotNull
 		private List<Post> posts;
 		
+		private int count;
+		
 		public Stream() {
 			// TODO Auto-generated constructor stub
 		}
@@ -213,7 +215,18 @@ public class Timeline {
 			Stream s = new Stream();
 			s.setTimeline(tl);
 			s.setPosts(list);
+			s.count = list.size();
 			return s;
+		}
+
+		@JsonProperty
+		public void setCount(int count) {
+			this.count = count;
+		}
+		
+		@JsonProperty
+		public int getCount() {
+			return count;
 		}
 
 		@JsonProperty
