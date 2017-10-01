@@ -13,7 +13,7 @@ public class ManagedSolr implements Managed {
 				.Builder(URL)
 				.withQueueSize(10)
 				.withThreadCount(4)
-				.build();		
+				.build();
 	}
 
 	@Override
@@ -22,7 +22,8 @@ public class ManagedSolr implements Managed {
 
 	@Override
 	public void stop() throws Exception {
-		solrUp.close();
+		if (solrUp != null)
+			solrUp.close();
 	}
 
 	public ConcurrentUpdateSolrClient getSolr() {

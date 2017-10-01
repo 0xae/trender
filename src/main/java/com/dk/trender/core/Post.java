@@ -2,14 +2,19 @@ package com.dk.trender.core;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotNull;
 
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrInputDocument;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 
@@ -27,15 +32,35 @@ public class Post {
 	private @NotEmpty String link;
 	private @NotEmpty String description = "";
 	private @NotEmpty String location = "worldwide";
-	private @NotNull LocalDateTime timestamp;
+	private @NotEmpty String lang = "en-us";
+	private @NotNull DateTime timestamp;
+	private DateTime indexedAt;
 
 	private @NotNull String authorPicture = "";
 	private @NotNull String picture = "";
 	private @NotNull String data = "{}";
 	private @NotNull List<String> category = Collections.emptyList();
 
-	public Post() {
-		// TODO
+	@JsonIgnore
+	public Post indexedAt(DateTime date) {
+		this.indexedAt = date;
+		return this;
+	}
+
+	@JsonIgnore
+	public DateTime indexedAt() {
+		return indexedAt;
+	}
+
+	@JsonProperty
+	public Post setLang(String lang) {
+		this.lang = lang;
+		return this;
+	}
+
+	@JsonProperty
+	public String getLang() {
+		return lang;
 	}
 
 	@JsonProperty
@@ -82,26 +107,33 @@ public class Post {
 	}
 
 	@JsonProperty
-	public Post setTimestamp(LocalDateTime timestamp) {
+	public Post setTimestamp(DateTime timestamp) {
 		this.timestamp = timestamp;
 		return this;
 	}
 
 	@JsonProperty
 	public Post setTimestamp(String ts) {
-		this.timestamp = new LocalDateTime(ts.replace(" ", "T"));
+		this.timestamp = new DateTime(ts.replace(" ", "T"));
 		return this;
 	}
 
 	@JsonProperty
-	public LocalDateTime getTimestamp() {
+	public DateTime getTimestamp() {
 		return timestamp;
 	}
 
  	@JsonProperty
- 	public String formatTs() {
-		return DateTimeFormat.forPattern("YYY-MM-d HH:mm:ss")
+ 	public String timestampFmt() {
+		return DateTimeFormat.forPattern("YYY-MM-dd HH:mm:ss")
 				.print(timestamp)
+				.replace(' ', 'T');
+ 	}
+
+ 	@JsonProperty
+ 	public String indexedAtFmt() {
+		return DateTimeFormat.forPattern("YYY-MM-dd HH:mm:ss")
+				.print(indexedAt)
 				.replace(' ', 'T');
  	}
 
@@ -174,13 +206,58 @@ public class Post {
 	@JsonProperty
 	public void setCategory(List<String> category) {
 		this.category = category.stream()
-				.map(this::norm)
+				.map(t -> t.toLowerCase().trim())
 				.collect(Collectors.toList());
 	}
 
 	@JsonProperty
 	public List<String> getCategory() {
 		return category;
+	}
+	
+	@JsonIgnore
+	public SolrInputDocument toDoc() {
+		final Post post = this;
+		SolrInputDocument doc = new SolrInputDocument();
+		doc.addField("id", post.getId());
+		doc.addField("type", post.getType());
+		doc.addField("authorName", post.getAuthorName());
+		doc.addField("source", post.getSource());
+		doc.addField("link", post.getLink());
+		doc.addField("description", post.getDescription());
+		doc.addField("timestamp", post.timestampFmt() );
+		doc.addField("location", post.getLocation());
+//		doc.addField("indexedAt", post.indexedAtFmt());
+//		doc.addField("lang", post.getLang());
+
+		// the optional fellas
+		doc.addField("authorPicture", post.getAuthorPicture());
+		doc.addField("picture", post.getPicture());
+		doc.addField("data", post.getData());
+		doc.addField("category", post.getCategory());	
+		return doc;
+	}
+	
+	public static Post fromDoc(SolrDocument doc) {		
+		Post p = new Post();
+		p.setId(doc.get("id").toString());
+
+		p.setType(doc.get("type").toString());
+		p.setAuthorName(doc.get("authorName").toString());
+		p.setSource(doc.get("source").toString());
+		p.setLink(doc.get("link").toString());
+		p.setDescription(doc.get("description").toString());
+		p.setTimestamp(new DateTime(doc.get("timestamp")));
+		p.setLocation(doc.get("location").toString());
+		p.indexedAt(new DateTime(doc.get("indexedAt")));
+		p.setLang(Optional.ofNullable(doc.get("lang")).orElse("en-us").toString());
+
+		p.setAuthorPicture(Optional.ofNullable(doc.get("authorPicture")).orElse("").toString());
+		p.setPicture(Optional.ofNullable(doc.get("picture")).orElse("").toString());
+		p.setData(doc.get("data").toString());
+		p.setCategory((List<String>)doc.get("category"));
+
+		return p;
 	}
 
 	@Override
@@ -192,7 +269,8 @@ public class Post {
 	}
 
 	/**
-	 * XXX: what about an update?
+	 * XXX: since comparison is done in terms of id
+	 * 		what about an update?
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -207,9 +285,4 @@ public class Post {
 		final Post that = (Post) obj;
 		return Objects.equal(this.id, that.id);
 	}
-
-	private String norm(String tag) {
-		return tag.toLowerCase()
-				.trim();
-	}	
 }

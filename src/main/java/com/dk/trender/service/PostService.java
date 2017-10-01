@@ -1,52 +1,106 @@
 package com.dk.trender.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
+import javax.persistence.NoResultException;
+
+import java.util.Iterator;
+
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.ConcurrentUpdateSolrClient;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dk.trender.core.Post;
+import com.dk.trender.exceptions.SolrExecutionException;
 
 /**
  * 
  * @author ayrton
  */
 public class PostService {
-	private ConcurrentUpdateSolrClient solrUp;
+	private ConcurrentUpdateSolrClient solr;
+	private static final Logger log = LoggerFactory.getLogger(PostService.class);
 
 	public PostService(ConcurrentUpdateSolrClient service) {
-		solrUp = service;
+		solr = service;
 	}
 
 	public void create(List<Post> posts) {
 		final List<SolrInputDocument> docs = new LinkedList<>();
+		DateTime start = DateTime.now();
 
 		for (final Post p : posts) {
-			SolrInputDocument doc = new SolrInputDocument();
-			doc.addField("id", p.getId());
-			doc.addField("type", p.getType());
-			doc.addField("authorName", p.getAuthorName());
-			doc.addField("source", p.getSource());
-			doc.addField("link", p.getLink());
-			doc.addField("description", p.getDescription());
-			doc.addField("timestamp", p.formatTs());
-			doc.addField("location", p.getLocation());
-
-			// the optional fellas
-			doc.addField("authorPicture", p.getAuthorPicture());
-			doc.addField("picture", p.getPicture());
-			doc.addField("data", p.getData());
-			doc.addField("category", p.getCategory());
-
-			docs.add(doc);
+			p.indexedAt(start);
+			if (exists(p)) {
+				log.info("ignoring double insert on doc: " + p.getId());
+				return;
+			}
+			
+			log.info("index doc: " + p.getId());
+			docs.add(p.toDoc());
+			start = start.plusMillis(60);
 		}
 
 		try {
-			solrUp.add(docs);
-			solrUp.commit();
+			solr.add(docs);
+			solr.commit();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new SolrExecutionException(e);
+		}
+	}
+
+	public List<Post> filter(String query, int limit, int start, String sort) {
+		SolrQuery sq = new SolrQuery();
+		List<Post> res = new ArrayList<>();
+
+		sq.set("q", query);
+		sq.set("facet", true);
+		sq.set("facet.field", "category", "type");
+		sq.set("rows", limit);
+		sq.set("start", start);
+		sq.set("sort", sort);
+
+		try {
+			QueryResponse response = solr.query(sq);
+			SolrDocumentList list = response.getResults();
+
+			log.info("found {} results for query '{}'", list.size(), query);
+			for (Iterator<SolrDocument> itr=list.iterator(); itr.hasNext(); ) {
+				Post p = Post.fromDoc(itr.next());
+				res.add(p);				
+			}
+			return res;
+		} catch (Exception e) {
+			throw new SolrExecutionException(e);
+		}
+	}
+	
+	public Post byId(String id) {
+		try {
+			SolrDocument doc = Optional
+					.ofNullable(solr.getById(id))
+					.orElseThrow(NoResultException::new);
+			return Post.fromDoc(doc);
+		} catch (Exception e) {
+			throw new SolrExecutionException(e);
+		}		
+	}
+
+	private boolean exists(Post p) {
+		try {
+			return solr.getById(p.getId()) != null;
+		} catch (Exception e) {
+			throw new SolrExecutionException(e);
 		}
 	}
 }

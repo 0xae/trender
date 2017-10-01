@@ -3,7 +3,7 @@ package com.dk.trender.exceptions;
 import org.hibernate.exception.ConstraintViolationException;
 import org.postgresql.util.PSQLException;
 
-import javax.ws.rs.WebApplicationExceptions;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 

@@ -19,9 +19,9 @@ import javax.persistence.NoResultException;
  * @date 2017-04-01 07:00:30
  */
 public class NoResultExceptionExceptionMapper implements ExceptionMapper<NoResultException> {
-	private final Meter exceptions;
 	private final Logger LOGGER = LoggerFactory.getLogger(NoResultExceptionExceptionMapper.class);
-	
+	private final Meter exceptions;
+
 	public NoResultExceptionExceptionMapper(final MetricRegistry metrics) {
 		exceptions = metrics.meter(name(getClass(), "exceptions"));
 	}

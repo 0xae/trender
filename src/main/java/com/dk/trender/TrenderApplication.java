@@ -8,11 +8,13 @@ import javax.servlet.FilterRegistration;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.hibernate.SessionFactory;
 
-import com.dk.trender.core.Channel;
+import com.dk.trender.core.Timeline;
 import com.dk.trender.core.managed.ManagedSolr;
+import com.dk.trender.exceptions.ConstraintViolationExceptionMapper;
+import com.dk.trender.exceptions.NoResultExceptionExceptionMapper;
 import com.dk.trender.resources.ApiResource;
-import com.dk.trender.service.ChannelService;
 import com.dk.trender.service.PostService;
+import com.dk.trender.service.TimelineService;
 
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
@@ -29,7 +31,7 @@ import io.dropwizard.setup.Environment;
  * @date 2017-07-29 07:04:53
  */
 public class TrenderApplication extends Application<TrenderConfiguration> {
-    final HibernateBundle<TrenderConfiguration> hibernateBundle = new HibernateBundle<TrenderConfiguration>(Channel.class) {
+    final HibernateBundle<TrenderConfiguration> hibernateBundle = new HibernateBundle<TrenderConfiguration>(Timeline.class) {
 		public DataSourceFactory getDataSourceFactory(TrenderConfiguration configuration) {
 			return configuration.getDatabase();
 		}
@@ -64,14 +66,16 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 		cors.setInitParameter(CrossOriginFilter.CHAIN_PREFLIGHT_PARAM, Boolean.FALSE.toString());
 
-		SessionFactory sessionFactory = hibernateBundle.getSessionFactory();
-		ManagedSolr managedSolr = new ManagedSolr();
+		SessionFactory session = hibernateBundle.getSessionFactory();
+		ManagedSolr solr = new ManagedSolr();
 
-		PostService postService = new PostService(managedSolr.getSolr());
-		ChannelService channelService = new ChannelService(sessionFactory);			
+		PostService post = new PostService(solr.getSolr());
+		TimelineService timeline = new TimelineService(session, post);			
 
-		env.jersey().register(new ApiResource(postService, channelService));
-		env.lifecycle().manage(managedSolr);
+		env.jersey().register(new ApiResource(post, timeline));
+		env.jersey().register(new NoResultExceptionExceptionMapper(env.metrics()));
+		env.jersey().register(new ConstraintViolationExceptionMapper());
+		env.lifecycle().manage(solr);
 	}
 
 	public static void main(String[] args) throws Exception {

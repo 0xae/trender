@@ -85,11 +85,21 @@ create schema public;
 --insert into z_listing(title, description) 
 --values ('general', 'listing for uncategorized posts'), ('breaking-news', 'breaking media social news');
 
-create table z_channel (
+create table z_timeline (
         id bigserial primary key,
         name text not null,
         description text,
         topic varchar(250) not null,
         post_types varchar(250)[],
-        creation_date timestamp not null
+        created_at timestamp not null,
+        updated_at timestamp,
+        index integer not null default 0,
+        state varchar(50) not null default 'temp',
+        is_active boolean not null default true
 );
+
+insert into z_timeline(id, name, topic, post_types, state, created_at)
+values(1, 'home', '*', '{steemit-post,twitter-post,bbc-post,youtube-post}', 'created', now());
+
+insert into z_timeline(id, name, topic, post_types, state, created_at)
+values(2, 'news', 'news', '{steemit-post,twitter-post,bbc-post,youtube-post}', 'created', now());
