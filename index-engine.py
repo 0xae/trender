@@ -12,7 +12,7 @@ def get_spider_name(t):
              'bbc-post', 'steemit-post'):
         return t.replace('-', '_') + 's'
     else:
-        raise ValueError('Unexpected post-type %s' % t)
+        raise ValueError('Unexpected post-type "%s"' % t)
 
 
 def get_conf():
@@ -29,13 +29,14 @@ def get_conf():
 def callback():
     """ send the indexing work to scrapy  """
     host, _ = get_conf()
-    r = requests.get('http://%s:5000/api/channel' % host)
+    r = requests.get('http://%s:5000/api/timeline?state=temp' % host)
     data = r.json()
 
     for item in data:
-        print "indexing: ", item['name']
-        for s in item['spiders']:
+        postType = item['postTypes'].split(',')
+        for s in postType:
             spider_name = get_spider_name(s)
+            print 'indexing: %s/%s ' % (spider_name, item['topic'])
 
             r = requests.post('http://%s:6800/schedule.json' % host,
                               data={'project': 'spiders',

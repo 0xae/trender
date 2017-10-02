@@ -15,30 +15,10 @@ class TwitterSpider(scrapy.Spider):
     name = 'twitter_posts'
 
     def start_requests(self):
-        # start_links = [
-        #     'https://twitter.com/XHNews',
-        #     'https://twitter.com/ftrain',
-        #     'https://twitter.com/_gamemix_',
-        #     'https://twitter.com/bobbyclee',
-        #     'https://twitter.com/lopp',
-        #     'https://twitter.com/AyrtonGsZ',
-        #     'https://twitter.com/search?q=bitcoin&src=typd',
-        #     'https://twitter.com/search?q=cryptocurrency&src=typd',
-        #     'https://twitter.com/search?q=news&src=typd',
-        #     'https://twitter.com/search?f=news&vertical=default&q=cryptocurrency&src=typd',
-        #     'https://twitter.com/ForbesInvestor',
-        #     'https://twitter.com/search?f=news&vertical=default&q=rick+and+morty&src=typd',
-        # ]
         self.tweetTopic = quote_plus(self.topic if self.topic else 'news')
         start_links = [
              'https://twitter.com/search?' +
              'f=news&vertical=default&q=%s&src=typd' % self.tweetTopic,
-             'https://twitter.com/AyrtonGsZ',
-             'https://twitter.com/XHNews',
-             'https://twitter.com/ftrain',
-             'https://twitter.com/_gamemix_',
-             'https://twitter.com/bobbyclee',
-             'https://twitter.com/lopp',
         ]
 
         for url in start_links:
@@ -147,7 +127,7 @@ class TwitterSpider(scrapy.Spider):
 
         for link in node.css('.tweet-text a'):
             ltype = link.css('::attr("class")').extract()[0].split()
-            lhtml = link.extract_first()
+            lhtml = link.extract()
             try:
                 if 'twitter-hashtag' in ltype or 'twitter-cashtag' in ltype:
                     first = link.css('b::text').extract_first()

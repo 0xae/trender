@@ -1,6 +1,5 @@
 package com.dk.trender.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,13 +7,8 @@ import java.util.Optional;
 
 import javax.persistence.NoResultException;
 
-import java.util.Iterator;
-
-import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.ConcurrentUpdateSolrClient;
-import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -36,17 +30,17 @@ public class PostService {
 	}
 
 	public void create(List<Post> posts) {
-		final List<SolrInputDocument> docs = new LinkedList<>();
+		List<SolrInputDocument> docs = new LinkedList<>();
 		DateTime start = DateTime.now();
 
 		for (final Post p : posts) {
 			p.indexedAt(start);
 			if (exists(p)) {
-				log.info("ignoring double insert on doc: " + p.getId());
+				log.info("skip doc: " + p.getLink());
 				return;
 			}
-			
-			log.info("index doc: " + p.getId());
+
+			log.info("index doc: " + p.getLink());
 			docs.add(p.toDoc());
 			start = start.plusMillis(60);
 		}
@@ -68,6 +62,29 @@ public class PostService {
 		} catch (Exception e) {
 			throw new SolrExecutionException(e);
 		}		
+	}
+	
+	public void updateMedia(String id, String media) {
+		try {
+			SolrDocument post = solr.getById(id);
+			if (post == null) {
+				log.warn("post " + id + " not found!");
+				return;
+				// throw new NoResultException("post " + id + " not found!");
+			}
+
+			SolrInputDocument doc = new SolrInputDocument();
+			post.setField("cached", media);
+
+			for (String key : post.getFieldNames()) {
+				doc.setField(key, post.get(key));
+			}
+
+			solr.add(doc);
+			solr.commit();
+		} catch (Exception e) {
+			throw new SolrExecutionException(e);
+		}
 	}
 
 	private boolean exists(Post p) {

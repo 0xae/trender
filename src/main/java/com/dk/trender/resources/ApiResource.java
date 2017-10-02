@@ -8,6 +8,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -16,6 +17,8 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.solr.common.SolrDocumentList;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dk.trender.core.Timeline;
 import com.dk.trender.core.Post;
@@ -33,6 +36,7 @@ import io.dropwizard.hibernate.UnitOfWork;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ApiResource {
+	private static final Logger log = LoggerFactory.getLogger(ApiResource.class);
 	private final PostService post;
 	private final TimelineService timeline;
 
@@ -49,12 +53,13 @@ public class ApiResource {
 		post.create(request);
 	}
 
-//	@GET
-//	@Path("/post/search")
-//	public List<Post> searchPost(@QueryParam("q") @NotEmpty String query,
-//						         @QueryParam("limit") @DefaultValue("50") int limit) {
-//		return post.filter(query, limit);
-//	}
+	@Path("/post/media/{id}")
+	@POST
+	public void updatePostMedia(@PathParam("id") String id,
+								@NotEmpty String mediaUrl) {
+		log.info("media " + mediaUrl);
+		post.updateMedia(id, mediaUrl);
+	}
 
 	@GET
 	@Path("/post/{id}")
@@ -93,15 +98,6 @@ public class ApiResource {
 										 @QueryParam("limit") @DefaultValue("10") int limit) {
 		return timeline.stream(name, limit);
 	}
-
-//	@GET
-//	@UnitOfWork
-//	@Path("/timeline/{id}/more")
-//	public Timeline.Stream loadTimeline(@PathParam("id") long id,
-//			@QueryParam("start") @Min(0) int start,
-//			@QueryParam("limit") @DefaultValue("10") int limit) {
-//		return timeline.fetch(id, start, limit);
-//	}
 
 	@GET
 	@UnitOfWork

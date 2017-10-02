@@ -27,13 +27,6 @@ class SteemitSpider(scrapy.Spider):
                         .re(r'\((.*)\)')
             image = image_node[0] if image_node else DEFAULT_IMG
 
-            try:
-                post_url = art.css(
-                        '.PostSummary__header h3.entry-title a::attr("href")'
-                       )[1].extract()
-            except IndexError:
-                continue
-
             post_url = 'https://steemit.com' + art.css(
                     '.PostSummary__header h3.entry-title a::attr("href")'
                    )[1].extract()
@@ -49,7 +42,7 @@ class SteemitSpider(scrapy.Spider):
 
             post_author = art.css(
                             '.PostSummary__time_author_category ' +
-                            ' .author a strong::text').extract_first()
+                            ' .author a::text').extract_first()
 
             post_author_link = art.css(
                             '.PostSummary__time_author_category ' +
@@ -91,6 +84,7 @@ class SteemitSpider(scrapy.Spider):
                 "authorName": post_author,
                 "source": "steemit.com",
                 "link": post_url,
+                "lang": "en-us",
                 "location": "worlwide",
                 "timestamp": timestamp,
                 "picture": image if image else DEFAULT_IMG,

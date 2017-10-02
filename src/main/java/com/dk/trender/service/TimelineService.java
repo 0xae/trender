@@ -35,7 +35,7 @@ import io.dropwizard.hibernate.AbstractDAO;
  */
 public class TimelineService extends AbstractDAO<Timeline> {
 	private static final Logger log = LoggerFactory.getLogger(TimelineService.class);
-	private static final String SORT_ORDER = "timestamp asc";
+	private static final String SORT_ORDER = "indexedAt asc";
 	private static final int POSTS_PER_REQUEST = 50;
 	private final ConcurrentUpdateSolrClient solr;
 
@@ -52,7 +52,7 @@ public class TimelineService extends AbstractDAO<Timeline> {
 		 log.info("get timeline {}#{}", t.getId(), t.getName());
 		 return t;
 	}
-	
+
 	public Timeline create(Timeline obj) {	
 		Timeline t = persist(obj);
 		log.info("create timeline {}", t.getId(), t.getName());

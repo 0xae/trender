@@ -88,3 +88,12 @@ NEWSPIDER_MODULE = 'spiders.spiders'
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+IMAGES_STORE = '/opt/lampp/htdocs/trender/downloads'
+
+ITEM_PIPELINES = {
+    'spiders.pipelines.MediaImagesPipeline': 10,
+    'spiders.pipelines.MediaPipeline': 30,
+}
+
+IMAGES_EXPIRES = 30

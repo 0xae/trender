@@ -36,9 +36,21 @@ public class Post {
 	private DateTime indexedAt;
 
 	private @NotNull String authorPicture = "";
+	private String authorId = "";
 	private @NotNull String picture = "";
 	private @NotNull String data = "{}";
-	private @NotNull List<String> category = Collections.emptyList();
+	private String cached = "";
+	private @NotNull List<String> category = Collections.emptyList();	
+	
+	@JsonProperty
+	public void setAuthorId(String authorId) {
+		this.authorId = authorId;
+	}
+	
+	@JsonProperty
+	public String getAuthorId() {
+		return authorId;
+	}
 
 	@JsonIgnore
 	public Post indexedAt(DateTime date) {
@@ -46,7 +58,7 @@ public class Post {
 		return this;
 	}
 
-	@JsonIgnore
+	@JsonProperty
 	public DateTime indexedAt() {
 		return indexedAt;
 	}
@@ -213,7 +225,17 @@ public class Post {
 	public List<String> getCategory() {
 		return category;
 	}
-	
+
+	@JsonProperty
+	public void setCached(String cached) {
+		this.cached = cached;
+	}
+
+	@JsonProperty
+	public String getCached() {
+		return cached;
+	}
+
 	@JsonIgnore
 	public SolrInputDocument toDoc() {
 		final Post post = this;
@@ -226,8 +248,10 @@ public class Post {
 		doc.addField("description", post.getDescription());
 		doc.addField("timestamp", post.timestampFmt() );
 		doc.addField("location", post.getLocation());
-//		doc.addField("indexedAt", post.indexedAtFmt());
-//		doc.addField("lang", post.getLang());
+		doc.addField("indexedAt", post.indexedAtFmt());
+		doc.addField("lang", post.getLang());
+		doc.addField("cached", post.getCached());
+		doc.addField("authorId", post.getAuthorId());
 
 		// the optional fellas
 		doc.addField("authorPicture", post.getAuthorPicture());
@@ -236,7 +260,7 @@ public class Post {
 		doc.addField("category", post.getCategory());	
 		return doc;
 	}
-	
+
 	public static Post fromDoc(SolrDocument doc) {		
 		Post p = new Post();
 		p.setId(doc.get("id").toString());
@@ -250,9 +274,11 @@ public class Post {
 		p.setLocation(doc.get("location").toString());
 		p.indexedAt(new DateTime(doc.get("indexedAt")));
 		p.setLang(Optional.ofNullable(doc.get("lang")).orElse("en-us").toString());
+		p.setAuthorId(Optional.ofNullable(doc.get("authorId")).orElse("i/unknown").toString());
 
 		p.setAuthorPicture(Optional.ofNullable(doc.get("authorPicture")).orElse("").toString());
 		p.setPicture(Optional.ofNullable(doc.get("picture")).orElse("").toString());
+		p.setCached(Optional.ofNullable(doc.get("cached")).orElse("").toString());
 		p.setData(doc.get("data").toString());
 		p.setCategory((List<String>)doc.get("category"));
 
