@@ -71,9 +71,11 @@ that's it
 * [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
 * [Hibernate User Guide](http://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#architecture-overview)
 
-### Scrapy & Friends
+### Tools
 * [Scrapy](https://docs.scrapy.org/en/latest/topics)
 * [grequests](https://pypi.python.org/pypi/grequests)
+* [syntax-highlighter](https://github.com/syntaxhighlighter/)
+* [twitter-emoji](https://github.com/twitter/twemoji)
 
 ### Multimedia websites
 * [UK Tv Guide](http://www.tvguide.co.uk/)
@@ -87,12 +89,14 @@ that's it
 * [openweathermap](https://openweathermap.org/city/3374333)
 
 ### Markets
+* [Oil Price](http://oilprice.com)
 * [blockchain](https://blockchain.info)
 * [blockchair](https://blockchair.com)
 * [coinmarketcap](https://coinmarketcap.com)
 * [bravenewcoin](https://bravenewcoin.com)
 * [bitcoin developer guide](https://bitcoin.org/en/developer-guide)
 * [cryptocompare](https://www.cryptocompare.com)
+* [fork.lol](http://fork.lol)
 
 ### Text/Data Processing
 * [Command-line JSON processor](https://github.com/stedolan/jq)
@@ -120,7 +124,11 @@ that's it
 * [OpenAI](https://openai.com/)
 * [openai systems](https://openai.com/systems/)
 
+### Blogs
+* [Nick Szabo](https://unenumerated.blogspot.com)
+
 ### Random Stuff    
+* [twitter.com/Channel4News](https://twitter.com/Channel4News)
 * [Random UK post code generator](https://www.doogal.co.uk/PostcodeGenerator.php)
 * [Reddit Atlas](https://www.reddit.com/r/RedditAtlas/)
 * [Project Atlas](https://draemm.li/various/place-atlas/)
@@ -140,6 +148,10 @@ that's it
 * [jvm article at cnblogs](http://www.cnblogs.com/-new/p/7244460.html)
 * [douban looks awesome](https://www.douban.com/people/killme2008/)
 * [Government Types](https://www.pinterest.com/pin/521432463090231883/)
+* [Jp live musics](https://www.showroom-live.com/akb48_asuyoro)
+* [rotten tomatoes](https://www.rottentomatoes.com)
+* [imdb.com](http://www.imdb.com)
+* [4news](https://www.channel4.com)
 
 ### A Geek amusings
 * [geeking.co](http://geeking.co/)
