@@ -138,7 +138,8 @@ public class Timeline {
 		return DateTimeFormat.forPattern("YYY-MM-d HH:mm:ss")
 				.print(updateDate)
 				.replace(' ', 'T');
- 	}		
+ 	}
+
 	@JsonProperty
 	public String getName() {
 		return name;

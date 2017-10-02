@@ -80,7 +80,7 @@ public class ApiResource {
 
 	@GET
 	@UnitOfWork
-	@Path("/timeline/{id:\\d+}/stream")
+	@Path("/timeline/{id}/stream")
 	public Timeline.Stream streamTimeline(@PathParam("id") long id,
 										 @QueryParam("limit") @DefaultValue("10") int limit) {
 		return timeline.stream(id, limit);
@@ -88,7 +88,7 @@ public class ApiResource {
 
 	@GET
 	@UnitOfWork
-	@Path("/topic/{name:\\w+}/stream")
+	@Path("/topic/{name}/stream")
 	public Timeline.Stream streamTimeline(@PathParam("name") String name,
 										 @QueryParam("limit") @DefaultValue("10") int limit) {
 		return timeline.stream(name, limit);
