@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.dk.trender.core.Post;
 import com.dk.trender.exceptions.SolrExecutionException;
+import com.dk.trender.service.utils.DateUtils;
 
 /**
  * 
@@ -70,7 +71,6 @@ public class PostService {
 			if (post == null) {
 				log.warn("post " + id + " not found!");
 				return;
-				// throw new NoResultException("post " + id + " not found!");
 			}
 
 			SolrInputDocument doc = new SolrInputDocument();
@@ -80,9 +80,19 @@ public class PostService {
 				doc.setField(key, post.get(key));
 			}
 
+			if (post.get("indexedAt") == null) {
+				doc.setField("indexedAt", DateUtils.format(DateTime.now()));
+				doc.setField("indexedAt", DateUtils.format(DateTime.now()));
+			}
+
+			if (post.get("lang") == null) {
+				doc.setField("lang", "en-us");
+			}			
+			
 			solr.add(doc);
 			solr.commit();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new SolrExecutionException(e);
 		}
 	}

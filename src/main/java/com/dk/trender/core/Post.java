@@ -39,7 +39,7 @@ public class Post {
 	private String authorId = "";
 	private @NotNull String picture = "";
 	private @NotNull String data = "{}";
-	private String cached = "";
+	private String cached = "none";
 	private @NotNull List<String> category = Collections.emptyList();	
 	
 	@JsonProperty
