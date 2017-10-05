@@ -93,11 +93,13 @@ class SteemitSpider(scrapy.Spider):
             }
 
             queue.append(post)
-            yield post
 
         topic = quote_plus(self.topic if self.topic else '')
         dbg = "steemit/%s" % quote_plus(topic)
         create_post(queue, debug=dbg)
+
+        for p in queue:
+            yield p
 
         links = response.css('ul.Topics a::attr("href")').extract()
         next_page = '/tags'

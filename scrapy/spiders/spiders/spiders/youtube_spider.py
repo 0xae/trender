@@ -17,11 +17,11 @@ class YoutubeSpider(scrapy.Spider):
 
         start_links = [
             'https://www.youtube.com/results?search_query=%s' % youtubeTopic,
-            # 'https://www.youtube.com/results?search_query=bitcoin',
-            # 'https://www.youtube.com/results?search_query=china+news',
-            # 'https://www.youtube.com/results?search_query=asia+news',
-            # 'https://www.youtube.com/results?q=stock+market&sp=EgIIBFAU',
-            # 'https://www.youtube.com/results?q=rick+and+morty&sp=EgIIBFAU'
+            'https://www.youtube.com/results?search_query=bitcoin',
+            'https://www.youtube.com/results?search_query=china+news',
+            'https://www.youtube.com/results?search_query=asia+news',
+            'https://www.youtube.com/results?q=stock+market&sp=EgIIBFAU',
+            'https://www.youtube.com/results?q=rick+and+morty&sp=EgIIBFAU'
         ]
 
         for url in start_links:
@@ -34,10 +34,12 @@ class YoutubeSpider(scrapy.Spider):
         for v in videos:
             post = self.get_youtube_post(v)
             queue.append(post)
-            yield post
 
         dbg = "youtube/%s" % quote_plus(self.youtubeTopic)
         create_post(queue, debug=dbg)
+
+        for k in queue:
+            yield k
 
     def get_youtube_post(self, node):
         video_id = node.css('::attr("data-context-item-id")') \

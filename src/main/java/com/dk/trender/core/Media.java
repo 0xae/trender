@@ -55,7 +55,7 @@ public class Media {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+
 	@JsonProperty
 	public String getTitle() {
 		return title;
@@ -65,32 +65,32 @@ public class Media {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
 	@JsonProperty
 	public String getDescription() {
 		return description;
 	}
-	
+
 	@JsonProperty
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	@JsonProperty
 	public String getType() {
 		return type;
 	}
-	
+
 	@JsonProperty
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 	@JsonProperty
 	public DateTime getTimestamp() {
 		return timestamp;
 	}
-	
+
 	@JsonProperty
 	public void setTimestamp(DateTime timestamp) {
 		this.timestamp = timestamp;

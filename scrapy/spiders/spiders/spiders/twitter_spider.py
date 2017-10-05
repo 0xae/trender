@@ -31,10 +31,12 @@ class TwitterSpider(scrapy.Spider):
         for tw in tweets:
             post = self._domToPost(tw)
             queue.append(post)
-            yield post
 
         dbg = "twitter/%s" % quote_plus(self.tweetTopic)
         create_post(queue, debug=dbg)
+
+        for p in queue:
+            yield p
 
     def _domToPost(self, tw):
         account = tw.css('.content a.account-group')[0]

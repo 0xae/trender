@@ -23,17 +23,13 @@ class BBCSpider(scrapy.Spider):
     def parse(self, response):
         articles = response.css('section.module div.module__content ' +
                                 'ul li.media-list__item div.media')
-        queue = []
-        for art in articles:
-            try:
-                post = self.parse_article(art, response)
-                queue.append(post)
-                yield post
-            except AttributeError:
-                continue
-
+        queue = [self.parse_article(p, response) for p in articles]
         dbg = "bbc/%s" % quote_plus(self.topic if self.topic else '')
         create_post(queue, debug=dbg)
+
+        for it in queue:
+            yield it
+
 
     def parse_article(self, node, response):
         link = response.meta['link']

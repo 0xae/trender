@@ -1,9 +1,13 @@
 package com.dk.trender.service;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.persistence.NoResultException;
 
@@ -34,16 +38,18 @@ public class PostService {
 		List<SolrInputDocument> docs = new LinkedList<>();
 		DateTime start = DateTime.now();
 
-		for (final Post p : posts) {
-			p.indexedAt(start);
-			if (exists(p)) {
-				log.info("skip doc: " + p.getLink());
-				return;
+		for (final Post post : posts) {
+			SolrDocument found = exists(post);
+			if (found != null) {
+				post.indexedAt(new DateTime(found.get("indexedAt")));
+				log.info("doc exists: " + post.getLink());
+			} else {
+				post.indexedAt(start);
+				log.info("index doc: " + post.getLink());
+				start = start.plusMillis(60);
 			}
 
-			log.info("index doc: " + p.getLink());
-			docs.add(p.toDoc());
-			start = start.plusMillis(60);
+			docs.add(post.toDoc());
 		}
 
 		try {
@@ -60,17 +66,21 @@ public class PostService {
 					.ofNullable(solr.getById(id))
 					.orElseThrow(NoResultException::new);
 			return Post.fromDoc(doc);
+		} catch (NoResultException k) {
+			throw k;
 		} catch (Exception e) {
 			throw new SolrExecutionException(e);
-		}		
+		}
 	}
-	
+
 	public void updateMedia(String id, String media) {
 		try {
+			log.info("update media ({}) on post ({})", media, id);
 			SolrDocument post = solr.getById(id);
 			if (post == null) {
-				log.warn("post " + id + " not found!");
-				return;
+				String msg = "post " + id + " not found!";
+				log.warn(msg);
+				throw new NoResultException(msg);
 			}
 
 			SolrInputDocument doc = new SolrInputDocument();
@@ -91,15 +101,17 @@ public class PostService {
 			
 			solr.add(doc);
 			solr.commit();
-		} catch (Exception e) {
+		} catch (NoResultException k) {
+			throw k;
+		}  catch (Exception e) {
 			e.printStackTrace();
 			throw new SolrExecutionException(e);
 		}
 	}
 
-	private boolean exists(Post p) {
+	private SolrDocument exists(Post p) {
 		try {
-			return solr.getById(p.getId()) != null;
+			return solr.getById(p.getId());
 		} catch (Exception e) {
 			throw new SolrExecutionException(e);
 		}

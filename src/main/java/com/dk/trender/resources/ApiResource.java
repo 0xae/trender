@@ -1,6 +1,7 @@
 package com.dk.trender.resources;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -57,7 +58,6 @@ public class ApiResource {
 	@POST
 	public void updatePostMedia(@PathParam("id") String id,
 								@NotEmpty String mediaUrl) {
-		log.info("media " + mediaUrl);
 		post.updateMedia(id, mediaUrl);
 	}
 
