@@ -73,6 +73,7 @@ public class TimelineService extends AbstractDAO<Timeline> {
 		return obj;
 	}
 
+	@SuppressWarnings({"unchecked"})
 	public List<Timeline> all(String state) {
 		log.info("get timeline {}#{}");
 		String query = "from Timeline t where :state='*' or state=:state";

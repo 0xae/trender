@@ -1,7 +1,6 @@
 package com.dk.trender.resources;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -9,20 +8,18 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.solr.common.SolrDocumentList;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dk.trender.core.Timeline;
 import com.dk.trender.core.Post;
+import com.dk.trender.core.Timeline;
 import com.dk.trender.service.PostService;
 import com.dk.trender.service.TimelineService;
 
@@ -37,7 +34,6 @@ import io.dropwizard.hibernate.UnitOfWork;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ApiResource {
-	private static final Logger log = LoggerFactory.getLogger(ApiResource.class);
 	private final PostService post;
 	private final TimelineService timeline;
 
