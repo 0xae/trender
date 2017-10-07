@@ -20,7 +20,7 @@ import com.dk.trender.core.Post;
 import com.dk.trender.core.Timeline;
 import com.dk.trender.service.PostService;
 import com.dk.trender.service.TimelineService;
-
+import static com.dk.trender.service.TimelineService.DEFAULT_START_L;
 import io.dropwizard.hibernate.UnitOfWork;
 
 /**
@@ -81,8 +81,9 @@ public class ApiResource {
 	@UnitOfWork
 	@Path("/timeline/{id}/stream")
 	public Timeline.Stream streamTimeline(@PathParam("id") long id,
-										 @QueryParam("limit") @DefaultValue("10") int limit) {
-		return timeline.stream(id, limit);
+										 @QueryParam("limit") @DefaultValue("10") int limit,
+										 @QueryParam("start") @DefaultValue(DEFAULT_START_L) int start) {
+		return timeline.stream(id, limit, start);
 	}
 
 	@GET
