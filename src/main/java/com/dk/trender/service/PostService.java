@@ -1,5 +1,6 @@
 package com.dk.trender.service;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +54,10 @@ public class PostService {
 		} catch (Exception e) {
 			throw new SolrExecutionException(e);
 		}
+	}
+	
+	public void update(Post p) {
+		create(Arrays.asList(p));
 	}
 
 	public Post byId(String id) {

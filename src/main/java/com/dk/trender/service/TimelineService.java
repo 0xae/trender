@@ -36,8 +36,8 @@ import io.dropwizard.hibernate.AbstractDAO;
  * XXX: sortBy should be by indexedAt
  */
 public class TimelineService extends AbstractDAO<Timeline> {
-	public static final String DEFAULT_START_L = "-1";
 	public static final int DEFAULT_START = -1;
+	public static final String DEFAULT_START_L = "-1";
 	private static final Logger log = LoggerFactory.getLogger(TimelineService.class);
 	private static final String SORT_ORDER = "indexedAt asc";
 	private static final int POSTS_PER_REQUEST = 50;

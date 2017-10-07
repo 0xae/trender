@@ -13,6 +13,7 @@ import com.dk.trender.core.managed.ManagedSolr;
 import com.dk.trender.exceptions.ConstraintViolationExceptionMapper;
 import com.dk.trender.exceptions.NoResultExceptionExceptionMapper;
 import com.dk.trender.resources.ApiResource;
+import com.dk.trender.service.MediaService;
 import com.dk.trender.service.PostService;
 import com.dk.trender.service.TimelineService;
 
@@ -70,9 +71,10 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		ManagedSolr solr = new ManagedSolr();
 
 		PostService post = new PostService(solr.getClient());
-		TimelineService timeline = new TimelineService(session, solr.getClient());			
+		TimelineService timeline = new TimelineService(session, solr.getClient());
+		MediaService media = new MediaService();
 
-		env.jersey().register(new ApiResource(post, timeline));
+		env.jersey().register(new ApiResource(post, timeline, media));
 		env.jersey().register(new NoResultExceptionExceptionMapper(env.metrics()));
 		env.jersey().register(new ConstraintViolationExceptionMapper());
 		env.lifecycle().manage(solr);
