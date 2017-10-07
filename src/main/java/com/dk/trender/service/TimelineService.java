@@ -1,9 +1,11 @@
 package com.dk.trender.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.NoResultException;
 
@@ -53,7 +55,7 @@ public class TimelineService extends AbstractDAO<Timeline> {
 		 return t;
 	}
 
-	public Timeline create(Timeline obj) {	
+	public Timeline create(Timeline obj) {
 		Timeline t = persist(obj);
 		log.info("create timeline {}", t.getId(), t.getName());
 		return t;
@@ -76,7 +78,8 @@ public class TimelineService extends AbstractDAO<Timeline> {
 	@SuppressWarnings({"unchecked"})
 	public List<Timeline> all(String state) {
 		log.info("get timeline {}#{}");
-		String query = "from Timeline t where :state='*' or state=:state";
+		String query = "from Timeline t where :state='*' or state=:state "+
+					   "order by creationDate desc";
 		Query<Timeline> q = currentSession().createQuery(query)
 							.setParameter("state", state);
 		return list(q);
@@ -86,14 +89,14 @@ public class TimelineService extends AbstractDAO<Timeline> {
 		Timeline t = getTimeline(name);
 		return stream(t.getId(), limit);
 	}
-
+	
 	public Timeline.Stream stream(long timelineId, int limit) {
 		Timeline t = byId(timelineId);
 		QueryResponse resp = query(
 			  t.getTopic(), Math.min(POSTS_PER_REQUEST, limit), 
 			  t.getIndex(), SORT_ORDER
 		);
-
+		
 		List<Post> posts = toPosts(resp.getResults());
 		if (!posts.isEmpty()) {
 			int start = t.getIndex() + posts.size();
