@@ -63,8 +63,10 @@ public class ApiResource {
 		// if it is already cached
 		if (!"".equals(p.getCached()) && !"none".equals(p.getCached()) &&
 					!"/opt/lampp/htdocs".startsWith(p.getCached()) &&
-					!link.isPresent()) {
-			return p.getCached();
+					!link.isPresent()) 
+		{
+			return p.getCached()
+					.replace("/opt/lampp/htdocs/trender/", "");
 		}
 
 		String stored = media.store(p, id);
@@ -106,7 +108,7 @@ public class ApiResource {
 
 	@GET
 	@UnitOfWork
-	@Path("/topic/{name}/stream")
+	@Path("/timeline/{name}/stream_name")
 	public Timeline.Stream streamTimeline(@PathParam("name") String name,
 										 @QueryParam("limit") @DefaultValue("10") int limit) {
 		return timeline.stream(name, limit);
