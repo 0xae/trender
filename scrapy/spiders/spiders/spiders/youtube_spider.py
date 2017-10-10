@@ -99,7 +99,7 @@ class YoutubeSpider(scrapy.Spider):
             "link": video_link,
             "location": "worlwide",
             "timestamp": video_date,
-            "picture": video_image,
+            "picture": 'https://img.youtube.com/vi/'+video_id+'/0.jpg',
             "data": dumps(video_data),
             "category": [self.youtubeTopic]
         }
