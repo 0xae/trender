@@ -1,6 +1,5 @@
 package com.dk.trender.resources;
 
-import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
