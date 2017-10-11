@@ -15,7 +15,8 @@ class TwitterSpider(scrapy.Spider):
     name = 'twitter_posts'
 
     def start_requests(self):
-        self.tweetTopic = quote_plus(self.topic if self.topic else 'news')
+        self.tweetTopic = quote_plus(self.topic if self.topic else 'news') \
+                                .replace('"', '')
         start_links = [
              'https://twitter.com/search?' +
              'f=news&vertical=default&q=%s&src=typd' % self.tweetTopic,
