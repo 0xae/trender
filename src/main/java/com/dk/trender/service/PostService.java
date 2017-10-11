@@ -38,10 +38,8 @@ public class PostService {
 			SolrDocument found = exists(post);
 			if (found != null) {
 				post.indexedAt(new DateTime(found.get("indexedAt")));
-				log.info("doc exists: " + post.getLink());
 			} else {
 				post.indexedAt(start);
-				log.info("index doc: " + post.getLink());
 				start = start.plusMillis(60);
 			}
 

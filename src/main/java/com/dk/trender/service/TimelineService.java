@@ -64,20 +64,17 @@ public class TimelineService extends AbstractDAO<Timeline> {
 	public Timeline update(Timeline obj) {
 		obj.setUpdateDate(DateTime.now());
 		currentSession().update(obj);
-		log.info("update timeline {}#{}", obj.getId(), obj.getName());
 		return obj;
 	}
 
 	public Timeline delete(Timeline obj) {
 		obj.setIsActive(false);
 		currentSession().update(obj);
-		log.info("delete timeline {}#{}", obj.getId(), obj.getName());
 		return obj;
 	}
 
 	@SuppressWarnings({"unchecked"})
 	public List<Timeline> all(String state) {
-		log.info("get timeline {}#{}");
 		String query = "from Timeline t where :state='*' or state=:state "+
 					   "order by creationDate desc";
 		Query<Timeline> q = currentSession().createQuery(query)
@@ -92,7 +89,6 @@ public class TimelineService extends AbstractDAO<Timeline> {
 	
 	public Timeline.Stream stream(long timelineId, int limit, int streamStart) {
 		Timeline t = byId(timelineId);
-		log.info("streamStart: {}", streamStart);
 		int index = (streamStart == DEFAULT_START) ? 
 					t.getIndex() : 
 					streamStart; 
@@ -144,7 +140,6 @@ public class TimelineService extends AbstractDAO<Timeline> {
 				 		.createQuery("from Timeline t where lower(trim(name))=lower(trim(:name))")
 				 		.setParameter("name", name)
 		 				.getSingleResult();
-			 log.info("get timeline {}#{}", t.getId(), t.getName());
 			 return t;
 		} catch (NoResultException e) {
 			log.info("creating timeline {}", name);

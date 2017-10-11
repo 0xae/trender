@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 
 import com.dk.trender.core.Timeline;
 import com.dk.trender.core.managed.ManagedSolr;
+import com.dk.trender.exceptions.ConnectExceptionMapper;
 import com.dk.trender.exceptions.ConstraintViolationExceptionMapper;
 import com.dk.trender.exceptions.NoResultExceptionExceptionMapper;
 import com.dk.trender.resources.ApiResource;
@@ -77,6 +78,7 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		env.jersey().register(new ApiResource(post, timeline, media));
 		env.jersey().register(new NoResultExceptionExceptionMapper(env.metrics()));
 		env.jersey().register(new ConstraintViolationExceptionMapper());
+		env.jersey().register(new ConnectExceptionMapper());		
 		env.lifecycle().manage(solr);
 	}
 
