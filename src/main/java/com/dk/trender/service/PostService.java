@@ -53,7 +53,7 @@ public class PostService {
 			throw new SolrExecutionException(e);
 		}
 	}
-	
+
 	public void update(Post p) {
 		create(Arrays.asList(p));
 	}

@@ -96,7 +96,7 @@ public class TimelineService extends AbstractDAO<Timeline> {
 			  t.getTopic(), Math.min(POSTS_PER_REQUEST, limit), 
 			  index, SORT_ORDER
 		);
-		
+
 		List<Post> posts = toPosts(resp.getResults());
 		if (!posts.isEmpty() && streamStart < 0) {
 			int start = t.getIndex() + posts.size();

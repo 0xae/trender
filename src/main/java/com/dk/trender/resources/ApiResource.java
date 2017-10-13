@@ -22,6 +22,8 @@ import com.dk.trender.core.Timeline;
 import com.dk.trender.service.MediaService;
 import com.dk.trender.service.PostService;
 import com.dk.trender.service.TimelineService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import static com.dk.trender.service.TimelineService.DEFAULT_START_L;
 import io.dropwizard.hibernate.UnitOfWork;
 
@@ -68,10 +70,14 @@ public class ApiResource {
 					.replace("/opt/lampp/htdocs/trender/", "");
 		}
 
-		String stored = media.store(p, id);
-		p.setCached(stored);
-		post.update(p);
-		return stored;
+		try {
+			String stored = media.store(p, id);
+			p.setCached(stored);
+			post.update(p);
+			return stored;
+		} catch (JsonProcessingException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@GET
