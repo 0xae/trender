@@ -90,10 +90,12 @@ public class TimelineService extends AbstractDAO<Timeline> {
 	public Timeline.Stream stream(long timelineId, int limit, int streamStart) {
 		Timeline t = byId(timelineId);
 		int index = (streamStart == DEFAULT_START) ? 
-					t.getIndex() : 
-					streamStart; 
+					t.getIndex() :
+					streamStart;
+
 		QueryResponse resp = query(
-			  t.getTopic(), Math.min(POSTS_PER_REQUEST, limit), 
+			  t.getTopic(), 
+			  Math.min(POSTS_PER_REQUEST, limit), 
 			  index, SORT_ORDER
 		);
 
