@@ -42,7 +42,6 @@ public class PostService {
 				post.indexedAt(start);
 				start = start.plusMillis(60);
 			}
-
 			docs.add(post.toDoc());
 		}
 
@@ -73,7 +72,6 @@ public class PostService {
 
 	public void updateMedia(String id, String media) {
 		try {
-			log.info("update media ({}) on post ({})", media, id);
 			SolrDocument post = solr.getById(id);
 			if (post == null) {
 				String msg = "post " + id + " not found!";
@@ -96,7 +94,7 @@ public class PostService {
 			if (post.get("lang") == null) {
 				doc.setField("lang", "en-us");
 			}			
-			
+
 			solr.add(doc);
 			solr.commit();
 		} catch (NoResultException k) {

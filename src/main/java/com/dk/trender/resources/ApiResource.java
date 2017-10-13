@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -91,6 +92,13 @@ public class ApiResource {
 	@Path("/timeline/new")
 	public Timeline createTimeline(@Valid Timeline request) {
 		return timeline.create(request);
+	}
+	
+	@DELETE
+	@UnitOfWork
+	@Path("/timeline/{id}")
+	public void deleteTimeline(@PathParam("id") long id) {
+		timeline.delete(id);
 	}
 
 	@GET

@@ -67,9 +67,9 @@ public class TimelineService extends AbstractDAO<Timeline> {
 		return obj;
 	}
 
-	public Timeline delete(Timeline obj) {
-		obj.setIsActive(false);
-		currentSession().update(obj);
+	public Timeline delete(long id) {
+		Timeline obj = byId(id);
+		currentSession().delete(obj);
 		return obj;
 	}
 
