@@ -62,6 +62,7 @@ public class ApiResource {
 								  @QueryParam("link") Optional<String> link) {
 		Post p = post.byId(id);
 		p.setPicture(link.orElse(p.getPicture()));
+
 		// if it is already cached
 		if (!"".equals(p.getCached()) && !"none".equals(p.getCached()) &&
 					!"/opt/lampp/htdocs".startsWith(p.getCached()) &&
@@ -93,7 +94,7 @@ public class ApiResource {
 	public Timeline createTimeline(@Valid Timeline request) {
 		return timeline.create(request);
 	}
-	
+
 	@DELETE
 	@UnitOfWork
 	@Path("/timeline/{id}")

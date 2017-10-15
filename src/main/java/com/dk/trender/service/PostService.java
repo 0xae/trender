@@ -88,12 +88,11 @@ public class PostService {
 
 			if (post.get("indexedAt") == null) {
 				doc.setField("indexedAt", DateUtils.format(DateTime.now()));
-				doc.setField("indexedAt", DateUtils.format(DateTime.now()));
 			}
 
 			if (post.get("lang") == null) {
 				doc.setField("lang", "en-us");
-			}			
+			}
 
 			solr.add(doc);
 			solr.commit();

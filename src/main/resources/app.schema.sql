@@ -117,3 +117,16 @@ create table z_media (
         indexed_at timestamp not null default now()
 );
 
+create table z_profile (
+        id bigserial primary key,
+        username varchar(250) not null,
+        name varchar(250),
+        picture text,
+        data jsonb,
+
+        -- time
+        indexed_at timestamp not null,
+        last_activity timestamp,
+        last_update timestamp,
+        UNIQUE(username)
+);

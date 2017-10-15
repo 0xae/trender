@@ -55,12 +55,6 @@ public class MediaService {
 			IOUtils.copy(input, output);
 			return "downloads/media/" + name + ext;
 		} catch(java.io.IOException e) {
-			log.error(e.getMessage());
-			try {
-				log.error("error indexing post: {}", mapper.writeValueAsString(p));				
-			} catch (JsonProcessingException e1) {				
-			}
-
 			throw new RuntimeException(e);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
