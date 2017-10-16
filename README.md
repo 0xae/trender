@@ -84,6 +84,7 @@ that's it
 * [@rwalk blog post on straw](http://blog.ryanwalker.us/2015/11/building-streaming-search-platform.html)
 * [luwak](https://github.com/flaxsearch/luwak)
 * [real-time-full-text-search-with-luwak-and-samza](https://www.confluent.io/blog/real-time-full-text-search-with-luwak-and-samza/)
+* [scalable web crawlers on Apache Storm](http://stormcrawler.net/index.html)
 
 ### Tools
 * [syntax-highlighter](https://github.com/syntaxhighlighter/)
@@ -98,7 +99,7 @@ that's it
 * [Awesome russian youtube](https://plus.kinopoisk.ru/)
 
 ### Gamming platform
-* [darkforestGo] (https://github.com/facebookresearch/darkforestGo)
+* [darkforestGo](https://github.com/facebookresearch/darkforestGo)
 * [Facebook Game Research](https://github.com/facebookresearch/ELF)
 
 ### API
