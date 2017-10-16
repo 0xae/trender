@@ -75,20 +75,31 @@ that's it
 * [list of crawlers](https://github.com/BruceDone/awesome-crawler)
 * [gigablast](https://github.com/gigablast/open-source-search-engine)
 * [erlang ebot](http://www.redaelli.org/matteo-blog/projects/ebot/)
-
-### Tools
 * [Scrapy](https://docs.scrapy.org/en/latest/topics)
 * [grequests](https://pypi.python.org/pypi/grequests)
+* [Command-line JSON processor](https://github.com/stedolan/jq)
+* [awesome-streaming](https://github.com/manuzhang/awesome-streaming)
+* [jet.hazelcast](https://jet.hazelcast.org/introduction/)
+* [@rwalk straw](https://github.com/rwalk/straw)
+* [@rwalk blog post on straw](http://blog.ryanwalker.us/2015/11/building-streaming-search-platform.html)
+* [luwak](https://github.com/flaxsearch/luwak)
+* [real-time-full-text-search-with-luwak-and-samza](https://www.confluent.io/blog/real-time-full-text-search-with-luwak-and-samza/)
+
+### Tools
 * [syntax-highlighter](https://github.com/syntaxhighlighter/)
 * [twitter-emoji](https://github.com/twitter/twemoji)
 
-### Multimedia websites
+### Multimedia/Games websites
 * [UK Tv Guide](http://www.tvguide.co.uk/)
 * [Youtube API](https://www.youtube.com/yt/dev/demos.html#/sentiment)
 * [My5](https://www.my5.tv)
 * [Webtorrent IO](https://webtorrent.io/intro)
 * [DTube](https://steemit.com/video/@heimindanger/introducing-dtube-a-decentralized-video-platform-using-steem-and-ipfs)
-* [Awesome russion youtube](https://plus.kinopoisk.ru/)
+* [Awesome russian youtube](https://plus.kinopoisk.ru/)
+
+### Gamming platform
+* [darkforestGo] (https://github.com/facebookresearch/darkforestGo)
+* [Facebook Game Research](https://github.com/facebookresearch/ELF)
 
 ### API
 * [openweathermap](https://openweathermap.org/city/3374333)
@@ -102,17 +113,7 @@ that's it
 * [bitcoin developer guide](https://bitcoin.org/en/developer-guide)
 * [cryptocompare](https://www.cryptocompare.com)
 * [fork.lol](http://fork.lol)
-
-### Text/Data Processing
-* [Command-line JSON processor](https://github.com/stedolan/jq)
-
-### real-time streaming search
-* [awesome-streaming](https://github.com/manuzhang/awesome-streaming)
-* [jet.hazelcast](https://jet.hazelcast.org/introduction/)
-* [@rwalk straw](https://github.com/rwalk/straw)
-* [@rwalk blog post on straw](http://blog.ryanwalker.us/2015/11/building-streaming-search-platform.html)
-* [luwak](https://github.com/flaxsearch/luwak)
-* [real-time-full-text-search-with-luwak-and-samza](https://www.confluent.io/blog/real-time-full-text-search-with-luwak-and-samza/)
+* [bitcoin cash links](https://github.com/dsmurrell/awesome-bitcoin-cash)
 
 ### Artificial intelligence / Machine Learning
 * [The Stanford NLP Group](https://nlp.stanford.edu/)
@@ -128,7 +129,7 @@ that's it
 * [Facebook ParlAI](https://code.facebook.com/posts/266433647155520/parlai-a-new-software-platform-for-dialog-research/)
 * [OpenAI](https://openai.com/)
 * [openai systems](https://openai.com/systems/)
-
+* [amazon mechanical turk](https://www.mturk.com/mturk/welcome)
 ### Blogs
 * [Nick Szabo](https://unenumerated.blogspot.com)
 
