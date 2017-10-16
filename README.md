@@ -74,6 +74,7 @@ that's it
 ### Crawling infraestructure
 * [list of crawlers](https://github.com/BruceDone/awesome-crawler)
 * [gigablast](https://github.com/gigablast/open-source-search-engine)
+* [erlang ebot](http://www.redaelli.org/matteo-blog/projects/ebot/)
 
 ### Tools
 * [Scrapy](https://docs.scrapy.org/en/latest/topics)
