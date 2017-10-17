@@ -41,12 +41,12 @@ public class Post {
 	private @NotNull String data = "{}";
 	private String cached = "none";
 	private @NotNull List<String> category = Collections.emptyList();	
-	
+
 	@JsonProperty
 	public void setAuthorId(String authorId) {
 		this.authorId = authorId;
 	}
-	
+
 	@JsonProperty
 	public String getAuthorId() {
 		return authorId;
