@@ -47,9 +47,11 @@ public class MediaService {
 		try {
 			URL u = new URL(link);
 			File out = new File(path);
-			if (out.exists())
-				out.delete();
+			if (out.exists()) {
+				out.delete();				
+			}
 			out.createNewFile();
+
 			input = new BufferedInputStream(u.openStream());
 			output = new FileOutputStream(out);
 			IOUtils.copy(input, output);

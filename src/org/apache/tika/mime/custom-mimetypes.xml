@@ -1,0 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <mime-info>
+   <mime-type type="application/hello">
+        <glob pattern="*.hi"/>
+   </mime-type>
+ </mime-info>
+ 
