@@ -150,7 +150,11 @@
 	    <artifactId>undertow-websockets-jsr</artifactId>
 	    <version>1.4.12.Final</version>
 	</dependency>
-  
+	<dependency>
+	    <groupId>com.hazelcast.jet</groupId>
+	    <artifactId>hazelcast-jet</artifactId>
+	    <version>0.4</version>
+	</dependency>
   </dependencies>
 
   <build>

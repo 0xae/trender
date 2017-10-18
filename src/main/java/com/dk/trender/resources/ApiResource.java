@@ -117,7 +117,8 @@ public class ApiResource {
 	public Timeline.Stream streamTimeline(@PathParam("id") long id,
 										 @QueryParam("limit") @DefaultValue("10") int limit,
 										 @QueryParam("start") @DefaultValue(DEFAULT_START_L) int start) {
-		return timeline.stream(id, limit, start);
+		Timeline.Stream stream = timeline.stream(id, limit, start);
+		return stream;
 	}
 
 	@GET
