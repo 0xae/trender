@@ -25,7 +25,7 @@ import com.dk.trender.service.PostService;
 import com.dk.trender.service.TimelineService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import static com.dk.trender.service.TimelineService.DEFAULT_START_L;
+import static com.dk.trender.service.TimelineService.DEFAULT_STARTL;
 import io.dropwizard.hibernate.UnitOfWork;
 
 /**
@@ -116,7 +116,7 @@ public class ApiResource {
 	@Path("/timeline/{id}/stream")
 	public Timeline.Stream streamTimeline(@PathParam("id") long id,
 										 @QueryParam("limit") @DefaultValue("10") int limit,
-										 @QueryParam("start") @DefaultValue(DEFAULT_START_L) int start) {
+										 @QueryParam("start") @DefaultValue(DEFAULT_STARTL) int start) {
 		Timeline.Stream stream = timeline.stream(id, limit, start);
 		return stream;
 	}

@@ -19,9 +19,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class MediaService {
+	public static final String STORE = "/opt/lampp/htdocs/trender/downloads/media/";	
 	private static final Logger log = LoggerFactory.getLogger(MediaService.class);
 	private static final ObjectMapper mapper = new ObjectMapper();
-	public static final String STORE = "/opt/lampp/htdocs/trender/downloads/media/";
 
 	public String store(Post p, String name) throws JsonProcessingException {		
 		if ("youtube-post".equals(p.getType()) && "<uk>".equals(p.getPicture())) {
