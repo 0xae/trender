@@ -130,3 +130,4 @@ create table z_profile (
         last_update timestamp,
         UNIQUE(username)
 );
+

@@ -66,8 +66,7 @@ public class ApiResource {
 		// if it is already cached
 		if (!"".equals(p.getCached()) && !"none".equals(p.getCached()) &&
 					!"/opt/lampp/htdocs".startsWith(p.getCached()) &&
-					!link.isPresent()) 
-		{
+					!link.isPresent()) {
 			return p.getCached()
 					.replace("/opt/lampp/htdocs/trender/", "");
 		}

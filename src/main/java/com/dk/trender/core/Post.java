@@ -23,6 +23,11 @@ import com.google.common.base.Objects;
  * @date 2017-03-31 14:11:42
  */
 public class Post {
+	public static final String STEEMIT = "steemit-post";
+	public static final String YOUTUBE = "youtube-post";
+	public static final String TWITTER = "twitter-post";
+	public static final String BBC = "bbc-post";
+
     private @NotEmpty String id;
 	private @NotEmpty String type;
 	private @NotEmpty String authorName;

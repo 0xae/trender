@@ -104,13 +104,13 @@
 	    <groupId>joda-time</groupId>
 	    <artifactId>joda-time-hibernate</artifactId>
 	    <version>${joda.time.hibernate}</version>
-	</dependency>    
+	</dependency>
 	<dependency>
 	  <groupId>joda-time</groupId>
 	  <artifactId>joda-time</artifactId>
 	  <version>${joda.version}</version>
 	</dependency>
-    <dependency>    
+    <dependency>
         <groupId>com.h2database</groupId>
         <artifactId>h2</artifactId>
         <version>${h2.version}</version>
@@ -125,6 +125,8 @@
 	  <artifactId>solr-solrj</artifactId>
 	  <version>${solr.version}</version>
 	</dependency>
+
+	<!-- experimental api -->
 	<dependency>
 		<groupId>org.apache.tika</groupId>
 		<artifactId>tika-core</artifactId>
