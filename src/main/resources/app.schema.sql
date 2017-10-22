@@ -125,7 +125,7 @@ create table z_profile (
         data jsonb,
 
         -- time
-        indexed_at timestamp not null,
+        indexed_at timestamp not null now(),
         last_activity timestamp,
         last_update timestamp,
         UNIQUE(username)

@@ -3,12 +3,9 @@ package com.dk.trender.service;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -23,16 +20,7 @@ public class MediaService {
 	private static final Logger log = LoggerFactory.getLogger(MediaService.class);
 	private static final ObjectMapper mapper = new ObjectMapper();
 
-	public String store(Post p, String name) throws JsonProcessingException {		
-		if ("youtube-post".equals(p.getType()) && "<uk>".equals(p.getPicture())) {
-			try {
-				Map<String, String> json = mapper.readValue(p.getData(), HashMap.class);
-				p.setPicture("https://img.youtube.com/vi/"+json.get("video_id")+"/0.jpg");
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		}
-
+	public String store(Post p, String name) throws JsonProcessingException {
 		String link = p.getPicture();
 		int index = link.lastIndexOf('.');
 		String ext = (index == -1) ? ".jpg" : link.substring(index);
@@ -56,8 +44,6 @@ public class MediaService {
 			output = new FileOutputStream(out);
 			IOUtils.copy(input, output);
 			return "downloads/media/" + name + ext;
-		} catch(java.io.IOException e) {
-			throw new RuntimeException(e);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {

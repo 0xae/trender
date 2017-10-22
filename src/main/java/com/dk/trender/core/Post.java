@@ -298,10 +298,6 @@ public class Post {
 		return result;
 	}
 
-	/**
-	 * XXX: since comparison is done in terms of id
-	 * 		what about an update?
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj){
