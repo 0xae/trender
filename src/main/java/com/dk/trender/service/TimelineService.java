@@ -77,7 +77,8 @@ public class TimelineService extends AbstractDAO<Timeline> {
 	public List<Timeline> all(String state) {
 		String query = "from Timeline t where :state='*' or state=:state "+
 					   "order by creationDate desc";
-		Query<Timeline> q = currentSession().createQuery(query)
+		Query<Timeline> q = currentSession()
+							.createQuery(query)
 							.setParameter("state", state);
 		return list(q);
 	}
