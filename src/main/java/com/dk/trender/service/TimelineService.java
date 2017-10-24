@@ -83,16 +83,15 @@ public class TimelineService extends AbstractDAO<Timeline> {
 		return list(q);
 	}
 
-	public Timeline.Stream stream(String name, int limit) {
-		Timeline t = getTimeline(name);
+	public Timeline.Stream stream(String topic, int limit) {
+		Timeline t = getTimeline(topic);
 		return stream(t.getId(), limit, DEFAULT_START);
 	}
-	
+
 	public Timeline.Stream stream(long timelineId, int limit, int streamStart) {
 		Timeline t = byId(timelineId);
 		int index = (streamStart == DEFAULT_START) ? 
-					t.getIndex() :
-					streamStart;
+					t.getIndex() : streamStart;
 
 		QueryResponse resp = query(
 			  t.getTopic(), 
@@ -111,8 +110,9 @@ public class TimelineService extends AbstractDAO<Timeline> {
 
 		for (FacetField f : resp.getFacetFields()) {
 			for (Count pivot : f.getValues()) {
-				if (pivot.getCount() == 0) 
+				if (pivot.getCount() == 0) {
 					continue;
+				}
 				Timeline.Topic topic = new Timeline.Topic(pivot.getName(), (int)pivot.getCount());
 				stream.addTopic(f.getName(), topic);
 			}
@@ -137,20 +137,20 @@ public class TimelineService extends AbstractDAO<Timeline> {
 		}
 	}
 
-	public Timeline getTimeline(String name) {
+	public Timeline getTimeline(String topic) {
 		try {
 			 Timeline t = (Timeline)currentSession()
-				 		.createQuery("from Timeline t where lower(trim(name))=lower(trim(:name))")
-				 		.setParameter("name", name)
+				 		.createQuery("from Timeline t where lower(trim(name))=lower(trim(:topic))")
+				 		.setParameter("topic", topic)
 		 				.getSingleResult();
 			 return t;
 		} catch (NoResultException e) {
-			log.info("creating timeline {}", name);
+			log.info("creating timeline {}", topic);
 			Timeline t = new Timeline();
-			t.setName(name);
-			t.setTopic(name);
+			t.setName("\""+topic+"\"");
+			t.setTopic(topic);
 			t.setPostTypes("steemit-post,twitter-post,bbc-post,youtube-post");
-			t.setDescription(name + " timeline created by trender.");
+			t.setDescription(topic + " timeline.");
 			t.setState("temp");
 			return create(t);
 		}

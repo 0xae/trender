@@ -59,7 +59,7 @@ public class Timeline {
 	private int index = 0;
 
 	@Column(name="state", nullable=false)
-	@OneOf({"temp", "created"})
+	@OneOf({"temp", "created", "search"})
 	private String state = "temp";
 
 	@NotNull

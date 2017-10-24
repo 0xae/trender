@@ -17,6 +17,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dk.trender.core.Post;
 import com.dk.trender.core.Timeline;
@@ -37,6 +39,7 @@ import io.dropwizard.hibernate.UnitOfWork;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ApiResource {
+	private static final Logger log = LoggerFactory.getLogger(ApiResource.class);
 	private final PostService post;
 	private final TimelineService timeline;
 	private final MediaService media;
@@ -116,16 +119,16 @@ public class ApiResource {
 	public Timeline.Stream streamTimeline(@PathParam("id") long id,
 										 @QueryParam("limit") @DefaultValue("10") int limit,
 										 @QueryParam("start") @DefaultValue(DEFAULT_STARTL) int start) {
-		Timeline.Stream stream = timeline.stream(id, limit, start);
-		return stream;
+		return timeline.stream(id, limit, start);
 	}
 
 	@GET
 	@UnitOfWork
-	@Path("/timeline/{name}/stream_name")
-	public Timeline.Stream streamTimeline(@PathParam("name") String name,
-										 @QueryParam("limit") @DefaultValue("10") int limit) {
-		return timeline.stream(name, limit);
+	@Path("/timeline/topic/{q}")
+	public Timeline.Stream streamTimeline(@PathParam("q") String topic,
+										  @QueryParam("limit") @DefaultValue("10") int limit) {
+		log.info("q is {}", topic);
+		return timeline.stream(topic, limit);
 	}
 
 	@GET
