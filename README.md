@@ -86,6 +86,7 @@ that's it
 * [real-time-full-text-search-with-luwak-and-samza](https://www.confluent.io/blog/real-time-full-text-search-with-luwak-and-samza/)
 * [scalable web crawlers on Apache Storm](http://stormcrawler.net/index.html)
 * [ebot crawler blogpost](http://www.redaelli.org/matteo-blog/projects/ebot/)
+* [seleniumhq.org](http://www.seleniumhq.org)
 
 ### Tools
 * [syntax-highlighter](https://github.com/syntaxhighlighter/)
