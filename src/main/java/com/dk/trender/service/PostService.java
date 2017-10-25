@@ -30,15 +30,17 @@ public class PostService {
 		solr = service;
 	}
 
-	public void create(List<Post> posts) {
+	public int create(List<Post> posts) {
 		List<SolrInputDocument> docs = new LinkedList<>();
 		DateTime start = DateTime.now();
+		int indexed = 0;
 
 		for (final Post post : posts) {
 			SolrDocument found = exists(post);
 			if (found != null) {
 				post.indexedAt(new DateTime(found.get("indexedAt")));
 			} else {
+				indexed++;
 				post.indexedAt(start);
 				start = start.plusMillis(60);
 			}
@@ -51,6 +53,8 @@ public class PostService {
 		} catch (Exception e) {
 			throw new SolrExecutionException(e);
 		}
+
+		return indexed;
 	}
 
 	public void update(Post p) {

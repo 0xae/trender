@@ -16,7 +16,7 @@ def get_spider_name(t):
 
 
 def get_conf():
-    if len(sys.argv) == 3:
+    if len(sys.argv) >= 3:
         host = sys.argv[1]
         interval = int(sys.argv[2])
     else:
@@ -26,11 +26,19 @@ def get_conf():
     return (host, interval)
 
 
+def req(host, state):
+    r = requests.get('http://%s:5000/api/timeline?state=%s' % (host, state))
+    return r.json()
+
 def callback():
     """ send the indexing work to scrapy  """
     host, _ = get_conf()
-    r = requests.get('http://%s:5000/api/timeline?state=temp' % host)
+    r = requests.get('http://%s:5000/api/timeline?state=now' % host)
     data = r.json()
+
+    data = req(host, 'now')
+    if len(data) == 0:
+        data = req(host, 'temp')
 
     for item in data:
         postType = item['postTypes'].split(',')

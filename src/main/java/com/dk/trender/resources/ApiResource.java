@@ -54,9 +54,16 @@ public class ApiResource {
 
 	@POST
 	@Path("/post/new")
-	public void createPost(@NotEmpty @Valid List<Post> request,
+	public int createPost(@Valid List<Post> request,
 						   @QueryParam("debug") String debug) {
-		post.create(request);
+		if (request.isEmpty()) {
+			log.info("Empty request for {}", debug);
+			return 0;
+		} else {
+			log.info("Indexing {} items for {}", request.size(), debug);
+		}
+
+ 		return post.create(request);
 	}
 
 	@Path("/post/media/{id}/download")
