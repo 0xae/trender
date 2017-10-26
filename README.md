@@ -117,6 +117,7 @@ that's it
 * [cryptocompare](https://www.cryptocompare.com)
 * [fork.lol](http://fork.lol)
 * [bitcoin cash links](https://github.com/dsmurrell/awesome-bitcoin-cash)
+* [thehalvening](http://www.thehalvening.com/#1)
 
 ### Artificial intelligence / Machine Learning
 * [The Stanford NLP Group](https://nlp.stanford.edu/)
