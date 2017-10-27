@@ -120,6 +120,7 @@ that's it
 * [thehalvening](http://www.thehalvening.com/#1)
 
 ### Artificial intelligence / Machine Learning
+* [caffe.berkeleyvision(deep learning framework)](http://caffe.berkeleyvision.org)
 * [The Stanford NLP Group](https://nlp.stanford.edu/)
 * [Learning words (google word2vec)](https://opensource.googleblog.com/2013/08/learning-meaning-behind-words.html)
 * [google word2vec](https://code.google.com/archive/p/word2vec/)
