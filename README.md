@@ -88,6 +88,23 @@ that's it
 * [ebot crawler blogpost](http://www.redaelli.org/matteo-blog/projects/ebot/)
 * [seleniumhq.org](http://www.seleniumhq.org)
 
+### Artificial intelligence / Machine Learning
+* [caffe.berkeleyvision(deep learning framework)](http://caffe.berkeleyvision.org)
+* [The Stanford NLP Group](https://nlp.stanford.edu/)
+* [Learning words (google word2vec)](https://opensource.googleblog.com/2013/08/learning-meaning-behind-words.html)
+* [google word2vec](https://code.google.com/archive/p/word2vec/)
+* [CS 229 Machine Learning](http://cs229.stanford.edu/projects2013.html)
+* [Exploring LSTMS](http://blog.echen.me/2017/05/30/exploring-lstms/?imm_mid=0f2ce7&cmp=em-data-na-na-newsltr_20170614)
+* [RNN Effectiveness](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
+* [IBM Watson](http://watson-developer-cloud.github.io/java-sdk/)
+* [Facebook ai-negociator-bots](/https://code.facebook.com/posts/1686672014972296/deal-or-no-deal-training-ai-bots-to-negotiate/)
+* [Quora QMF](https://github.com/quora/qmf)
+* [Facebook DeepText](https://code.facebook.com/posts/181565595577955/introducing-deeptext-facebook-s-text-understanding-engine/)
+* [Facebook ParlAI](https://code.facebook.com/posts/266433647155520/parlai-a-new-software-platform-for-dialog-research/)
+* [OpenAI](https://openai.com/)
+* [openai systems](https://openai.com/systems/)
+* [amazon mechanical turk](https://www.mturk.com/mturk/welcome)
+
 ### Tools
 * [syntax-highlighter](https://github.com/syntaxhighlighter/)
 * [twitter-emoji](https://github.com/twitter/twemoji)
@@ -119,22 +136,7 @@ that's it
 * [bitcoin cash links](https://github.com/dsmurrell/awesome-bitcoin-cash)
 * [thehalvening](http://www.thehalvening.com/#1)
 
-### Artificial intelligence / Machine Learning
-* [caffe.berkeleyvision(deep learning framework)](http://caffe.berkeleyvision.org)
-* [The Stanford NLP Group](https://nlp.stanford.edu/)
-* [Learning words (google word2vec)](https://opensource.googleblog.com/2013/08/learning-meaning-behind-words.html)
-* [google word2vec](https://code.google.com/archive/p/word2vec/)
-* [CS 229 Machine Learning](http://cs229.stanford.edu/projects2013.html)
-* [Exploring LSTMS](http://blog.echen.me/2017/05/30/exploring-lstms/?imm_mid=0f2ce7&cmp=em-data-na-na-newsltr_20170614)
-* [RNN Effectiveness](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
-* [IBM Watson](http://watson-developer-cloud.github.io/java-sdk/)
-* [Facebook ai-negociator-bots](/https://code.facebook.com/posts/1686672014972296/deal-or-no-deal-training-ai-bots-to-negotiate/)
-* [Quora QMF](https://github.com/quora/qmf)
-* [Facebook DeepText](https://code.facebook.com/posts/181565595577955/introducing-deeptext-facebook-s-text-understanding-engine/)
-* [Facebook ParlAI](https://code.facebook.com/posts/266433647155520/parlai-a-new-software-platform-for-dialog-research/)
-* [OpenAI](https://openai.com/)
-* [openai systems](https://openai.com/systems/)
-* [amazon mechanical turk](https://www.mturk.com/mturk/welcome)
+
 ### Blogs
 * [Nick Szabo](https://unenumerated.blogspot.com)
 
