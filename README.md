@@ -6,7 +6,7 @@ Trender aggregates data from google, facebook, youtube, twitter, wikipedia, blog
 
 Simply put: trender aims to be the frontpage of my internet.
 
-The idea is to build something akin to [Trending Topics](https://github.com/datawrangling/trendingtopics), but with a much simpler and faster and cheaper architecture, that runs fine on localhost.<br/>
+The idea is to build something akin to [Trending Topics](https://github.com/datawrangling/trendingtopics), but with a much richer and faster and cheaper architecture, that runs fine on localhost without aid of the fatso hadoop.<br/>
 The **trender** platform crawls, stores and makes use of search technologies, spiders, databases and artificial inteligence to produce ~accurate, diverse and descriptive information on realtime or at least near to realtime about what's happening in the world. it does so by collecting, processing and aggregating data from the various sources.<br/>
 
 ## Motivation
