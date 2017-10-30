@@ -104,6 +104,7 @@ that's it
 * [OpenAI](https://openai.com/)
 * [openai systems](https://openai.com/systems/)
 * [amazon mechanical turk](https://www.mturk.com/mturk/welcome)
+* [deeplearning.net](http://deeplearning.net)
 
 ### Tools
 * [syntax-highlighter](https://github.com/syntaxhighlighter/)
