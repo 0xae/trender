@@ -103,7 +103,6 @@ public class PostService {
 		} catch (NoResultException k) {
 			throw k;
 		}  catch (Exception e) {
-			e.printStackTrace();
 			throw new SolrExecutionException(e);
 		}
 	}
