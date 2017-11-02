@@ -128,7 +128,7 @@ public class TimelineService extends AbstractDAO<Timeline> {
 		sq.set("facet.field", "category", "type");
 		sq.set("rows", limit);
 		sq.set("start", start);
-		sq.set("sort", sort);
+		sq.set("sort", sort);		
 
 		try {
 			return solr.query(sq);
