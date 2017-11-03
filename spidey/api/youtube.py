@@ -18,7 +18,6 @@ def get_auth_service(scopes, apiName, apiVersion):
     credentials = flow.run_console()
     return build(apiName, apiVersion, credentials=credentials)
 
-
 # Build a resource based on a list of properties given as key-value pairs.
 # Leave properties with empty values out of the inserted resource.
 def build_resource(properties):
@@ -74,10 +73,18 @@ def remove_empty_kwargs(**kwargs):
 def search_videos(client, **kwargs):
     # See full sample for function
     kwargs = remove_empty_kwargs(**kwargs)
-
     return client.search().list(
           **kwargs
           ).execute()
+
+
+def search_livestream(client, **kwargs):
+    kwargs = remove_empty_kwargs(**kwargs)
+    return client.liveStreams().list(
+          **kwargs
+          ).execute()
+
+
 
 # This OAuth 2.0 access scope allows for full read/write access to the
 # authenticated user's account and requires requests to use an SSL connection.

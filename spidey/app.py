@@ -5,6 +5,9 @@ import google.oauth2.credentials
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 
+from flask import jsonify, render_template, request
+from api.youtube import (search_videos, search_livestream)
+
 # The CLIENT_SECRETS_FILE variable specifies the name of a file that contains
 # the OAuth 2.0 information for this application, including its client_id and
 # client_secret.
@@ -25,21 +28,11 @@ app = flask.Flask(__name__)
 # key. See http://flask.pocoo.org/docs/0.12/quickstart/#sessions.
 app.secret_key = YOUTUBE_KEY
 
+
 @app.route('/')
 def index():
-  if 'credentials' not in flask.session:
-    return flask.redirect('authorize')
-
-  # Load the credentials from the session.
-  credentials = google.oauth2.credentials.Credentials(
-      **flask.session['credentials'])
-
-  client = googleapiclient.discovery.build(
-      API_SERVICE_NAME, API_VERSION, credentials=credentials)
-  
-  return channels_list_by_username(client,
-    part='snippet,contentDetails,statistics',
-    forUsername='GoogleDevelopers')
+    if 'credentials' not in flask.session:
+        return flask.redirect('authorize')
 
 
 @app.route('/authorize')
@@ -61,6 +54,31 @@ def authorize():
   flask.session['state'] = state
 
   return flask.redirect(authorization_url)
+
+@app.route('/search')
+def search():
+    client = get_client()
+    query = request.args.get('q', 'news', type=str)
+    data = search_videos(client,
+            part='snippet',
+            maxResults=25,
+            q=query,
+            type="video"
+        )
+
+    return jsonify(data['items'])
+
+
+@app.route('/livestream')
+def livestream():
+    client = get_client()
+    query = request.args.get('q', type=str)
+    data = search_livestream(client,
+                part="id,snippet",
+                mine=True,
+                maxResults=10
+            )
+    return json(data)
 
 
 @app.route('/oauth2callback')
@@ -92,12 +110,14 @@ def oauth2callback():
 
   return flask.redirect(flask.url_for('index'))
 
-def channels_list_by_username(client, **kwargs):
-    response = client.channels().list(
-    **kwargs
-    ).execute()
+def get_client():
+    credentials = google.oauth2.credentials.Credentials(
+          **flask.session['credentials'])
 
-    return flask.jsonify(**response)
+    client = googleapiclient.discovery.build(
+          API_SERVICE_NAME, API_VERSION, credentials=credentials)
+
+    return client
 
 
 if __name__ == '__main__':
@@ -105,5 +125,4 @@ if __name__ == '__main__':
     # running in production *do not* leave this option enabled.
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     app.run('localhost', 8090, debug=True)
-
 
