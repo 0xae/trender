@@ -65,3 +65,4 @@ tmp/**/*
 trender.iml
 
 dependency-reduced-pom.xml
+client_secret.json
