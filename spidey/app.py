@@ -75,10 +75,10 @@ def livestream():
     query = request.args.get('q', type=str)
     data = search_livestream(client,
                 part="id,snippet",
-                mine=True,
+                mine=False,
                 maxResults=10
             )
-    return json(data)
+    return jsonify(data)
 
 
 @app.route('/oauth2callback')
