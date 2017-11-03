@@ -1,6 +1,7 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/env python2.7
+# -*- coding: utf-8 -*-
 # Youtube api
+
 import os
 import json
 from googleapiclient.discovery import build
