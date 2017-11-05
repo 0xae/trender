@@ -131,3 +131,17 @@ create table z_profile (
         UNIQUE(username)
 );
 
+create table z_channel (
+        id bigserial primary key,
+        name varchar(250) not null,
+        picture text,
+        query_conf jsonb,
+        curation integer default 0,
+        rank integer default -1,
+        inteligence jsonb,
+        audience varchar(50) not null,
+        -- time
+        created_at timestamp not null default now(),
+        last_update timestamp,
+        UNIQUE(name)
+);

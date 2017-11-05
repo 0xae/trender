@@ -10,6 +10,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -22,8 +23,10 @@ import org.slf4j.LoggerFactory;
 
 import com.dk.trender.core.Post;
 import com.dk.trender.core.Timeline;
+import com.dk.trender.core.ZChannel;
 import com.dk.trender.service.MediaService;
 import com.dk.trender.service.PostService;
+import com.dk.trender.service.SZChannel;
 import com.dk.trender.service.TimelineService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -43,15 +46,63 @@ public class ApiResource {
 	private final PostService post;
 	private final TimelineService timeline;
 	private final MediaService media;
+	private final SZChannel $channel;
 
 	public ApiResource(PostService postService,
 					   TimelineService timeline,
-					   MediaService media) {
+					   MediaService media,
+					   SZChannel channel) {
 		this.post = postService;
 		this.timeline = timeline;
 		this.media = media;
+		this.$channel = channel;
 	}
 
+	@POST
+	@Path("/channel/new")	
+	@UnitOfWork
+	public ZChannel createChannel(@Valid ZChannel req) {		
+		return $channel.create(req);
+	}
+
+	@GET
+	@Path("/channel")	
+	@UnitOfWork
+	public List<ZChannel> allChannels() {
+		return $channel.all();
+	}
+
+	@GET
+	@Path("/channel/find")	
+	@UnitOfWork
+	public List<ZChannel> findChannel(@QueryParam("audience") 
+									 @DefaultValue(ZChannel.PUBLIC)
+									 String audience) {
+		return $channel.find(audience);
+	}
+
+	@GET
+	@Path("/channel/{id}")	
+	@UnitOfWork
+	public ZChannel getChannel(@PathParam("id") long id) {
+		return $channel.byId(id);
+	}
+
+	@POST
+	@Path("/channel/{id}")	
+	@UnitOfWork
+	public ZChannel saveChannel(@PathParam("id") long id,
+								@Valid ZChannel chan) {
+		return $channel.update(chan);
+	}
+
+	@POST
+	@Path("/channel/{id}/delete")	
+	@UnitOfWork
+	public void deleteChannel(@PathParam("id") long id) {
+		$channel.deleteById(id);
+	}
+	
 	@POST
 	@Path("/post/new")
 	public int createPost(@Valid List<Post> request,

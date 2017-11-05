@@ -9,6 +9,7 @@ import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.hibernate.SessionFactory;
 
 import com.dk.trender.core.Timeline;
+import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.managed.ManagedSolr;
 import com.dk.trender.exceptions.ConnectExceptionMapper;
 import com.dk.trender.exceptions.ConstraintViolationExceptionMapper;
@@ -16,6 +17,7 @@ import com.dk.trender.exceptions.NoResultExceptionExceptionMapper;
 import com.dk.trender.resources.ApiResource;
 import com.dk.trender.service.MediaService;
 import com.dk.trender.service.PostService;
+import com.dk.trender.service.SZChannel;
 import com.dk.trender.service.TimelineService;
 
 import io.dropwizard.Application;
@@ -33,7 +35,7 @@ import io.dropwizard.setup.Environment;
  * @date 2017-07-29 07:04:53
  */
 public class TrenderApplication extends Application<TrenderConfiguration> {
-    final HibernateBundle<TrenderConfiguration> hibernateBundle = new HibernateBundle<TrenderConfiguration>(Timeline.class) {
+    final HibernateBundle<TrenderConfiguration> hibernateBundle = new HibernateBundle<TrenderConfiguration>(Timeline.class, ZChannel.class) {
 		public DataSourceFactory getDataSourceFactory(TrenderConfiguration configuration) {
 			return configuration.getDatabase();
 		}
@@ -74,8 +76,9 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		PostService post = new PostService(solr.getClient());
 		TimelineService timeline = new TimelineService(session, solr.getClient());
 		MediaService media = new MediaService();
+		SZChannel $channel = new SZChannel(session);
 
-		env.jersey().register(new ApiResource(post, timeline, media));
+		env.jersey().register(new ApiResource(post, timeline, media, $channel));
 		env.jersey().register(new NoResultExceptionExceptionMapper(env.metrics()));
 		env.jersey().register(new ConstraintViolationExceptionMapper());
 		env.jersey().register(new ConnectExceptionMapper());		
