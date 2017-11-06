@@ -95,6 +95,7 @@ that's it
 ### Artificial intelligence / Machine Learning
 * [caffe.berkeleyvision(deep learning framework)](http://caffe.berkeleyvision.org)
 * [The Stanford NLP Group](https://nlp.stanford.edu/)
+* [Stanford CoreNLP](https://github.com/stanfordnlp/CoreNLP)
 * [Learning words (google word2vec)](https://opensource.googleblog.com/2013/08/learning-meaning-behind-words.html)
 * [google word2vec](https://code.google.com/archive/p/word2vec/)
 * [CS 229 Machine Learning](http://cs229.stanford.edu/projects2013.html)
