@@ -109,6 +109,7 @@ that's it
 * [openai systems](https://openai.com/systems/)
 * [amazon mechanical turk](https://www.mturk.com/mturk/welcome)
 * [deeplearning.net](http://deeplearning.net)
+* [artificial-intelligence-revealed (facebook)](https://code.facebook.com/posts/384869298519962/artificial-intelligence-revealed/)
 
 ### Tools
 * [syntax-highlighter](https://github.com/syntaxhighlighter/)
