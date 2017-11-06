@@ -71,7 +71,7 @@ that's it
 * [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
 * [Hibernate User Guide](http://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#architecture-overview)
 
-### Crawling infraestructure
+### infraestructure
 * [list of crawlers](https://github.com/BruceDone/awesome-crawler)
 * [gigablast](https://github.com/gigablast/open-source-search-engine)
 * [erlang ebot](http://www.redaelli.org/matteo-blog/projects/ebot/)
@@ -87,6 +87,10 @@ that's it
 * [scalable web crawlers on Apache Storm](http://stormcrawler.net/index.html)
 * [ebot crawler blogpost](http://www.redaelli.org/matteo-blog/projects/ebot/)
 * [seleniumhq.org](http://www.seleniumhq.org)
+* [htaccess snippets](https://github.com/phanan/htaccess)
+* [syntax-highlighter](https://github.com/syntaxhighlighter/)
+* [twitter-emoji](https://github.com/twitter/twemoji)
+
 
 ### Public Datasets
 * [amazon public datasets](https://aws.amazon.com/public-datasets/)
@@ -112,9 +116,6 @@ that's it
 * [deeplearning.net](http://deeplearning.net)
 * [artificial-intelligence-revealed (facebook)](https://code.facebook.com/posts/384869298519962/artificial-intelligence-revealed/)
 
-### Tools
-* [syntax-highlighter](https://github.com/syntaxhighlighter/)
-* [twitter-emoji](https://github.com/twitter/twemoji)
 
 ### Multimedia/Games websites
 * [UK Tv Guide](http://www.tvguide.co.uk/)
