@@ -88,6 +88,9 @@ that's it
 * [ebot crawler blogpost](http://www.redaelli.org/matteo-blog/projects/ebot/)
 * [seleniumhq.org](http://www.seleniumhq.org)
 
+### Public Datasets
+* [amazon public datasets](https://aws.amazon.com/public-datasets/)
+
 ### Artificial intelligence / Machine Learning
 * [caffe.berkeleyvision(deep learning framework)](http://caffe.berkeleyvision.org)
 * [The Stanford NLP Group](https://nlp.stanford.edu/)
