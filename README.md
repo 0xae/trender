@@ -128,6 +128,7 @@ that's it
 
 ### API
 * [openweathermap](https://openweathermap.org/city/3374333)
+* [thetvdb](https://www.thetvdb.com/)
 
 ### Markets
 * [Oil Price](http://oilprice.com)
