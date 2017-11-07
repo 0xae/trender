@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -68,6 +69,13 @@ public class ZChannel {
 	public DateTime getLastUpdate() {
 		return lastUpdate;
 	}
+
+	@JsonProperty
+	public String getLastUpdateFmt() {
+		return DateTimeFormat
+				   .forPattern("YYYY-MM-dd")
+				   .print(lastUpdate);
+	}	
 	
 	@JsonProperty
 	public long getId() {

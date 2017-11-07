@@ -36,7 +36,7 @@ public class SZChannel extends AbstractDAO<ZChannel> {
 				  .setParameter("id", id);
 		q.executeUpdate();
 	}
-	
+
 	public ZChannel create(ZChannel obj) {
 		ZChannel t = persist(obj);
 		log.info("create zchannel {}#{}", t.getId(), t.getName());
