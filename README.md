@@ -149,7 +149,8 @@ that's it
 ### Blogs
 * [Nick Szabo](https://unenumerated.blogspot.com)
 
-### Random Stuff    
+### Random Stuff
+* [stephenking.com](http://stephenking.com)
 * [Lively PowerfulBird game announcemnt](https://www.reddit.com/r/gaming/comments/7blahv/my_friends_are_making_a_game_where_you_build_your/)
 * [Lively PowerfulBird game](https://gfycat.com/LivelyPowerfulBird)
 * [twitter.com/Channel4News](https://twitter.com/Channel4News)
