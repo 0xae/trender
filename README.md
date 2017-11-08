@@ -150,6 +150,7 @@ that's it
 * [Nick Szabo](https://unenumerated.blogspot.com)
 
 ### Random Stuff    
+* [Lively PowerfulBird game announcemnt](https://www.reddit.com/r/gaming/comments/7blahv/my_friends_are_making_a_game_where_you_build_your/)
 * [Lively PowerfulBird game](https://gfycat.com/LivelyPowerfulBird)
 * [twitter.com/Channel4News](https://twitter.com/Channel4News)
 * [Random UK post code generator](https://www.doogal.co.uk/PostcodeGenerator.php)
