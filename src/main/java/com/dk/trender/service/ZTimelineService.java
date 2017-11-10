@@ -20,8 +20,8 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dk.trender.core.Post;
-import com.dk.trender.core.Timeline;
+import com.dk.trender.core.ZPost;
+import com.dk.trender.core.ZTimeline;
 import com.dk.trender.exceptions.SolrExecutionException;
 
 import io.dropwizard.hibernate.AbstractDAO;
@@ -33,63 +33,63 @@ import io.dropwizard.hibernate.AbstractDAO;
  * TODO: cache timelines
  * XXX: sortBy should be by indexedAt
  */
-public class TimelineService extends AbstractDAO<Timeline> {
-	private static final Logger log = LoggerFactory.getLogger(TimelineService.class);
+public class ZTimelineService extends AbstractDAO<ZTimeline> {
+	private static final Logger log = LoggerFactory.getLogger(ZTimelineService.class);
 	private static final String SORT_ORDER = "indexedAt asc";
 	private static final int POSTS_PER_REQUEST = 50;
 	public static final String DEFAULT_STARTL = "-1";
 	public static final int DEFAULT_START = -1;
 	private final ConcurrentUpdateSolrClient solr;
 
-	public TimelineService(SessionFactory sessionFactory, 
+	public ZTimelineService(SessionFactory sessionFactory, 
 						   ConcurrentUpdateSolrClient solr) {
 		super(sessionFactory);
 		this.solr = solr;
 	}
 
-	public Timeline byId(long id) {
-		 Timeline t = Optional
+	public ZTimeline byId(long id) {
+		 ZTimeline t = Optional
 				.ofNullable(get(id))
 				.orElseThrow(NoResultException::new);
 		 log.info("get timeline {}#{}", t.getId(), t.getName());
 		 return t;
 	}
 
-	public Timeline create(Timeline obj) {
-		Timeline t = persist(obj);
+	public ZTimeline create(ZTimeline obj) {
+		ZTimeline t = persist(obj);
 		log.info("create timeline {}", t.getId(), t.getName());
 		return t;
 	}
 
-	public Timeline update(Timeline obj) {
+	public ZTimeline update(ZTimeline obj) {
 		obj.setUpdateDate(DateTime.now());
 		currentSession().update(obj);
 		return obj;
 	}
 
-	public Timeline delete(long id) {
-		Timeline obj = byId(id);
+	public ZTimeline delete(long id) {
+		ZTimeline obj = byId(id);
 		currentSession().delete(obj);
 		return obj;
 	}
 
 	@SuppressWarnings({"unchecked"})
-	public List<Timeline> all(String state) {
+	public List<ZTimeline> all(String state) {
 		String query = "from Timeline t where :state='*' or state=:state "+
 					   "order by creationDate desc";
-		Query<Timeline> q = currentSession()
+		Query<ZTimeline> q = currentSession()
 							.createQuery(query)
 							.setParameter("state", state);
 		return list(q);
 	}
 
-	public Timeline.Stream stream(String topic, int limit) {
-		Timeline t = getTimeline(topic);
+	public ZTimeline.Stream stream(String topic, int limit) {
+		ZTimeline t = getTimeline(topic);
 		return stream(t.getId(), limit, DEFAULT_START);
 	}
 
-	public Timeline.Stream stream(long timelineId, int limit, int streamStart) {
-		Timeline t = byId(timelineId);
+	public ZTimeline.Stream stream(long timelineId, int limit, int streamStart) {
+		ZTimeline t = byId(timelineId);
 		int index = (streamStart == DEFAULT_START) ? 
 					t.getIndex() : streamStart;
 
@@ -99,21 +99,21 @@ public class TimelineService extends AbstractDAO<Timeline> {
 			  index, SORT_ORDER
 		);
 
-		List<Post> posts = toPosts(resp.getResults());
+		List<ZPost> posts = toPosts(resp.getResults());
 		if (!posts.isEmpty() && streamStart < 0) {
 			int start = t.getIndex() + posts.size();
 			t.index(start);
 			update(t);			
 		}
 
-		Timeline.Stream stream = new Timeline.Stream(t, posts);
+		ZTimeline.Stream stream = new ZTimeline.Stream(t, posts);
 
 		for (FacetField f : resp.getFacetFields()) {
 			for (Count pivot : f.getValues()) {
 				if (pivot.getCount() == 0) {
 					continue;
 				}
-				Timeline.Topic topic = new Timeline.Topic(pivot.getName(), (int)pivot.getCount());
+				ZTimeline.Topic topic = new ZTimeline.Topic(pivot.getName(), (int)pivot.getCount());
 				stream.addTopic(f.getName(), topic);
 			}
 		}
@@ -137,16 +137,16 @@ public class TimelineService extends AbstractDAO<Timeline> {
 		}
 	}
 
-	public Timeline getTimeline(String topic) {
+	public ZTimeline getTimeline(String topic) {
 		try {
-			 Timeline t = (Timeline)currentSession()
+			 ZTimeline t = (ZTimeline)currentSession()
 				 		.createQuery("from Timeline t where lower(trim(name))=lower(trim(:topic))")
 				 		.setParameter("topic", topic)
 		 				.getSingleResult();
 			 return t;
 		} catch (NoResultException e) {
 			log.info("creating timeline {}", topic);
-			Timeline t = new Timeline();
+			ZTimeline t = new ZTimeline();
 			t.setName("\""+topic+"\"");
 			t.setTopic(topic);
 			t.setPostTypes("steemit-post,twitter-post,bbc-post,youtube-post");
@@ -156,10 +156,10 @@ public class TimelineService extends AbstractDAO<Timeline> {
 		}
 	}
 
-	private List<Post> toPosts(SolrDocumentList list) {
-		List<Post> res = new ArrayList<>();
+	private List<ZPost> toPosts(SolrDocumentList list) {
+		List<ZPost> res = new ArrayList<>();
 		for (Iterator<SolrDocument> itr=list.iterator(); itr.hasNext(); ) {
-			Post p = Post.fromDoc(itr.next());
+			ZPost p = ZPost.fromDoc(itr.next());
 			res.add(p);				
 		}
 		return res;		

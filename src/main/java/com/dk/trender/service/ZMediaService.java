@@ -11,28 +11,32 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dk.trender.core.Post;
+import com.dk.trender.core.ZPost;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class MediaService {
-	public static final String STORE = "/opt/lampp/htdocs/trender/downloads/media/";	
-	private static final Logger log = LoggerFactory.getLogger(MediaService.class);
+public class ZMediaService {
+	private static final Logger log = LoggerFactory.getLogger(ZMediaService.class);
 	private static final ObjectMapper mapper = new ObjectMapper();
+	private final String mediaHost;	
 
-	public String store(Post p, String name) throws JsonProcessingException {
-		String link = p.getPicture();
+	public ZMediaService(String mediaHost) {
+		this.mediaHost = mediaHost;
+	}
+	
+	public String store(String link, String container, String name) throws JsonProcessingException {
 		int index = link.lastIndexOf('.');
 		String ext = (index == -1) ? ".jpg" : link.substring(index);
 		if (ext.indexOf('?') != -1) {
 			ext = ext.substring(0, ext.indexOf('?'));
 		}
 
-		String path = STORE + name + ext;
+		String path = mediaHost + container + "/" + name + ext;
 		InputStream input = null;
 		OutputStream output = null;
 
 		try {
+			new File(mediaHost + container).mkdirs();
 			URL u = new URL(link);
 			File out = new File(path);
 			if (out.exists()) {
@@ -43,7 +47,7 @@ public class MediaService {
 			input = new BufferedInputStream(u.openStream());
 			output = new FileOutputStream(out);
 			IOUtils.copy(input, output);
-			return "downloads/media/" + name + ext;
+			return container + "/" + name + ext;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {

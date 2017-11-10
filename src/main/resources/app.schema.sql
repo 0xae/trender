@@ -145,3 +145,15 @@ create table z_channel (
         last_update timestamp,
         UNIQUE(name)
 );
+
+create table z_collection (
+        id bigserial primary key,
+        name varchar(250) not null,
+        label varchar(250) not null,
+        description text,
+        audience varchar(50) not null,
+        created_at timestamp not null default now(),
+        last_update timestamp,
+        channel_id bigint references z_channel(id),
+        UNIQUE(name)
+);

@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Profile {
+public class ZProfile {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)	
 	private long id;

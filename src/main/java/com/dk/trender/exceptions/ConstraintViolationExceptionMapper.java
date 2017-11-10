@@ -17,7 +17,7 @@ public class ConstraintViolationExceptionMapper implements ExceptionMapper<Const
 			 ((PSQLException) e.getCause()).getSQLState().equals(SQL_DUPLICATED_STATE)) {
 			return Response
 					   .status(400)
-					   .entity("Verify if this object has unique properties")
+					   .entity("{\"errors\": [\"Verify if this object has unique properties\"]}")
 					   .build();
 		}
 

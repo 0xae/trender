@@ -14,7 +14,7 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dk.trender.core.Post;
+import com.dk.trender.core.ZPost;
 import com.dk.trender.exceptions.SolrExecutionException;
 import com.dk.trender.service.utils.DateUtils;
 
@@ -22,20 +22,20 @@ import com.dk.trender.service.utils.DateUtils;
  * 
  * @author ayrton
  */
-public class PostService {
+public class ZPostService {
 	private ConcurrentUpdateSolrClient solr;
-	private static final Logger log = LoggerFactory.getLogger(PostService.class);
+	private static final Logger log = LoggerFactory.getLogger(ZPostService.class);
 
-	public PostService(ConcurrentUpdateSolrClient service) {
+	public ZPostService(ConcurrentUpdateSolrClient service) {
 		solr = service;
 	}
 
-	public int create(List<Post> posts) {
+	public int create(List<ZPost> posts) {
 		List<SolrInputDocument> docs = new LinkedList<>();
 		DateTime start = DateTime.now();
 		int indexed = 0;
 
-		for (final Post post : posts) {
+		for (final ZPost post : posts) {
 			SolrDocument found = exists(post);
 			if (found != null) {
 				post.indexedAt(new DateTime(found.get("indexedAt")));
@@ -57,16 +57,16 @@ public class PostService {
 		return indexed;
 	}
 
-	public void update(Post p) {
+	public void update(ZPost p) {
 		create(Arrays.asList(p));
 	}
 
-	public Post byId(String id) {
+	public ZPost byId(String id) {
 		try {
 			SolrDocument doc = Optional
 					.ofNullable(solr.getById(id))
 					.orElseThrow(NoResultException::new);
-			return Post.fromDoc(doc);
+			return ZPost.fromDoc(doc);
 		} catch (NoResultException k) {
 			throw k;
 		} catch (Exception e) {
@@ -107,7 +107,7 @@ public class PostService {
 		}
 	}
 
-	private SolrDocument exists(Post p) {
+	private SolrDocument exists(ZPost p) {
 		try {
 			return solr.getById(p.getId());
 		} catch (Exception e) {

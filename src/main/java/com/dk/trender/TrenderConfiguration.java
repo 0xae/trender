@@ -19,6 +19,19 @@ import io.dropwizard.db.DataSourceFactory;
 public class TrenderConfiguration extends Configuration {
 	@NotEmpty
 	private String authorizationPrefix;
+	
+	@NotEmpty
+	private String mediaHost;
+	
+	@JsonProperty
+	public void setMediaHost(String mediaHost) {
+		this.mediaHost = mediaHost;
+	}
+
+	@JsonProperty
+	public String getMediaHost() {
+		return mediaHost;
+	}
 
 	@JsonProperty
 	public String getAuthorizationPrefix() {

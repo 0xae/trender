@@ -22,7 +22,7 @@ import com.google.common.base.Objects;
  * @author ayrton
  * @date 2017-03-31 14:11:42
  */
-public class Post {
+public class ZPost {
 	public static final String STEEMIT = "steemit-post";
 	public static final String YOUTUBE = "youtube-post";
 	public static final String TWITTER = "twitter-post";
@@ -45,7 +45,18 @@ public class Post {
 	private @NotNull String picture = "";
 	private @NotNull String data = "{}";
 	private String cached = "none";
-	private @NotNull List<String> category = Collections.emptyList();	
+	private @NotNull List<String> category = Collections.emptyList();
+	private @NotNull List<String> collections = Collections.emptyList();
+	
+	@JsonProperty
+	public void setCollections(List<String> collections) {
+		this.collections = collections;
+	}
+	
+	@JsonProperty
+	public List<String> getCollections() {
+		return collections;
+	}
 
 	@JsonProperty
 	public void setAuthorId(String authorId) {
@@ -58,7 +69,7 @@ public class Post {
 	}
 
 	@JsonIgnore
-	public Post indexedAt(DateTime date) {
+	public ZPost indexedAt(DateTime date) {
 		this.indexedAt = date;
 		return this;
 	}
@@ -69,7 +80,7 @@ public class Post {
 	}
 
 	@JsonProperty
-	public Post setLang(String lang) {
+	public ZPost setLang(String lang) {
 		this.lang = lang;
 		return this;
 	}
@@ -85,7 +96,7 @@ public class Post {
 	}
 
 	@JsonProperty
-	public Post setId(String id) {
+	public ZPost setId(String id) {
 		this.id = id;
 		return this;
 	}
@@ -96,7 +107,7 @@ public class Post {
 	}
 
 	@JsonProperty
-	public Post setDescription(String description) {
+	public ZPost setDescription(String description) {
 		this.description = description;
 		return this;
 	}
@@ -112,7 +123,7 @@ public class Post {
 	}
 
 	@JsonProperty
-	public Post setPicture(String picture) {
+	public ZPost setPicture(String picture) {
 		this.picture = picture;
 		return this;
 	}
@@ -123,13 +134,13 @@ public class Post {
 	}
 
 	@JsonProperty
-	public Post setTimestamp(DateTime timestamp) {
+	public ZPost setTimestamp(DateTime timestamp) {
 		this.timestamp = timestamp;
 		return this;
 	}
 
 	@JsonProperty
-	public Post setTimestamp(String ts) {
+	public ZPost setTimestamp(String ts) {
 		this.timestamp = new DateTime(ts.replace(" ", "T"));
 		return this;
 	}
@@ -159,13 +170,13 @@ public class Post {
 	}
 
 	@JsonProperty
-	public Post setType(String type) {
+	public ZPost setType(String type) {
 		this.type = type;
 		return this;
 	}
 
 	@JsonProperty
-	public Post setAuthorName(String name) {
+	public ZPost setAuthorName(String name) {
 		this.authorName = name;
 		return this;
 	}
@@ -176,7 +187,7 @@ public class Post {
 	}
 
 	@JsonProperty
-	public Post setAuthorPicture(String pic) {
+	public ZPost setAuthorPicture(String pic) {
 		this.authorPicture = pic;
 		return this;
 	}
@@ -187,7 +198,7 @@ public class Post {
 	}
 
 	@JsonProperty
-	public Post setSource(String source) {
+	public ZPost setSource(String source) {
 		this.source = source;
 		return this;
 	}
@@ -198,7 +209,7 @@ public class Post {
 	}
 
 	@JsonProperty
-	public Post setLink(String link) {
+	public ZPost setLink(String link) {
 		this.link = link;
 		return this;
 	}
@@ -209,7 +220,7 @@ public class Post {
 	}
 
 	@JsonProperty
-	public Post setData(String blob) {
+	public ZPost setData(String blob) {
 		this.data = blob;
 		return this;
 	}
@@ -243,7 +254,7 @@ public class Post {
 
 	@JsonIgnore
 	public SolrInputDocument toDoc() {
-		final Post post = this;
+		final ZPost post = this;
 		SolrInputDocument doc = new SolrInputDocument();
 		doc.addField("id", post.getId());
 		doc.addField("type", post.getType());
@@ -262,12 +273,13 @@ public class Post {
 		doc.addField("authorPicture", post.getAuthorPicture());
 		doc.addField("picture", post.getPicture());
 		doc.addField("data", post.getData());
-		doc.addField("category", post.getCategory());	
+		doc.addField("category", post.getCategory());
+		doc.addField("collections", post.getCollections());	
 		return doc;
 	}
 
-	public static Post fromDoc(SolrDocument doc) {		
-		Post p = new Post();
+	public static ZPost fromDoc(SolrDocument doc) {		
+		ZPost p = new ZPost();
 		p.setId(doc.get("id").toString());
 
 		p.setType(doc.get("type").toString());
@@ -286,6 +298,8 @@ public class Post {
 		p.setCached(Optional.ofNullable(doc.get("cached")).orElse("").toString());
 		p.setData(doc.get("data").toString());
 		p.setCategory((List<String>)doc.get("category"));
+		Optional<List<String>> op = Optional.ofNullable((List<String>)doc.get("collections"));
+		p.setCollections((List<String>)op.orElse(Collections.emptyList()));
 
 		return p;
 	}
@@ -308,7 +322,7 @@ public class Post {
 			return false;
 		}
 
-		final Post that = (Post) obj;
+		final ZPost that = (ZPost) obj;
 		return Objects.equal(this.id, that.id);
 	}
 }

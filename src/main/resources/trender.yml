@@ -1,4 +1,5 @@
 authorizationPrefix: $2a$10$VLACkixgmd6Yhz.BPNCijezAZqa7YQbdO9AbPxN6zjoU3mKgPNqGy
+mediaHost: /opt/lampp/htdocs/trender/media/
 
 database: 
   # the name of your JDBC driver

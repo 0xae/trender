@@ -26,7 +26,7 @@ import io.dropwizard.validation.OneOf;
 
 @Entity
 @Table(name="z_timeline")
-public class Timeline {
+public class ZTimeline {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
@@ -221,8 +221,8 @@ public class Timeline {
 	}
 
 	public static class Stream {
-		private Timeline timeline;
-		private List<Post> posts;		
+		private ZTimeline timeline;
+		private List<ZPost> posts;		
 		private Map<String, List<Topic>> topics = new HashMap<>();
 		private int count;
 
@@ -230,7 +230,7 @@ public class Timeline {
 			// TODO Auto-generated constructor stub
 		}
 
-		public Stream (Timeline tl, List<Post> list) {
+		public Stream (ZTimeline tl, List<ZPost> list) {
 			this.setTimeline(tl);
 			this.setPosts(list);
 			this.count = list.size();
@@ -259,22 +259,22 @@ public class Timeline {
 		}
 
 		@JsonProperty
-		public void setPosts(List<Post> posts) {
+		public void setPosts(List<ZPost> posts) {
 			this.posts = posts;
 		}
 
 		@JsonProperty
-		public List<Post> getPosts() {
+		public List<ZPost> getPosts() {
 			return posts;
 		}
 
 		@JsonProperty
-		public void setTimeline(Timeline timeline) {
+		public void setTimeline(ZTimeline timeline) {
 			this.timeline = timeline;
 		}
 
 		@JsonProperty
-		public Timeline getTimeline() {
+		public ZTimeline getTimeline() {
 			return timeline;
 		}
 	}
