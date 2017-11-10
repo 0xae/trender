@@ -47,12 +47,12 @@ public class ZPost {
 	private String cached = "none";
 	private @NotNull List<String> category = Collections.emptyList();
 	private @NotNull List<String> collections = Collections.emptyList();
-	
+
 	@JsonProperty
 	public void setCollections(List<String> collections) {
 		this.collections = collections;
 	}
-	
+
 	@JsonProperty
 	public List<String> getCollections() {
 		return collections;

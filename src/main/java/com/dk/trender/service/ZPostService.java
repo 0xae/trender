@@ -1,5 +1,6 @@
 package com.dk.trender.service;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,10 +14,12 @@ import org.apache.solr.common.SolrInputDocument;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.google.common.collect.ImmutableMap;
 
 import com.dk.trender.core.ZPost;
 import com.dk.trender.exceptions.SolrExecutionException;
 import com.dk.trender.service.utils.DateUtils;
+
 
 /**
  * 
@@ -69,6 +72,18 @@ public class ZPostService {
 			return ZPost.fromDoc(doc);
 		} catch (NoResultException k) {
 			throw k;
+		} catch (Exception e) {
+			throw new SolrExecutionException(e);
+		}
+	}
+	
+	public void addToCollection(String postId, String collectionName) {
+		SolrInputDocument doc = new SolrInputDocument();
+		doc.addField("id", postId);
+		doc.addField("collections", ImmutableMap.of("add", collectionName));
+		try {
+			solr.add(Arrays.asList(doc));
+			solr.commit();
 		} catch (Exception e) {
 			throw new SolrExecutionException(e);
 		}

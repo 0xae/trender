@@ -188,7 +188,13 @@ public class ApiResource {
 		// }
 
 		try {
-			String stored = $media.store(post.getPicture(), post.getType(), id);
+			String picture = post.getPicture();
+			if (ZPost.YOUTUBE.equals(post.getType()) && 
+				picture.startsWith("/yts/img/")) 
+			{				
+			}
+
+			String stored = $media.store(picture, post.getType(), id);
 			post.setCached(stored);
 			$post.update(post);
 			return stored;
@@ -203,6 +209,13 @@ public class ApiResource {
 		return $post.byId(id);
 	}
 
+	@POST
+	@Path("/post/{id}/add_to_collection/{name}")
+	public void addPostToCollection(@PathParam("id") @NotEmpty String id,
+									 @PathParam("name") @NotEmpty String collectionName) {
+		$post.addToCollection(id, collectionName);
+	}	
+	
 	@POST
 	@UnitOfWork
 	@Path("/timeline/new")

@@ -444,6 +444,7 @@
   <field name="_text_" type="text_general" multiValued="true" indexed="true" stored="false"/>
   <field name="_version_" type="long" indexed="false" stored="false"/>
   <field name="authorName" type="string" indexed="true" stored="true"/>
+  <field name="authorId" type="string" indexed="false" stored="true"/>
   <field name="authorPicture" type="string" indexed="false" stored="true"/>
   <field name="category" type="text_general" termVectors="true" multiValued="true" indexed="true" stored="true"/>
   <field name="data" type="text_general" multiValued="false" indexed="false" stored="true"/>
@@ -455,7 +456,10 @@
   <field name="source" type="string" indexed="true" stored="true"/>
   <field name="timestamp" type="date" indexed="true" required="true" stored="true"/>
   <field name="type" type="string" indexed="true" stored="true"/>
-  <field name="collections" type="text_general" multiValued="true" termVectors="true" indexed="true" stored="true"/>
+  <field name="collections" type="string" multiValued="true" termVectors="true" indexed="true" stored="true"/>
+  <field name="indexedAt" type="date" indexed="true" stored="true"/>
+  <field name="lang" type="string" indexed="true" stored="true"/>
+  <field name="cached" type="string" indexed="false" stored="true"/>
 
   <dynamicField name="*_txt_en_split_tight" type="text_en_splitting_tight" indexed="true" stored="true"/>
   <dynamicField name="*_descendent_path" type="descendent_path" indexed="true" stored="true"/>
