@@ -157,3 +157,6 @@ create table z_collection (
         channel_id bigint references z_channel(id),
         UNIQUE(name)
 );
+
+insert into z_collection(name, label, audience)
+values('likes', 'likes', 'public');

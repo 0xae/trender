@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.dk.trender.core.ZChannel;
+import com.dk.trender.core.ZCollection;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
@@ -116,12 +117,12 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 	}
 
 	@SuppressWarnings({"unchecked"})
-	public List<ZChannel> collections(long id) {
-		String query = "from ZChannel z" +
-					   " where z.channelId = :channelId";
-		Query<ZChannel> q = currentSession()
+	public List<ZCollection> collections(long id) {
+		String query = "from ZCollection c"+
+					   " where c.channelId = :channelId";
+		Query<ZCollection> q = currentSession()
 							.createQuery(query)
 							.setParameter("channelId", id);		
-		return list(q);
+		return q.getResultList();
 	}
 }

@@ -139,7 +139,7 @@ public class ApiResource {
 	@GET
 	@Path("/channel/{id}/collections")	
 	@UnitOfWork
-	public List<ZChannel> getChannelCols(@PathParam("id") long id) {
+	public List<ZCollection> getChannelCols(@PathParam("id") long id) {
 		return $channel.collections(id);
 	}
 
