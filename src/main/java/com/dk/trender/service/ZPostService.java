@@ -81,6 +81,7 @@ public class ZPostService {
 		SolrInputDocument doc = new SolrInputDocument();
 		doc.addField("id", postId);
 		doc.addField("collections", ImmutableMap.of("add", collectionName));
+
 		try {
 			solr.add(Arrays.asList(doc));
 			solr.commit();

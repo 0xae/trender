@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.validator.constraints.Length;
@@ -24,8 +25,8 @@ public class ZCollection {
 	private long id;
 
 	@NotEmpty
-	@Column(name="name")
-	@NaturalId
+	@Column(name="name", updatable=false)
+	@Pattern(regexp="[a-zA-Z0-9_@.-]+")
 	private String name;
 
 	@NotEmpty

@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -27,7 +26,6 @@ public class ZChannel {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 
-	@NotNull
 	@NotEmpty
 	@Column(name="name")
 	private String name;
@@ -52,7 +50,7 @@ public class ZChannel {
 	@NotEmpty
 	@Column(name="audience", nullable=false)
 	@OneOf({PUBLIC, PRIVATE})
-	private String audience="private";
+	private String audience = PRIVATE;
 
 	@Column(name="created_at", updatable=false)
 	private DateTime createdAt=new DateTime();

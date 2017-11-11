@@ -7,6 +7,8 @@ import javax.servlet.FilterRegistration;
 
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dk.trender.core.ZTimeline;
 import com.dk.trender.core.ZChannel;
@@ -37,7 +39,9 @@ import io.dropwizard.setup.Environment;
  * @date 2017-07-29 07:04:53
  */
 public class TrenderApplication extends Application<TrenderConfiguration> {
-    final HibernateBundle<TrenderConfiguration> hibernateBundle = 
+	private static final Logger log = LoggerFactory.getLogger(TrenderApplication.class);
+
+	final HibernateBundle<TrenderConfiguration> hibernateBundle = 
     		new HibernateBundle<TrenderConfiguration>(ZTimeline.class, ZChannel.class,
     												  ZCollection.class) {
 		public DataSourceFactory getDataSourceFactory(TrenderConfiguration configuration) {
@@ -78,16 +82,17 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		ManagedSolr solr = new ManagedSolr();
 
 		ZPostService post = new ZPostService(solr.getClient());
-		ZTimelineService timeline = new ZTimelineService(session, solr.getClient());
 		ZMediaService media = new ZMediaService(conf.getMediaHost());
 		ZChannelService $channel = new ZChannelService(session);
 		ZCollectionService $col = new ZCollectionService(session);
 
-		env.jersey().register(new ApiResource(post, timeline, media, $channel, $col));
+		env.jersey().register(new ApiResource(post, media, $channel, $col));
 		env.jersey().register(new NoResultExceptionExceptionMapper(env.metrics()));
 		env.jersey().register(new ConstraintViolationExceptionMapper());
 		env.jersey().register(new ConnectExceptionMapper());		
 		env.lifecycle().manage(solr);
+		
+		log.info("authorizationPrefix is {}", conf.getAuthorizationPrefix());
 	}
 
 	public static void main(String[] args) throws Exception {

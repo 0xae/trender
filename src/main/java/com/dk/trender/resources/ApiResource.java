@@ -1,12 +1,13 @@
 package com.dk.trender.resources;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -21,18 +22,16 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dk.trender.core.ZPost;
-import com.dk.trender.core.ZTimeline;
 import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
-import com.dk.trender.service.ZMediaService;
-import com.dk.trender.service.ZPostService;
+import com.dk.trender.core.ZPost;
 import com.dk.trender.service.ZChannelService;
 import com.dk.trender.service.ZCollectionService;
-import com.dk.trender.service.ZTimelineService;
+import com.dk.trender.service.ZMediaService;
+import com.dk.trender.service.ZPostService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static com.dk.trender.service.ZTimelineService.DEFAULT_STARTL;
 import io.dropwizard.hibernate.UnitOfWork;
 
 /**
@@ -46,18 +45,15 @@ import io.dropwizard.hibernate.UnitOfWork;
 public class ApiResource {
 	private static final Logger log = LoggerFactory.getLogger(ApiResource.class);
 	private final ZPostService $post;
-	private final ZTimelineService timeline;
 	private final ZMediaService $media;
 	private final ZChannelService $channel;
 	private final ZCollectionService $col;
 
-	public ApiResource(ZPostService postService,
-					   ZTimelineService timeline,
+	public ApiResource(ZPostService post,
 					   ZMediaService media,
 					   ZChannelService channel,
 					   ZCollectionService $col) {
-		this.$post = postService;
-		this.timeline = timeline;
+		this.$post = post;
 		this.$media = media;
 		this.$channel = channel;
 		this.$col = $col;
@@ -66,14 +62,14 @@ public class ApiResource {
 	@POST
 	@Path("/collection/new")	
 	@UnitOfWork
-	public ZCollection createCol(@Valid ZCollection req) {		
-		return $col.create(req);
+	public ZCollection createCol(@Valid ZCollection obj) {		
+		return $col.create(obj);
 	}
 
 	@GET
 	@Path("/collection")	
 	@UnitOfWork
-	public List<ZCollection> allCols(@QueryParam("audience")
+	public List<ZCollection> getAllCols(@QueryParam("audience")
 									 @NotEmpty String audience) {
 		return $col.all(audience);
 	}
@@ -118,23 +114,28 @@ public class ApiResource {
 		return $channel.find(audience);
 	}
 
+	/**
+	 * 
+	 * TODO: fix duplicate creation of channels
+	 * @return
+	 */
 	@GET
 	@Path("/channel/find_by")
 	@UnitOfWork
-	public ZChannel findBy(@QueryParam("name") 
+	public ZChannel findBy(@QueryParam("name")
 						   @NotEmpty String name,
-						   @QueryParam("q") 
+						   @QueryParam("q")
 	   					   @NotEmpty String q) {
 		return $channel.findByName(name, q);
-	}	
-	
+	}
+
 	@GET
 	@Path("/channel/{id}")	
 	@UnitOfWork
 	public ZChannel getChannel(@PathParam("id") long id) {
 		return $channel.byId(id);
 	}
-	
+
 	@GET
 	@Path("/channel/{id}/collections")	
 	@UnitOfWork
@@ -156,7 +157,7 @@ public class ApiResource {
 	public void deleteChannel(@PathParam("id") long id) {
 		$channel.deleteById(id);
 	}
-	
+
 	@POST
 	@Path("/post/new")
 	public int createPost(@Valid List<ZPost> request,
@@ -177,7 +178,6 @@ public class ApiResource {
 								  @QueryParam("link") Optional<String> link) {
 		ZPost post = $post.byId(id);
 		post.setPicture(link.orElse(post.getPicture()));
-
 		// if it is already cached
 		// XXX: ellaborate on this problem
 		// if (!"".equals(p.getCached()) && !"none".equals(p.getCached()) &&
@@ -188,13 +188,21 @@ public class ApiResource {
 		// }
 
 		try {
-			String picture = post.getPicture();
 			if (ZPost.YOUTUBE.equals(post.getType()) && 
-				picture.startsWith("/yts/img/")) 
-			{				
+					post.getPicture().startsWith("/yts/img/"))
+			{
+				ObjectMapper mapper = new ObjectMapper();
+				try {
+					Map<String, String> map = mapper.readValue(post.getData(), HashMap.class);
+					String videoId = map.get("video_id").toString();
+					String picture = "https://img.youtube.com/vi/"+videoId+"/0.jpg";
+					post.setPicture(picture);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
 			}
 
-			String stored = $media.store(picture, post.getType(), id);
+			String stored = $media.store(post.getPicture(), post.getType(), id);
 			post.setCached(stored);
 			$post.update(post);
 			return stored;
@@ -208,61 +216,24 @@ public class ApiResource {
 	public ZPost getPost(@PathParam("id") @NotEmpty String id) {
 		return $post.byId(id);
 	}
+	
+	@GET
+	@Path("/channel/test_name/{name}")
+	public String test(@PathParam("name") 
+					@Pattern(regexp="[a-zA-Z0-9_@.-]+")
+					@NotEmpty String name) 
+	{
+		log.info("{} is a valid chanel name.", name);
+		return name;
+	}
 
 	@POST
 	@Path("/post/{id}/add_to_collection/{name}")
 	public void addPostToCollection(@PathParam("id") @NotEmpty String id,
-									 @PathParam("name") @NotEmpty String collectionName) {
+									 @PathParam("name") 
+									 @NotEmpty @Pattern(regexp="[a-zA-Z0-9\\/]") 
+									 String collectionName) {
 		$post.addToCollection(id, collectionName);
-	}	
-	
-	@POST
-	@UnitOfWork
-	@Path("/timeline/new")
-	public ZTimeline createTimeline(@Valid ZTimeline request) {
-		return timeline.create(request);
-	}
-
-	@DELETE
-	@UnitOfWork
-	@Path("/timeline/{id}")
-	public void deleteTimeline(@PathParam("id") long id) {
-		timeline.delete(id);
-	}
-
-	@GET
-	@UnitOfWork
-	@Path("/timeline/")
-	public List<ZTimeline> getTimeline(@QueryParam("state") 
-									  @DefaultValue("created") 
-									  String state) {
-		return timeline.all(state);
-	}
-
-	@GET
-	@UnitOfWork
-	@Path("/timeline/{id}/stream")
-	public ZTimeline.Stream streamTimeline(@PathParam("id") long id,
-										 @QueryParam("limit") @DefaultValue("10") int limit,
-										 @QueryParam("start") @DefaultValue(DEFAULT_STARTL) int start) {
-		return timeline.stream(id, limit, start);
-	}
-
-	@GET
-	@UnitOfWork
-	@Path("/timeline/topic/{q}")
-	public ZTimeline.Stream streamTimeline(@PathParam("q") String topic,
-										  @QueryParam("limit") @DefaultValue("10") int limit) {
-		log.info("q is {}", topic);
-		return timeline.stream(topic, limit);
-	}
-
-	@GET
-	@UnitOfWork
-	@Path("/timeline/{id}")
-	public ZTimeline getTimeline(@PathParam("id") long id,
-								@QueryParam("start") @Min(0) int start) {
-		return timeline.byId(id);
 	}
 }
 
