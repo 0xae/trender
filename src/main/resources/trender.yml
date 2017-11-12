@@ -1,4 +1,8 @@
-authorizationPrefix: ${TRENDER_AUTH_PREFIX:-123}
+authorizationPrefix: TRENDER
+
+# XXX replace this later after testing stuff out
+jwtSecretToken: $2a$10$VLACkixgmd6Yhz.BPNCijezAZqa7YQbdO9AbPxN6zjoU3mKgPNqGy
+
 mediaHost: /opt/lampp/htdocs/trender/media/
 
 database: 

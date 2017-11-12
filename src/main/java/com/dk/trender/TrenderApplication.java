@@ -1,12 +1,17 @@
 package com.dk.trender;
 
+import java.security.Principal;
 import java.util.EnumSet;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 
 import org.eclipse.jetty.servlets.CrossOriginFilter;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.hibernate.SessionFactory;
+import org.jose4j.jwt.consumer.JwtConsumer;
+import org.jose4j.jwt.consumer.JwtConsumerBuilder;
+import org.jose4j.keys.HmacKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,13 +23,17 @@ import com.dk.trender.exceptions.ConnectExceptionMapper;
 import com.dk.trender.exceptions.ConstraintViolationExceptionMapper;
 import com.dk.trender.exceptions.NoResultExceptionExceptionMapper;
 import com.dk.trender.resources.ApiResource;
+import com.dk.trender.resources.AuthResource;
 import com.dk.trender.service.ZMediaService;
 import com.dk.trender.service.ZPostService;
 import com.dk.trender.service.ZChannelService;
 import com.dk.trender.service.ZCollectionService;
 import com.dk.trender.service.ZTimelineService;
+import com.dk.trender.service.ZUserService;
 
 import io.dropwizard.Application;
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.db.DataSourceFactory;
@@ -32,6 +41,9 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+
+import com.dk.trender.auth.*;
+import com.dk.trender.core.*;
 
 /**
  * 
@@ -43,7 +55,7 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 
 	final HibernateBundle<TrenderConfiguration> hibernateBundle = 
     		new HibernateBundle<TrenderConfiguration>(ZTimeline.class, ZChannel.class,
-    												  ZCollection.class) {
+    												  ZCollection.class, ZUser.class) {
 		public DataSourceFactory getDataSourceFactory(TrenderConfiguration configuration) {
 			return configuration.getDatabase();
 		}
@@ -85,14 +97,43 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		ZMediaService media = new ZMediaService(conf.getMediaHost());
 		ZChannelService $channel = new ZChannelService(session);
 		ZCollectionService $col = new ZCollectionService(session);
+		JwtService jwt = new JwtService(
+			conf.getJwtSecretToken().getBytes("UTF-8"), 
+			conf.getAuthorizationPrefix()
+		);
+		ZUserService $user = new ZUserService(session, jwt, conf.getAuthorizationPrefix());
 
+		env.jersey().register(new AuthResource($user));
 		env.jersey().register(new ApiResource(post, media, $channel, $col));
 		env.jersey().register(new NoResultExceptionExceptionMapper(env.metrics()));
 		env.jersey().register(new ConstraintViolationExceptionMapper());
 		env.jersey().register(new ConnectExceptionMapper());		
 		env.lifecycle().manage(solr);
+
+		setUpAuth(conf, env);
+	}
+	
+	private static void setUpAuth(TrenderConfiguration conf, Environment env) throws Exception {
+		final byte[] key = conf.getJwtSecretToken().getBytes("UTF-8");
+        final JwtConsumer consumer = new JwtConsumerBuilder()
+                .setAllowedClockSkewInSeconds(30) // allow some leeway in validating time based claims to account for clock skew
+                .setRequireExpirationTime() // the JWT must have an expiration time
+                .setRequireSubject() // the JWT must have a subject claim
+                .setVerificationKey(new HmacKey(key)) // verify the signature with the public key
+                .setRelaxVerificationKeyValidation() // relaxes key length requirement
+                .build(); // create the JwtConsumer instance
+
+        env.jersey().register(new AuthValueFactoryProvider.Binder<>(Principal.class));
+        env.jersey().register(RolesAllowedDynamicFeature.class);
+        env.jersey().register(new AuthDynamicFeature(
+                new JwtAuthFilter.Builder<ZUser>()
+                    .setJwtConsumer(consumer)
+                    .setRealm("realm")
+                    .setPrefix(conf.getAuthorizationPrefix())
+                    .setAuthenticator(new TrenderAuthenticator())
+                    .setAuthorizer(new TrenderAuthorizer())
+                    .buildAuthFilter()));
 		
-		log.info("authorizationPrefix is {}", conf.getAuthorizationPrefix());
 	}
 
 	public static void main(String[] args) throws Exception {

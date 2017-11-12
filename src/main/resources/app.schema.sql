@@ -163,3 +163,15 @@ values(1, 'likes', 'likes', 'public');
 
 insert into z_collection(id, name, label, audience)
 values(2, 'spam', 'spam', 'public');
+
+create table z_user (
+        id bigserial primary key,
+        name varchar(250) not null,
+        email text not null,
+        password_hash text not null,
+        location varchar(250),
+        lang varchar(250),
+        created_at timestamp not null default now(),
+        UNIQUE(email)
+);
+

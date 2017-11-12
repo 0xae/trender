@@ -23,6 +23,19 @@ public class TrenderConfiguration extends Configuration {
 	@NotEmpty
 	private String mediaHost;
 	
+	@NotEmpty
+	private String jwtSecretToken;
+	
+	@JsonProperty
+	public void setJwtSecretToken(String jwtSecretToken) {
+		this.jwtSecretToken = jwtSecretToken;
+	}
+	
+	@JsonProperty
+	public String getJwtSecretToken() {
+		return jwtSecretToken;
+	}
+	
 	@JsonProperty
 	public void setMediaHost(String mediaHost) {
 		this.mediaHost = mediaHost;

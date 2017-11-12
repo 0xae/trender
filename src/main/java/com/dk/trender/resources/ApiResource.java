@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.ws.rs.Consumes;
@@ -63,6 +64,7 @@ public class ApiResource {
 	@POST
 	@Path("/collection/new")	
 	@UnitOfWork
+	@PermitAll
 	public ZCollection createCol(@Valid ZCollection obj) {		
 		return $col.create(obj);
 	}
@@ -95,6 +97,7 @@ public class ApiResource {
 	@POST
 	@Path("/channel/new")	
 	@UnitOfWork
+	@PermitAll
 	public ZChannel createChannel(@Valid ZChannel req) {		
 		return $channel.create(req);
 	}
@@ -155,6 +158,7 @@ public class ApiResource {
 	@POST
 	@Path("/channel/{id}/delete")	
 	@UnitOfWork
+	@PermitAll
 	public void deleteChannel(@PathParam("id") long id) {
 		$channel.deleteById(id);
 	}
@@ -217,7 +221,7 @@ public class ApiResource {
 	public ZPost getPost(@PathParam("id") @NotEmpty String id) {
 		return $post.byId(id);
 	}
-	
+
 	@GET
 	@Path("/channel/test_name/{name}")
 	public String test(@PathParam("name") 
@@ -229,6 +233,7 @@ public class ApiResource {
 	}
 
 	@POST
+	@PermitAll
 	@Path("/post/{id}/{op}/collection/{name}")
 	public void updatePostCollection(
 		 @PathParam("id") @NotEmpty 
