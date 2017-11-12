@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.NaturalId;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.joda.time.DateTime;
@@ -38,7 +39,7 @@ public class ZUser implements Principal {
 	@Email
 	@NotNull
 	@Length(max=250)
-	@Column(name="email", nullable=false)
+	@Column(name="email", nullable=false, unique=true)
 	private String email;
 
 	@NotNull

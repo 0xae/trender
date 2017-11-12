@@ -1,5 +1,6 @@
 package com.dk.trender.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,12 +8,14 @@ import javax.persistence.NoResultException;
 import javax.ws.rs.ForbiddenException;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 
 import com.dk.trender.auth.BCrypt;
 import com.dk.trender.auth.JwtService;
 import com.dk.trender.auth.ZLogin;
 import com.dk.trender.auth.ZToken;
 import com.dk.trender.core.ZUser;
+import com.dk.trender.exceptions.BadRequest;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
@@ -28,10 +31,17 @@ public class ZUserService extends AbstractDAO<ZUser> {
 		this.prefix = prefix;
 	}
 
-	public ZUser create(ZUser obj) {
-		String encrypted=bcrypt(obj.getPassword(), 12);
-		obj.setPassword(encrypted);
-		return persist(obj);
+	public ZUser create(ZUser req) {
+		String encrypted=bcrypt(req.getPassword(), 12);
+		req.setPassword(encrypted);
+		try {
+			return persist(req);			
+		} catch(ConstraintViolationException e) {
+			String msg;
+			msg = String.format("The email '%s' is already taken.", 
+							  	req.getEmail());			
+			throw new BadRequest(Arrays.asList(msg));
+		}
 	}
 
 	private String bcrypt(String data, int complexity) {

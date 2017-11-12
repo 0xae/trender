@@ -19,7 +19,6 @@ import java.util.function.Predicate;
 import static com.codahale.metrics.MetricRegistry.name;
 
 public class CachingJwtAuthenticator<P extends Principal> implements Authenticator<JwtContext, P> {
-
     private final Authenticator<JwtContext, P> authenticator;
     private final Cache<String, SimpleEntry<JwtContext, Optional<P>>> cache;
     private final Meter cacheMisses;

@@ -13,11 +13,13 @@ public class ConstraintViolationExceptionMapper implements ExceptionMapper<Const
 	
 	@Override
 	public Response toResponse(ConstraintViolationException e) {
+		
 		if (e.getCause() instanceof PSQLException && 
 			 ((PSQLException) e.getCause()).getSQLState().equals(SQL_DUPLICATED_STATE)) {
+			String msg="Verify if this object has unique properties";
 			return Response
 					   .status(400)
-					   .entity("{\"errors\": [\"Verify if this object has unique properties\"]}")
+					   .entity("{\"errors\": [\""+msg+"\"]}")
 					   .build();
 		}
 

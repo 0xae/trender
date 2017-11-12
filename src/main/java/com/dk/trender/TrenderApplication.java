@@ -19,6 +19,7 @@ import com.dk.trender.core.ZTimeline;
 import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
 import com.dk.trender.core.managed.ManagedSolr;
+import com.dk.trender.exceptions.BadRequestExceptionMapper;
 import com.dk.trender.exceptions.ConnectExceptionMapper;
 import com.dk.trender.exceptions.ConstraintViolationExceptionMapper;
 import com.dk.trender.exceptions.NoResultExceptionExceptionMapper;
@@ -107,7 +108,9 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		env.jersey().register(new ApiResource(post, media, $channel, $col));
 		env.jersey().register(new NoResultExceptionExceptionMapper(env.metrics()));
 		env.jersey().register(new ConstraintViolationExceptionMapper());
-		env.jersey().register(new ConnectExceptionMapper());		
+		env.jersey().register(new ConnectExceptionMapper());
+		env.jersey().register(new BadRequestExceptionMapper());
+
 		env.lifecycle().manage(solr);
 
 		setUpAuth(conf, env);
