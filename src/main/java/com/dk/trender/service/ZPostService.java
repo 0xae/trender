@@ -77,10 +77,13 @@ public class ZPostService {
 		}
 	}
 	
-	public void addToCollection(String postId, String collectionName) {
+	public void updateCollection(String op, String postId, String collectionName) {
 		SolrInputDocument doc = new SolrInputDocument();
+		if ("remove".equals(op)) {
+			op = "removeregex";
+		}
 		doc.addField("id", postId);
-		doc.addField("collections", ImmutableMap.of("add", collectionName));
+		doc.addField("collections", ImmutableMap.of(op, collectionName));
 
 		try {
 			solr.add(Arrays.asList(doc));

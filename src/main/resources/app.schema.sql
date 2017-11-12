@@ -158,5 +158,8 @@ create table z_collection (
         UNIQUE(name)
 );
 
-insert into z_collection(name, label, audience)
-values('likes', 'likes', 'public');
+insert into z_collection(id, name, label, audience)
+values(1, 'likes', 'likes', 'public');
+
+insert into z_collection(id, name, label, audience)
+values(2, 'spam', 'spam', 'public');

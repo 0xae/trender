@@ -33,6 +33,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.validation.OneOf;
 
 /**
  * 
@@ -228,12 +229,16 @@ public class ApiResource {
 	}
 
 	@POST
-	@Path("/post/{id}/add_to_collection/{name}")
-	public void addPostToCollection(@PathParam("id") @NotEmpty String id,
-									 @PathParam("name") 
-									 @NotEmpty @Pattern(regexp="[a-zA-Z0-9\\/]") 
-									 String collectionName) {
-		$post.addToCollection(id, collectionName);
+	@Path("/post/{id}/{op}/collection/{name}")
+	public void updatePostCollection(
+		 @PathParam("id") @NotEmpty 
+		 String id,
+		 @PathParam("name") @Pattern(regexp=ZCollection.NAMEP) 
+		 String collectionName,
+		 @PathParam("op") @OneOf({"add", "remove"}) 
+		 String op
+	) {
+		$post.updateCollection(op, id, collectionName);
 	}
 }
 

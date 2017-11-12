@@ -12,6 +12,7 @@ import org.hibernate.annotations.NaturalId;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,13 +21,14 @@ import io.dropwizard.validation.OneOf;
 @Entity
 @Table(name="z_collection")
 public class ZCollection {
+	public static final String NAMEP = "[a-zA-Z0-9_@.-]+";
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 
 	@NotEmpty
 	@Column(name="name", updatable=false)
-	@Pattern(regexp="[a-zA-Z0-9_@.-]+")
+	@Pattern(regexp=NAMEP)
 	private String name;
 
 	@NotEmpty
@@ -48,8 +50,8 @@ public class ZCollection {
 	@Column(name="last_update")
 	private DateTime lastUpdate=new DateTime();
 	
-	@Column(name="channel_id")
-	private long channelId;
+	@Column(name="channel_id", nullable=true)
+	private Long channelId;
 
 	///private List<ZPost> posts = Collections.emptyList();
 
@@ -117,17 +119,31 @@ public class ZCollection {
 	}
 
 	@JsonProperty
+	public String getLastUpdateFmt() {
+		return DateTimeFormat
+				   .forPattern("YYYY-MM-dd HH:mm")
+				   .print(lastUpdate);
+	}	
+
+	@JsonProperty
+	public String getCreatedAtFmt() {
+		return DateTimeFormat
+				   .forPattern("YYYY-MM-dd HH:mm")
+				   .print(createdAt);
+	}		
+
+	@JsonProperty
 	public void setLastUpdate(DateTime lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
 
 	@JsonProperty
-	public long getChannelId() {
+	public Long getChannelId() {
 		return channelId;
 	}
 
 	@JsonProperty
-	public void setChannelId(long channelId) {
+	public void setChannelId(Long channelId) {
 		this.channelId = channelId;
 	}
 }
