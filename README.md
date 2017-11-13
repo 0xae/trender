@@ -71,6 +71,9 @@ that's it
 * [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
 * [Hibernate User Guide](http://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#architecture-overview)
 
+### Crypto
+* [namecoin](https://namecoin.org)
+
 ### infraestructure
 * [list of crawlers](https://github.com/BruceDone/awesome-crawler)
 * [gigablast](https://github.com/gigablast/open-source-search-engine)
