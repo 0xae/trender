@@ -33,12 +33,12 @@ import io.dropwizard.validation.OneOf;
 @Path("/api/v1/post")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class PostApi {
-	private static final Logger log = LoggerFactory.getLogger(PostApi.class);
+public class ZPostApi {
+	private static final Logger log = LoggerFactory.getLogger(ZPostApi.class);
 	private final ZPostService $post;
 	private final ZMediaService $media;
 
-	public PostApi(ZPostService $post,
+	public ZPostApi(ZPostService $post,
 				   ZMediaService $media) {
 		this.$post = $post;
 		this.$media = $media;

@@ -25,7 +25,6 @@ import io.dropwizard.hibernate.AbstractDAO;
 
 public class ZChannelService extends AbstractDAO<ZChannel> {
 	private static final Logger log = LoggerFactory.getLogger(ZChannelService.class);
-
 	public ZChannelService(SessionFactory sessionFactory) {
 		super(sessionFactory);
 	}
@@ -36,17 +35,9 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 				.orElseThrow(NoResultException::new);
 	}
 
-	public void deleteById(long id) {
-		String query = "delete from ZChannel z where id=:id";
-		Query q = currentSession()
-				  .createQuery(query)
-				  .setParameter("id", id);
-		q.executeUpdate();
-	}
-
 	public ZChannel create(ZChannel obj) {
 		ZChannel t = persist(obj);
-		log.info("create zchannel {}#{}", t.getId(), t.getName());
+		log.info("created zchannel {}#{}", t.getId(), t.getName());
 		return t;
 	}
 
@@ -55,11 +46,16 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		currentSession().update(obj);
 		return obj;
 	}
-	
-	public ZChannel delete(long id) {
-		ZChannel obj = byId(id);
-		currentSession().delete(obj);
-		return obj;
+
+	public void delete(long id) {
+		int affected = currentSession()
+		  .createQuery("delete from ZChannel z where id=:id")
+		  .setParameter("id", id)
+		  .executeUpdate();
+
+		if (affected == 0) {
+			throw new NoResultException("No channel with id" + id + " found!");
+		}
 	}
 
 	@SuppressWarnings({"unchecked"})
@@ -67,8 +63,11 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		String query = "from ZChannel z"+
 						" where z.audience=:audience"+
 						" order by lastUpdate desc";
-		return list(currentSession().createQuery(query)
-						.setParameter("audience", audience));
+
+		return list(currentSession()
+				     .createQuery(query)
+					 .setParameter("audience", audience)
+				);
 	}
 
 	@SuppressWarnings({"unchecked"})
@@ -77,9 +76,11 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		String query = "from ZChannel z "+
 						"where lower(trim(z.name))=lower(trim(:name))";
 		log.info("searching for channel {}", name);
-		List<ZChannel> l = list(currentSession()
+		List<ZChannel> l = list(
+			currentSession()
 		    .createQuery(query)
-			.setParameter("name", name));
+			.setParameter("name", name)
+		);
 
 		// TODO move this search to postgres with json query operators
 		//      but first we need to figure out a way to make native queries
@@ -98,9 +99,7 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 				// XXX: it is not possible to reach here
 				// because postgres wont allow invalid json
 				// to be created
-
-				// there's no way i can possibly
-				// recover from this error
+				// i cant gracefuly recover from this error
 				throw new RuntimeException(e);
 			}				
 		}
@@ -110,19 +109,18 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 
 	@SuppressWarnings({"unchecked"})
 	public List<ZChannel> all() {
-		String query = "from ZChannel";
-		Query<ZChannel> q = currentSession()
-							.createQuery(query);
-		return list(q);
+		return list(currentSession()
+					.createQuery("from ZChannel"));
 	}
 
 	@SuppressWarnings({"unchecked"})
 	public List<ZCollection> collections(long id) {
 		String query = "from ZCollection c"+
 					   " where c.channelId = :channelId";
-		Query<ZCollection> q = currentSession()
-							.createQuery(query)
-							.setParameter("channelId", id);		
-		return q.getResultList();
+
+		return currentSession()
+			.createQuery(query)
+			.setParameter("channelId", id)
+			.getResultList();		
 	}
 }

@@ -20,13 +20,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ZMediaService {
 	private static final Logger log = LoggerFactory.getLogger(ZMediaService.class);
-	private static final ObjectMapper mapper = new ObjectMapper();
 	private final String mediaHost;	
 
 	public ZMediaService(String mediaHost) {
 		this.mediaHost = mediaHost;
 	}
-	
+
 	public String store(String link, String container, String name) {
 		int index = link.lastIndexOf('.');
 		String ext = (index == -1) ? ".jpg" : link.substring(index);
@@ -52,7 +51,7 @@ public class ZMediaService {
 			output = new FileOutputStream(out);
 			IOUtils.copy(input, output);
 			return container + "/" + name + ext;
-		} catch(java.net.UnknownHostException u){
+		} catch(java.net.UnknownHostException eu){
 			String msg = outUrl.getHost() + " is not available";
 			throw new BadRequest(503, Arrays.asList(msg));
 		} catch (MalformedURLException ek) {
