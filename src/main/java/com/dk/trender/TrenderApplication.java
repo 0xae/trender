@@ -23,8 +23,9 @@ import com.dk.trender.exceptions.BadRequestExceptionMapper;
 import com.dk.trender.exceptions.ConnectExceptionMapper;
 import com.dk.trender.exceptions.ConstraintViolationExceptionMapper;
 import com.dk.trender.exceptions.NoResultExceptionExceptionMapper;
-import com.dk.trender.resources.ApiResource;
-import com.dk.trender.resources.AuthResource;
+import com.dk.trender.resources.Api;
+import com.dk.trender.resources.AuthApi;
+import com.dk.trender.resources.PostApi;
 import com.dk.trender.service.ZMediaService;
 import com.dk.trender.service.ZPostService;
 import com.dk.trender.service.ZChannelService;
@@ -104,8 +105,9 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		);
 		ZUserService $user = new ZUserService(session, jwt, conf.getAuthorizationPrefix());
 
-		env.jersey().register(new AuthResource($user));
-		env.jersey().register(new ApiResource(post, media, $channel, $col));
+		env.jersey().register(new AuthApi($user));
+		env.jersey().register(new Api($channel, $col));
+		env.jersey().register(new PostApi(post, media));
 		env.jersey().register(new NoResultExceptionExceptionMapper(env.metrics()));
 		env.jersey().register(new ConstraintViolationExceptionMapper());
 		env.jersey().register(new ConnectExceptionMapper());

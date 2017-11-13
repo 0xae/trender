@@ -21,9 +21,9 @@ import io.dropwizard.hibernate.UnitOfWork;
 @Path("/api/v1/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class AuthResource {
+public class AuthApi {
 	private final ZUserService $user;
-	public AuthResource(ZUserService $user) {
+	public AuthApi(ZUserService $user) {
 		this.$user = $user;
 	}
 

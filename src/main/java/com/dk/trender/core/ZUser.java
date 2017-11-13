@@ -51,6 +51,9 @@ public class ZUser implements Principal {
 	@Column(name="lang")
 	private String lang = "en";
 
+	@Column(name="picture")
+	private String picture;
+	
 	@Length(max=250)
 	@Column(name="location")
 	private String location = "worldwide";	
@@ -58,7 +61,27 @@ public class ZUser implements Principal {
 	@NotNull
 	@Column(name="created_at", nullable=false)
 	private DateTime createdAt = DateTime.now();
-	
+
+	@JsonProperty
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	@JsonProperty
+	public String getLocation() {
+		return location;
+	}
+
+	@JsonProperty
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
+
+	@JsonProperty
+	public String getPicture() {
+		return picture;
+	}
+
 	@JsonProperty
 	public void setLang(String lang) {
 		this.lang = lang;
