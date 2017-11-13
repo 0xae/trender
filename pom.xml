@@ -30,7 +30,6 @@
           <id>jcenter</id>
           <url>http://jcenter.bintray.com</url>
       </repository>
-
       <repository>
           <id>sonatype-nexus-snapshots</id>
           <name>Sonatype Nexus Snapshots</name>

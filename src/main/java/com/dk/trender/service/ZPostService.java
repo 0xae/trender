@@ -1,6 +1,5 @@
 package com.dk.trender.service;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,12 +13,11 @@ import org.apache.solr.common.SolrInputDocument;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.google.common.collect.ImmutableMap;
 
 import com.dk.trender.core.ZPost;
 import com.dk.trender.exceptions.SolrExecutionException;
 import com.dk.trender.service.utils.DateUtils;
-
+import com.google.common.collect.ImmutableMap;
 
 /**
  * 
@@ -32,13 +30,18 @@ public class ZPostService {
 	public ZPostService(ConcurrentUpdateSolrClient service) {
 		solr = service;
 	}
+	
+	public int save(ZPost obj) {
+		return save(Arrays.asList(obj));
+	}
 
-	public int create(List<ZPost> posts) {
+	public int save(List<ZPost> posts) {
 		List<SolrInputDocument> docs = new LinkedList<>();
 		DateTime start = DateTime.now();
 		int indexed = 0;
 
 		for (final ZPost post : posts) {
+			// XXX: cant we use an Optional<> here?
 			SolrDocument found = exists(post);
 			if (found != null) {
 				post.indexedAt(new DateTime(found.get("indexedAt")));
@@ -60,10 +63,6 @@ public class ZPostService {
 		return indexed;
 	}
 
-	public void update(ZPost p) {
-		create(Arrays.asList(p));
-	}
-
 	public ZPost byId(String id) {
 		try {
 			SolrDocument doc = Optional
@@ -79,9 +78,6 @@ public class ZPostService {
 	
 	public void updateCollection(String op, String postId, String collectionName) {
 		SolrInputDocument doc = new SolrInputDocument();
-		if ("remove".equals(op)) {
-			op = "removeregex";
-		}
 		doc.addField("id", postId);
 		doc.addField("collections", ImmutableMap.of(op, collectionName));
 

@@ -25,6 +25,7 @@ import com.dk.trender.exceptions.ConstraintViolationExceptionMapper;
 import com.dk.trender.exceptions.NoResultExceptionExceptionMapper;
 import com.dk.trender.resources.ZCollectionApi;
 import com.dk.trender.resources.AuthApi;
+import com.dk.trender.resources.ZChannelApi;
 import com.dk.trender.resources.ZPostApi;
 import com.dk.trender.service.ZMediaService;
 import com.dk.trender.service.ZPostService;
@@ -54,7 +55,6 @@ import com.dk.trender.core.*;
  */
 public class TrenderApplication extends Application<TrenderConfiguration> {
 	private static final Logger log = LoggerFactory.getLogger(TrenderApplication.class);
-
 	final HibernateBundle<TrenderConfiguration> hibernateBundle = 
     		new HibernateBundle<TrenderConfiguration>(ZTimeline.class, ZChannel.class,
     												  ZCollection.class, ZUser.class) {
@@ -93,32 +93,31 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		cors.setInitParameter(CrossOriginFilter.CHAIN_PREFLIGHT_PARAM, Boolean.FALSE.toString());
 
 		SessionFactory session = hibernateBundle.getSessionFactory();
+		JwtService jwt = configAuth(conf, env);
 		ManagedSolr solr = new ManagedSolr();
-
-		ZPostService post = new ZPostService(solr.getClient());
-		ZMediaService media = new ZMediaService(conf.getMediaHost());
+		ZPostService $post = new ZPostService(solr.getClient());
+		ZMediaService $media = new ZMediaService(conf.getMediaHost());
 		ZChannelService $channel = new ZChannelService(session);
 		ZCollectionService $col = new ZCollectionService(session);
-		JwtService jwt = new JwtService(
-			conf.getJwtSecretToken().getBytes("UTF-8"), 
-			conf.getAuthorizationPrefix()
-		);
 		ZUserService $user = new ZUserService(session, jwt, conf.getAuthorizationPrefix());
 
+		// api resources
 		env.jersey().register(new AuthApi($user));
-		env.jersey().register(new ZCollectionApi($channel, $col));
-		env.jersey().register(new ZPostApi(post, media));
+		env.jersey().register(new ZCollectionApi($col));
+		env.jersey().register(new ZPostApi($post, $media));
+		env.jersey().register(new ZChannelApi($channel));
+
+		// exception handlers
 		env.jersey().register(new NoResultExceptionExceptionMapper(env.metrics()));
 		env.jersey().register(new ConstraintViolationExceptionMapper());
 		env.jersey().register(new ConnectExceptionMapper());
 		env.jersey().register(new BadRequestExceptionMapper());
 
+		// managed objects
 		env.lifecycle().manage(solr);
-
-		setUpAuth(conf, env);
 	}
 	
-	private static void setUpAuth(TrenderConfiguration conf, Environment env) throws Exception {
+	private JwtService configAuth(TrenderConfiguration conf, Environment env) throws Exception {
 		final byte[] key = conf.getJwtSecretToken().getBytes("UTF-8");
         final JwtConsumer consumer = new JwtConsumerBuilder()
                 .setAllowedClockSkewInSeconds(30) // allow some leeway in validating time based claims to account for clock skew
@@ -138,7 +137,11 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
                     .setAuthenticator(new TrenderAuthenticator())
                     .setAuthorizer(new TrenderAuthorizer())
                     .buildAuthFilter()));
-		
+        
+        return new JwtService(
+			conf.getJwtSecretToken().getBytes("UTF-8"), 
+			conf.getAuthorizationPrefix()
+		);		
 	}
 
 	public static void main(String[] args) throws Exception {

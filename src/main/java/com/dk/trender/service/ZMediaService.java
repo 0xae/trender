@@ -9,6 +9,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 
+import javax.ws.rs.NotFoundException;
+
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,9 +56,12 @@ public class ZMediaService {
 		} catch(java.net.UnknownHostException eu){
 			String msg = outUrl.getHost() + " is not available";
 			throw new BadRequest(503, Arrays.asList(msg));
-		} catch (MalformedURLException ek) {
-			String msg = "Malformed url: '" + link + "'.";
-			throw new BadRequest(400, Arrays.asList(msg));			
+		} catch(java.io.FileNotFoundException notFound) {
+			String msg = "Couldnt fetch resource '" + link + "'.";
+			throw new NotFoundException(msg);
+		}catch (MalformedURLException ek) {
+			String msg = "Bad url '" + link + "'";
+			throw new BadRequest(400, Arrays.asList(msg));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {

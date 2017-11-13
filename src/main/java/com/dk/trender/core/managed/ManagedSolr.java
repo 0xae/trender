@@ -4,12 +4,16 @@ import org.apache.solr.client.solrj.impl.ConcurrentUpdateSolrClient;
 
 import io.dropwizard.lifecycle.Managed;
 
+/**
+ * 
+ * @author ayrton
+ */
 public class ManagedSolr implements Managed {
 	private static final String URL = "http://localhost:8983/solr/trender";
-	private ConcurrentUpdateSolrClient solrUp;
+	private ConcurrentUpdateSolrClient client;
 
 	public ManagedSolr() {
-		solrUp = new ConcurrentUpdateSolrClient
+		client = new ConcurrentUpdateSolrClient
 				.Builder(URL)
 				.withQueueSize(10)
 				.withThreadCount(4)
@@ -22,11 +26,12 @@ public class ManagedSolr implements Managed {
 
 	@Override
 	public void stop() throws Exception {
-		if (solrUp != null)
-			solrUp.close();
+		if (client != null) {
+			client.close();			
+		}
 	}
 
 	public ConcurrentUpdateSolrClient getClient() {
-		return solrUp;
+		return client;
 	}
 }

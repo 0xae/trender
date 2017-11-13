@@ -61,15 +61,13 @@ public class ZCollectionApi {
 	@POST
 	@Path("/new")	
 	@UnitOfWork
-	@PermitAll
 	public ZCollection createCol(@Valid ZCollection obj) {		
 		return $col.create(obj);
 	}
 
-	@PUT
-	@Path("/collection/{id}")	
+	@POST
+	@Path("/{id}")	
 	@UnitOfWork
-	@PermitAll
 	public ZCollection colUpdate(@PathParam("id") long id,
 								 @Valid ZCollection col) {
 		if (col.getId()==0)

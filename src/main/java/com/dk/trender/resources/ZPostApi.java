@@ -25,10 +25,7 @@ import com.dk.trender.core.ZCollection;
 import com.dk.trender.core.ZPost;
 import com.dk.trender.service.ZMediaService;
 import com.dk.trender.service.ZPostService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import io.dropwizard.validation.OneOf;
 
 @Path("/api/v1/post")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -39,14 +36,14 @@ public class ZPostApi {
 	private final ZMediaService $media;
 
 	public ZPostApi(ZPostService $post,
-				   ZMediaService $media) {
+				    ZMediaService $media) {
 		this.$post = $post;
 		this.$media = $media;
 	}
 
 	@POST
 	@Path("/new")
-	public int createPost(@Valid List<ZPost> request,
+	public int create(@Valid List<ZPost> request,
 						   @QueryParam("debug") String debug) {
 		if (request.isEmpty()) {
 			log.info("Empty request for {}", debug);
@@ -55,12 +52,12 @@ public class ZPostApi {
 			log.info("Indexing {} items for {}", request.size(), debug);
 		}
 
- 		return $post.create(request);
+ 		return $post.save(request);
 	}
 
 	@Path("/media/{id}/download")
 	@GET
-	public String updatePostMedia(@PathParam("id") String id,
+	public String updateMedia(@PathParam("id") String id,
 								  @QueryParam("link") Optional<String> link) {
 		ZPost post = $post.byId(id);
 		post.setPicture(link.orElse(post.getPicture()));
@@ -80,27 +77,36 @@ public class ZPostApi {
 
 		String stored = $media.store(post.getPicture(), post.getType(), id);
 		post.setCached(stored);
-		$post.update(post);
+		$post.save(post);
 		return stored;
 	}
 
 	@GET
 	@Path("/{id}")
-	public ZPost getPost(@PathParam("id") @NotEmpty String id) {
+	public ZPost get(@PathParam("id") @NotEmpty String id) {
 		return $post.byId(id);
 	}
 
 	@POST
 	@PermitAll
-	@Path("/{id}/{op}/collection/{name}")
-	public void updatePostCollection(
+	@Path("/{id}/add_to/{name}")
+	public void addToCollection(
 		 @PathParam("id") @NotEmpty 
 		 String id,
-		 @PathParam("name") @Pattern(regexp=ZCollection.NAMEP) 
-		 String collectionName,
-		 @PathParam("op") @OneOf({"add", "remove"}) 
-		 String op
-	) {
-		$post.updateCollection(op, id, collectionName);
+		 @PathParam("name") @Pattern(regexp=ZCollection.NAMEP)
+		 String collectionName) 
+	{
+		$post.updateCollection("add", id, collectionName);
+	}
+
+	@POST
+	@PermitAll
+	@Path("/{id}/remove_from/{name}")
+	public void removeFromCollection(
+		 @PathParam("id") @NotEmpty String id,
+		 @PathParam("name") @Pattern(regexp=ZCollection.NAMEP)
+		 String collectionName) 
+	{
+		$post.updateCollection("removeregex", id, collectionName);
 	}
 }
