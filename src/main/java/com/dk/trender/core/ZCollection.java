@@ -8,12 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
-import org.hibernate.annotations.NaturalId;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
+import com.dk.trender.service.utils.Utils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.dropwizard.validation.OneOf;
@@ -120,16 +119,12 @@ public class ZCollection {
 
 	@JsonProperty
 	public String getLastUpdateFmt() {
-		return DateTimeFormat
-				   .forPattern("YYYY-MM-dd HH:mm")
-				   .print(lastUpdate);
+		return Utils.format(lastUpdate);
 	}	
 
 	@JsonProperty
 	public String getCreatedAtFmt() {
-		return DateTimeFormat
-				   .forPattern("YYYY-MM-dd HH:mm")
-				   .print(createdAt);
+		return Utils.format(createdAt);
 	}		
 
 	@JsonProperty

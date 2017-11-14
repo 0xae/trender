@@ -55,8 +55,9 @@ public class ZPostApi {
  		return $post.save(request);
 	}
 
-	@Path("/media/{id}/download")
 	@GET
+	@Path("/media/{id}/download")
+	@SuppressWarnings({"unchecked"})
 	public String updateMedia(@PathParam("id") String id,
 								  @QueryParam("link") Optional<String> link) {
 		ZPost post = $post.byId(id);

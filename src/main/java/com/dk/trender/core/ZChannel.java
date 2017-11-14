@@ -10,8 +10,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
+import com.dk.trender.service.utils.Utils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.dropwizard.validation.OneOf;
@@ -70,11 +70,9 @@ public class ZChannel {
 
 	@JsonProperty
 	public String getLastUpdateFmt() {
-		return DateTimeFormat
-				   .forPattern("YYYY-MM-dd")
-				   .print(lastUpdate);
+		return Utils.format(lastUpdate);
 	}	
-	
+
 	@JsonProperty
 	public long getId() {
 		return id;

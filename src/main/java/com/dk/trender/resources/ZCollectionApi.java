@@ -2,14 +2,10 @@ package com.dk.trender.resources;
 
 import java.util.List;
 
-import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -20,9 +16,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
-import com.dk.trender.service.ZChannelService;
 import com.dk.trender.service.ZCollectionService;
 
 import io.dropwizard.hibernate.UnitOfWork;

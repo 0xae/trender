@@ -11,8 +11,6 @@ import com.dk.trender.core.ZUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.dropwizard.jackson.Jackson;
-
 /**
  * 
  * @author ayrton
@@ -21,6 +19,7 @@ public class JwtService {
 	private final byte[] tokenSecret;
 	private final String authorizationPrefix;
 	public static final int JWT_EXPIRATION_TIME = 60 * 24 * 10; // days
+	private static final ObjectMapper mapper = new ObjectMapper();
 
 	public JwtService(final byte[] tokenSecret, final String authorizationPrefix) {
 		this.tokenSecret = tokenSecret;
@@ -29,7 +28,6 @@ public class JwtService {
 
 	public String getJwtToken(final ZUser user) {
         try {
-    		final ObjectMapper mapper = Jackson.newObjectMapper();
             final JwtClaims claims = new JwtClaims();
             claims.setSubject(mapper.writeValueAsString(user));
             claims.setExpirationTimeMinutesInTheFuture(JWT_EXPIRATION_TIME);
@@ -44,14 +42,17 @@ public class JwtService {
         }
 	}
 	
-	public ZUser getUserFromToken(String token) throws Exception {
-		final ObjectMapper mapper = Jackson.newObjectMapper();
+	public ZUser getUserFromToken(String token) {
 		final JsonWebSignature jwe = new JsonWebSignature();
         jwe.setKey(new HmacKey(tokenSecret));
-        jwe.setCompactSerialization(token);
-        
-        final JwtClaims claims = JwtClaims.parse(jwe.getPayload());
-        return mapper.readValue(claims.getSubject(), ZUser.class);
+
+        try {
+			jwe.setCompactSerialization(token);
+	        final JwtClaims claims = JwtClaims.parse(jwe.getPayload());
+	        return mapper.readValue(claims.getSubject(), ZUser.class);        	
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	public byte[] getTokenSecret() {

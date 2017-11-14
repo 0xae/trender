@@ -15,23 +15,27 @@ import org.jose4j.keys.HmacKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dk.trender.core.ZTimeline;
+import com.dk.trender.auth.JwtAuthFilter;
+import com.dk.trender.auth.JwtService;
+import com.dk.trender.auth.TrenderAuthenticator;
+import com.dk.trender.auth.TrenderAuthorizer;
 import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
+import com.dk.trender.core.ZTimeline;
+import com.dk.trender.core.ZUser;
 import com.dk.trender.core.managed.ManagedSolr;
 import com.dk.trender.exceptions.BadRequestExceptionMapper;
 import com.dk.trender.exceptions.ConnectExceptionMapper;
 import com.dk.trender.exceptions.ConstraintViolationExceptionMapper;
 import com.dk.trender.exceptions.NoResultExceptionExceptionMapper;
-import com.dk.trender.resources.ZCollectionApi;
 import com.dk.trender.resources.AuthApi;
 import com.dk.trender.resources.ZChannelApi;
+import com.dk.trender.resources.ZCollectionApi;
 import com.dk.trender.resources.ZPostApi;
-import com.dk.trender.service.ZMediaService;
-import com.dk.trender.service.ZPostService;
 import com.dk.trender.service.ZChannelService;
 import com.dk.trender.service.ZCollectionService;
-import com.dk.trender.service.ZTimelineService;
+import com.dk.trender.service.ZMediaService;
+import com.dk.trender.service.ZPostService;
 import com.dk.trender.service.ZUserService;
 
 import io.dropwizard.Application;
@@ -44,9 +48,6 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-
-import com.dk.trender.auth.*;
-import com.dk.trender.core.*;
 
 /**
  * 
@@ -116,7 +117,7 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		// managed objects
 		env.lifecycle().manage(solr);
 	}
-	
+
 	private JwtService configAuth(TrenderConfiguration conf, Environment env) throws Exception {
 		final byte[] key = conf.getJwtSecretToken().getBytes("UTF-8");
         final JwtConsumer consumer = new JwtConsumerBuilder()
@@ -137,14 +138,14 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
                     .setAuthenticator(new TrenderAuthenticator())
                     .setAuthorizer(new TrenderAuthorizer())
                     .buildAuthFilter()));
-        
+
         return new JwtService(
 			conf.getJwtSecretToken().getBytes("UTF-8"), 
 			conf.getAuthorizationPrefix()
-		);		
+		);
 	}
 
 	public static void main(String[] args) throws Exception {
-		new TrenderApplication().run(args);    		
+		new TrenderApplication().run(args);
 	}
 }

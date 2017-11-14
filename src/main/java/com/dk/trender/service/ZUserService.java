@@ -44,10 +44,6 @@ public class ZUserService extends AbstractDAO<ZUser> {
 		}
 	}
 
-	private String bcrypt(String data, int complexity) {
-		return BCrypt.hashpw(data, BCrypt.gensalt(complexity));
-	}
-
 	public ZToken login(ZLogin req) {
 		String q = "from ZUser where email=:email";
 		ZUser user = (ZUser) currentSession()
@@ -74,5 +70,9 @@ public class ZUserService extends AbstractDAO<ZUser> {
 	public List<ZUser> list() {
 		String query = "from ZUser";
 		return list(currentSession().createQuery(query));
+	}
+
+	private String bcrypt(String data, int complexity) {
+		return BCrypt.hashpw(data, BCrypt.gensalt(complexity));
 	}
 }

@@ -23,6 +23,7 @@
     <solr.version>6.6.0</solr.version>
     <joda.version>2.9.4</joda.version>
     <joda.time.hibernate>1.4</joda.time.hibernate>
+    <google.guava.version>20.0</google.guava.version>
   </properties>
 
   <repositories>
@@ -37,7 +38,7 @@
       </repository>
   </repositories>
   
- <dependencies>
+  <dependencies>
     <!-- dropwizard-core -->
     <dependency>
         <groupId>io.dropwizard</groupId>
@@ -64,18 +65,33 @@
         <version>${dropwizard.version}</version>
         <scope>test</scope>
     </dependency>
-  <dependency> <!-- Spark dependency -->
+    
+    <!-- Spark dependency -->
+    <dependency> 
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-sql_2.11</artifactId>
       <version>2.2.0</version>
     </dependency>
+
+    <!-- Google Guava -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${google.guava.version}</version>
+    </dependency>
+
     <!-- dropwizard-validation -->
     <dependency>
         <groupId>io.dropwizard</groupId>
         <artifactId>dropwizard-validation</artifactId>
         <version>${dropwizard.version}</version>
     </dependency>
-
+    <dependency>
+        <groupId>org.codehaus.jackson</groupId>
+        <artifactId>jackson-mapper-asl</artifactId>
+        <version>${jackson-version}</version>
+    </dependency>
+    
     <!-- dropwizard-testing -->
     <dependency>
         <groupId>io.dropwizard</groupId>
@@ -168,6 +184,17 @@
         <type>jar</type>
         <scope>compile</scope>
     </dependency>
+    <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-streaming_2.11</artifactId>
+        <version>2.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>biz.paluch.redis</groupId>
+      <artifactId>lettuce</artifactId>
+      <version>4.4.0.Final</version>
+    </dependency>
+
 	<!-- Authentication -->
     <dependency>
         <groupId>io.dropwizard</groupId>
@@ -180,7 +207,6 @@
         <version>0.5.2</version>
     </dependency>    
   </dependencies>
-
   <build>
     <plugins>
         <plugin>
@@ -251,5 +277,4 @@
         </plugin>
     </plugins>
   </build>
-  
 </project>

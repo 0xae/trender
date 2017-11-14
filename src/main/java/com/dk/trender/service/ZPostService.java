@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.dk.trender.core.ZPost;
 import com.dk.trender.exceptions.SolrExecutionException;
-import com.dk.trender.service.utils.DateUtils;
+import com.dk.trender.service.utils.Utils;
 import com.google.common.collect.ImmutableMap;
 
 /**
@@ -106,7 +106,7 @@ public class ZPostService {
 			}
 
 			if (post.get("indexedAt") == null) {
-				doc.setField("indexedAt", DateUtils.format(DateTime.now()));
+				doc.setField("indexedAt", Utils.format(DateTime.now()));
 			}
 
 			if (post.get("lang") == null) {

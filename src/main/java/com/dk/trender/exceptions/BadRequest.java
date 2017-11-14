@@ -3,6 +3,8 @@ package com.dk.trender.exceptions;
 import java.util.List;
 
 public class BadRequest extends RuntimeException {
+	private static final long serialVersionUID = 1L;
+
 	private List<String> errors;
 	private int status=0;
 

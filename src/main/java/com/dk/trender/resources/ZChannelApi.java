@@ -34,6 +34,7 @@ import io.dropwizard.hibernate.UnitOfWork;
 public class ZChannelApi {
 	private static final Logger log = LoggerFactory.getLogger(ZChannelApi.class);
 	private final ZChannelService $channel;
+
 	public ZChannelApi(ZChannelService channel) {
 		this.$channel = channel;
 	}

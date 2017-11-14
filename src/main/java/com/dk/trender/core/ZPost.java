@@ -11,8 +11,8 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrInputDocument;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
+import com.dk.trender.service.utils.Utils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
@@ -44,7 +44,7 @@ public class ZPost {
 	private String authorId = "";
 	private @NotNull String picture = "";
 	private @NotNull String data = "{}";
-	private String cached = "none";
+	private String cached = "";
 	private @NotNull List<String> category = Collections.emptyList();
 	private @NotNull List<String> collections = Collections.emptyList();
 
@@ -152,16 +152,12 @@ public class ZPost {
 
  	@JsonProperty
  	public String timestampFmt() {
-		return DateTimeFormat.forPattern("YYY-MM-dd HH:mm:ss")
-				.print(timestamp)
-				.replace(' ', 'T');
+		return Utils.format(timestamp);
  	}
 
  	@JsonProperty
  	public String indexedAtFmt() {
-		return DateTimeFormat.forPattern("YYY-MM-dd HH:mm:ss")
-				.print(indexedAt)
-				.replace(' ', 'T');
+		return Utils.format(indexedAt);
  	}
 
 	@JsonProperty

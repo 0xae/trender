@@ -25,6 +25,10 @@ public class TrenderConfiguration extends Configuration {
 	
 	@NotEmpty
 	private String jwtSecretToken;
+
+	@Valid
+    @NotNull
+    private DataSourceFactory database = new DataSourceFactory();	
 	
 	@JsonProperty
 	public void setJwtSecretToken(String jwtSecretToken) {
@@ -55,10 +59,6 @@ public class TrenderConfiguration extends Configuration {
 	public void setAuthorizationPrefix(String authorizationPrefix) {
 		this.authorizationPrefix = authorizationPrefix;
 	}
-
-	@Valid
-    @NotNull
-    private DataSourceFactory database = new DataSourceFactory();
 
 	@JsonProperty
 	public DataSourceFactory getDatabase() {
