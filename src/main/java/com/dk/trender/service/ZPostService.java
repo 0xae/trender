@@ -1,5 +1,6 @@
 package com.dk.trender.service;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Optional;
 
 import javax.persistence.NoResultException;
 
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.ConcurrentUpdateSolrClient;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrInputDocument;
@@ -64,14 +66,15 @@ public class ZPostService {
 	}
 
 	public ZPost byId(String id) {
+		SolrDocument doc;
 		try {
-			SolrDocument doc = Optional
+			doc = Optional
 					.ofNullable(solr.getById(id))
 					.orElseThrow(NoResultException::new);
 			return ZPost.fromDoc(doc);
-		} catch (NoResultException k) {
-			throw k;
-		} catch (Exception e) {
+		} catch (NoResultException | 
+				 SolrServerException | 
+				 IOException e) {
 			throw new SolrExecutionException(e);
 		}
 	}

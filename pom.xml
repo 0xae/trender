@@ -86,11 +86,6 @@
         <artifactId>dropwizard-validation</artifactId>
         <version>${dropwizard.version}</version>
     </dependency>
-    <dependency>
-        <groupId>org.codehaus.jackson</groupId>
-        <artifactId>jackson-mapper-asl</artifactId>
-        <version>${jackson-version}</version>
-    </dependency>
     
     <!-- dropwizard-testing -->
     <dependency>

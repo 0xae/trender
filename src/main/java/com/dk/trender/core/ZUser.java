@@ -160,9 +160,10 @@ public class ZUser implements Principal {
 
 	@Override
 	public String toString() {
-		return "AppUser [id=" + id + 
-						 ", name=" + name + 
-						 ", email=" + email + 
+		return "AppUser ["+
+					 "id = " + id + ","+
+					 "name = " + name + "," +
+					 "email = " + email +
 				"]";
 	}
 }

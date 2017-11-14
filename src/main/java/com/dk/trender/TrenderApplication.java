@@ -56,6 +56,7 @@ import io.dropwizard.setup.Environment;
  */
 public class TrenderApplication extends Application<TrenderConfiguration> {
 	private static final Logger log = LoggerFactory.getLogger(TrenderApplication.class);
+
 	final HibernateBundle<TrenderConfiguration> hibernateBundle = 
     		new HibernateBundle<TrenderConfiguration>(ZTimeline.class, ZChannel.class,
     												  ZCollection.class, ZUser.class) {
