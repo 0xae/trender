@@ -1,4 +1,4 @@
-# an exquisite newsfeed
+# Trender - an exquisite newsfeed
 
 This is an app that aggregates the most recent and popular tweets, the most interesting videos from youtube,
 what's happening in the stock and crypto markets, the most recent news, activities and every relevant information happening in realtime on the internet. we also feature a live tv that aggregates videos and livestreams of anime, tv shows, news (again), music, films, and also funny, cool and entertaining cartoons. 
@@ -153,6 +153,7 @@ that's it
 * [Nick Szabo](https://unenumerated.blogspot.com)
 
 ### Random Stuff
+* [10-print-in-python](https://www.makeartwithpython.com/blog/10-print-in-python/)
 * [stephenking.com](http://stephenking.com)
 * [Lively PowerfulBird game announcemnt](https://www.reddit.com/r/gaming/comments/7blahv/my_friends_are_making_a_game_where_you_build_your/)
 * [Lively PowerfulBird game](https://gfycat.com/LivelyPowerfulBird)
