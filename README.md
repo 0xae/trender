@@ -105,6 +105,7 @@ that's it
 * [NASA Image Gallery](https://landsat.visibleearth.nasa.gov/)
 
 ### Artificial intelligence / Machine Learning
+* [yago Knowledge Base](https://www.mpi-inf.mpg.de/departments/databases-and-information-systems/research/yago-naga/yago/)
 * [caffe.berkeleyvision(deep learning framework)](http://caffe.berkeleyvision.org)
 * [The Stanford NLP Group](https://nlp.stanford.edu/)
 * [Stanford CoreNLP](https://github.com/stanfordnlp/CoreNLP)
