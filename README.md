@@ -74,6 +74,11 @@ that's it
 ### Crypto
 * [namecoin](https://namecoin.org)
 
+### News
+* [news24](https://www.news24.com)
+* [herald.co.zw](http://www.herald.co.zw)
+* [4news](https://www.channel4.com)
+
 ### infraestructure
 * [list of crawlers](https://github.com/BruceDone/awesome-crawler)
 * [gigablast](https://github.com/gigablast/open-source-search-engine)
@@ -100,6 +105,7 @@ that's it
 * [NASA Image Gallery](https://landsat.visibleearth.nasa.gov/)
 
 ### Artificial intelligence / Machine Learning
+* [yago Knowledge Base](https://www.mpi-inf.mpg.de/departments/databases-and-information-systems/research/yago-naga/yago/)
 * [caffe.berkeleyvision(deep learning framework)](http://caffe.berkeleyvision.org)
 * [The Stanford NLP Group](https://nlp.stanford.edu/)
 * [Stanford CoreNLP](https://github.com/stanfordnlp/CoreNLP)
@@ -180,7 +186,7 @@ that's it
 * [Jp live musics](https://www.showroom-live.com/akb48_asuyoro)
 * [rotten tomatoes](https://www.rottentomatoes.com)
 * [imdb.com](http://www.imdb.com)
-* [4news](https://www.channel4.com)
+
 
 ### A Geek amusings
 * [geeking.co](http://geeking.co/)
