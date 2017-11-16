@@ -71,9 +71,6 @@ that's it
 * [Cockroach DB for storing distributed data](https://cockroachdb-getting-started.glitch.me/#/cluster/all/overview)
 * [Hibernate User Guide](http://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#architecture-overview)
 
-### Crypto
-* [namecoin](https://namecoin.org)
-
 ### News
 * [news24](https://www.news24.com)
 * [herald.co.zw](http://www.herald.co.zw)
@@ -141,8 +138,6 @@ that's it
 ### API
 * [openweathermap](https://openweathermap.org/city/3374333)
 * [thetvdb](https://www.thetvdb.com/)
-
-### Markets
 * [Oil Price](http://oilprice.com)
 * [blockchain](https://blockchain.info)
 * [blockchair](https://blockchair.com)
@@ -154,9 +149,10 @@ that's it
 * [bitcoin cash links](https://github.com/dsmurrell/awesome-bitcoin-cash)
 * [thehalvening](http://www.thehalvening.com/#1)
 
-
 ### Blogs
 * [Nick Szabo](https://unenumerated.blogspot.com)
+* [namecoin](https://namecoin.org)
+* [lopp.net/bitcoin](http://lopp.net/bitcoin.html)
 
 ### Random Stuff
 * [10-print-in-python](https://www.makeartwithpython.com/blog/10-print-in-python/)
