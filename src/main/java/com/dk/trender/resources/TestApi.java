@@ -19,7 +19,7 @@ public class TestApi {
 		client = new MemcachedClient(new InetSocketAddress("127.0.0.1", 11211));
 		client.set(key, 0, 123);
 	}
-	
+
 	@GET
 	@Path("/get/{key}")
 	public String get(@PathParam("key") String key) throws Exception {
