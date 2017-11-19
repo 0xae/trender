@@ -69,7 +69,9 @@ public class ZUserService extends AbstractDAO<ZUser> {
 	@SuppressWarnings({"unchecked"})
 	public List<ZUser> list() {
 		String query = "from ZUser";
-		return list(currentSession().createQuery(query));
+		return list(currentSession()
+					.createQuery(query)
+					.setMaxResults(10));
 	}
 
 	private String bcrypt(String data, int complexity) {

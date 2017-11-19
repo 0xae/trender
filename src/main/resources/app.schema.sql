@@ -152,20 +152,17 @@ create table z_collection (
         label varchar(250) not null,
         description text,
         audience varchar(50) not null,
+        curation decimal(10,2) not null default 0.0,
+        update boolean not null default true,
+        display boolean not null default false,
         created_at timestamp not null default now(),
         last_update timestamp,
         channel_id bigint references z_channel(id),
         UNIQUE(name)
 );
 
-insert into z_collection(id, name, label, audience)
-values(1, 'likes', 'likes', 'public');
-
-insert into z_collection(id, name, label, audience)
-values(2, 'spam', 'spam', 'public');
-
-insert into z_collection(id, name, label, audience)
-values(3, 'notes', 'notes', 'public');
+insert into z_collection(id, name, display, label, audience, curation)
+values(1, 't/core', false, 'internal collection', 'private', 1);
 
 create table z_user (
         id bigserial primary key,
@@ -179,3 +176,16 @@ create table z_user (
         UNIQUE(email)
 );
 
+
+create table z_relation (
+        id bigserial primary key,
+        user_id bigint not null,
+        name varchar(20) not null,
+        afinity decimal(10, 2) not null,
+        collection_id bigint,
+        channel_id bigint,
+
+        FOREIGN KEY(user_id) REFERENCES z_user(id),
+        FOREIGN KEY(collection_id) REFERENCES z_collection(id),
+        FOREIGN KEY(channel_id) REFERENCES z_channel(id)
+);

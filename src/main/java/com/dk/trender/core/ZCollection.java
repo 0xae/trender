@@ -1,5 +1,7 @@
 package com.dk.trender.core;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -52,7 +54,39 @@ public class ZCollection {
 	@Column(name="channel_id", nullable=true)
 	private Long channelId;
 
-	///private List<ZPost> posts = Collections.emptyList();
+	@Column(name="display")
+	private boolean display=false;
+	
+	@Column(name="curation", nullable=false)
+	private BigDecimal curation = BigDecimal.valueOf(0.5);
+
+	@Column(name="update", nullable=false)
+	private boolean update=true;
+	
+
+	public BigDecimal getCuration() {
+		return curation;
+	}
+
+	public void setCuration(BigDecimal curation) {
+		this.curation = curation;
+	}
+
+	public boolean isUpdate() {
+		return update;
+	}
+
+	public void setUpdate(boolean update) {
+		this.update = update;
+	}
+
+	public void setDisplay(boolean display) {
+		this.display = display;
+	}
+	
+	public boolean isDisplay() {
+		return display;
+	}
 
 	public void setLabel(String label) {
 		this.label = label;

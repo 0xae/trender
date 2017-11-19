@@ -59,8 +59,9 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 	private static final Logger log = LoggerFactory.getLogger(TrenderApplication.class);
 
 	final HibernateBundle<TrenderConfiguration> hibernateBundle = 
-    		new HibernateBundle<TrenderConfiguration>(ZTimeline.class, ZChannel.class,
-    												  ZCollection.class, ZUser.class) {
+    		new HibernateBundle<TrenderConfiguration>(ZChannel.class,
+    												  ZCollection.class, 
+    												  ZUser.class) {
 		public DataSourceFactory getDataSourceFactory(TrenderConfiguration configuration) {
 			return configuration.getDatabase();
 		}
@@ -105,7 +106,7 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		ZUserService $user = new ZUserService(session, jwt, conf.getAuthorizationPrefix());
 
 		// api resources
-		env.jersey().register(new TestApi());
+		// env.jersey().register(new TestApi());
 		env.jersey().register(new AuthApi($user));
 		env.jersey().register(new ZCollectionApi($col));
 		env.jersey().register(new ZPostApi($post, $media));

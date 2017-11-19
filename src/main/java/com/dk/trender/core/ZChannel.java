@@ -1,5 +1,9 @@
 package com.dk.trender.core;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +16,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 
 import com.dk.trender.service.utils.Utils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.dropwizard.validation.OneOf;
 
@@ -107,7 +113,12 @@ public class ZChannel {
 	public String getQueryConf() {
 		return queryConf;
 	}
-
+	
+	@JsonIgnore
+	public QueryConf queryConf() {
+		return QueryConf.parse(this.queryConf);
+	}
+	
 	@JsonProperty
 	public void setQueryConf(String queryConf) {
 		this.queryConf = queryConf;
