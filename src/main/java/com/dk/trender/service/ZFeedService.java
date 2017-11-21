@@ -17,7 +17,6 @@ public class ZFeedService {
 		this.client = client;
 	}
 
-	@SuppressWarnings({"unchecked"})
 	public List<ZCollection> forChannel(ZChannel chan, List<String> fq) {
 		List<String> types = Arrays.asList(
 			ZPost.BBC,
@@ -25,8 +24,9 @@ public class ZFeedService {
 			ZPost.TWITTER,
 			ZPost.YOUTUBE
 		);
-		
+
 		QueryConf conf = chan.queryConf();
+		
 		List<ZCollection> cols = new ArrayList<>();
 		return cols;
 	}

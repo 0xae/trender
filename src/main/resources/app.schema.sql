@@ -98,12 +98,6 @@ create table z_timeline (
         is_active boolean not null default true
 );
 
-insert into z_timeline(id, name, topic, post_types, state, created_at)
-values(1, 'home', '*', '{steemit-post,twitter-post,bbc-post,youtube-post}', 'created', now());
-
-insert into z_timeline(id, name, topic, post_types, state, created_at)
-values(2, 'news', 'news', '{steemit-post,twitter-post,bbc-post,youtube-post}', 'created', now());
-
 create table z_media (
         id bigserial primary key,
         title text,
@@ -176,16 +170,3 @@ create table z_user (
         UNIQUE(email)
 );
 
-
-create table z_relation (
-        id bigserial primary key,
-        user_id bigint not null,
-        name varchar(20) not null,
-        afinity decimal(10, 2) not null,
-        collection_id bigint,
-        channel_id bigint,
-
-        FOREIGN KEY(user_id) REFERENCES z_user(id),
-        FOREIGN KEY(collection_id) REFERENCES z_collection(id),
-        FOREIGN KEY(channel_id) REFERENCES z_channel(id)
-);
