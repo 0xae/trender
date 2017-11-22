@@ -24,7 +24,6 @@ import io.dropwizard.hibernate.UnitOfWork;
 /**
  * 
  * @author ayrton
- * @date 2017-04-02 18:36:53
  */
 @Path("/api/v1/collection")
 @Consumes(MediaType.APPLICATION_JSON)

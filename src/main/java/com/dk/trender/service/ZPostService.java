@@ -73,12 +73,11 @@ public class ZPostService {
 					.orElseThrow(NoResultException::new);
 			return ZPost.fromDoc(doc);
 		} catch (NoResultException | 
-				 SolrServerException | 
-				 IOException e) {
+				 SolrServerException | IOException e) {
 			throw new SolrExecutionException(e);
 		}
 	}
-	
+
 	public void updateCollection(String op, String postId, String collectionName) {
 		SolrInputDocument doc = new SolrInputDocument();
 		doc.addField("id", postId);
@@ -88,39 +87,6 @@ public class ZPostService {
 			solr.add(Arrays.asList(doc));
 			solr.commit();
 		} catch (Exception e) {
-			throw new SolrExecutionException(e);
-		}
-	}
-
-	public void updateMedia(String id, String media) {
-		try {
-			SolrDocument post = solr.getById(id);
-			if (post == null) {
-				String msg = "post " + id + " not found!";
-				log.warn(msg);
-				throw new NoResultException(msg);
-			}
-
-			SolrInputDocument doc = new SolrInputDocument();
-			post.setField("cached", media);
-
-			for (String key : post.getFieldNames()) {
-				doc.setField(key, post.get(key));
-			}
-
-			if (post.get("indexedAt") == null) {
-				doc.setField("indexedAt", Utils.format(DateTime.now()));
-			}
-
-			if (post.get("lang") == null) {
-				doc.setField("lang", "en-us");
-			}
-
-			solr.add(doc);
-			solr.commit();
-		} catch (NoResultException k) {
-			throw k;
-		}  catch (Exception e) {
 			throw new SolrExecutionException(e);
 		}
 	}
