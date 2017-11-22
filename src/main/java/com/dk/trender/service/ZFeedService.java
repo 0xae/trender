@@ -12,7 +12,7 @@ import com.dk.trender.core.ZCollection;
 import com.dk.trender.core.ZPost;
 
 public class ZFeedService {
-	private final ConcurrentUpdateSolrClient client;	
+	private final ConcurrentUpdateSolrClient client;
 	public ZFeedService(ConcurrentUpdateSolrClient client) {
 		this.client = client;
 	}
@@ -26,7 +26,6 @@ public class ZFeedService {
 		);
 
 		QueryConf conf = chan.queryConf();
-		
 		List<ZCollection> cols = new ArrayList<>();
 		return cols;
 	}

@@ -22,7 +22,8 @@ import io.dropwizard.validation.OneOf;
 @Entity
 @Table(name="z_collection")
 public class ZCollection {
-	public static final String NAMEP = "[a-zA-Z0-9_@.-]+";
+	public static final String NAMEP = "[a-zA-Z0-9_@.-/]+";
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
@@ -43,7 +44,7 @@ public class ZCollection {
 	@NotEmpty
 	@OneOf({"public", "private"})
 	@Column(name="audience", nullable=false)
-	private String audience="";	
+	private String audience="";
 
 	@Column(name="created_at", updatable=false)
 	private DateTime createdAt=new DateTime();
