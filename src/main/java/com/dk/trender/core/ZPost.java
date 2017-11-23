@@ -34,7 +34,7 @@ public class ZPost {
 	private @NotEmpty String source;
 
 	private @NotEmpty String link;
-	private @NotEmpty String description = "";
+	private @NotEmpty String description;
 	private @NotEmpty String location = "worldwide";
 	private @NotEmpty String lang = "en-us";
 	private @NotNull DateTime timestamp;
@@ -46,17 +46,6 @@ public class ZPost {
 	private @NotNull String data = "{}";
 	private String cached = "";
 	private @NotNull List<String> category = Collections.emptyList();
-	private @NotNull List<String> collections = Collections.emptyList();
-
-	@JsonProperty
-	public void setCollections(List<String> collections) {
-		this.collections = collections;
-	}
-
-	@JsonProperty
-	public List<String> getCollections() {
-		return collections;
-	}
 
 	@JsonProperty
 	public void setAuthorId(String authorId) {
@@ -270,7 +259,6 @@ public class ZPost {
 		doc.addField("picture", post.getPicture());
 		doc.addField("data", post.getData());
 		doc.addField("category", post.getCategory());
-		doc.addField("collections", post.getCollections());	
 		return doc;
 	}
 
@@ -295,7 +283,6 @@ public class ZPost {
 		p.setData(doc.get("data").toString());
 		p.setCategory((List<String>)doc.get("category"));
 		Optional<List<String>> op = Optional.ofNullable((List<String>)doc.get("collections"));
-		p.setCollections((List<String>)op.orElse(Collections.emptyList()));
 
 		return p;
 	}

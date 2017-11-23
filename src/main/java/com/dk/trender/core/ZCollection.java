@@ -1,6 +1,8 @@
 package com.dk.trender.core;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
@@ -22,7 +25,7 @@ import io.dropwizard.validation.OneOf;
 @Entity
 @Table(name="z_collection")
 public class ZCollection {
-	public static final String NAMEP = "[a-zA-Z0-9_@.-/]+";
+	public static final String NAMEP = "[a-zA-Z0-9_@.-]+";
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -59,11 +62,21 @@ public class ZCollection {
 	private boolean display=false;
 	
 	@Column(name="curation", nullable=false)
-	private BigDecimal curation = BigDecimal.valueOf(0.5);
+	private BigDecimal curation = BigDecimal.valueOf(0.1);
 
 	@Column(name="update", nullable=false)
 	private boolean update=true;
-	
+
+	@Transient
+	private List<ZGroup> groups = Collections.EMPTY_LIST;	
+
+	public List<ZGroup> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(List<ZGroup> groups) {
+		this.groups = groups;
+	}
 
 	public BigDecimal getCuration() {
 		return curation;

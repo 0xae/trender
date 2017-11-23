@@ -85,19 +85,6 @@ create schema public;
 --insert into z_listing(title, description) 
 --values ('general', 'listing for uncategorized posts'), ('breaking-news', 'breaking media social news');
 
-create table z_timeline (
-        id bigserial primary key,
-        name text not null,
-        description text,
-        topic varchar(250) not null,
-        post_types varchar(250)[],
-        created_at timestamp not null,
-        updated_at timestamp,
-        index integer not null default 0,
-        state varchar(50) not null default 'temp',
-        is_active boolean not null default true
-);
-
 create table z_media (
         id bigserial primary key,
         title text,

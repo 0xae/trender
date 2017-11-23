@@ -1,11 +1,15 @@
 package com.dk.trender.core;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -58,6 +62,19 @@ public class ZChannel {
 
 	@Column(name="last_update")
 	private DateTime lastUpdate=new DateTime();
+
+	@Transient
+	private List<ZCollection> collections = Collections.emptyList();
+
+	@JsonProperty
+	public void setCollections(List<ZCollection> collections) {
+		this.collections = collections;
+	}
+
+	@JsonProperty
+	public List<ZCollection> getCollections() {
+		return collections;
+	}
 
 	@JsonProperty
 	public void setLastUpdate(DateTime lastUpdate) {
@@ -113,7 +130,7 @@ public class ZChannel {
 	public QueryConf queryConf() {
 		return QueryConf.parse(this.queryConf);
 	}
-	
+
 	@JsonProperty
 	public void setQueryConf(String queryConf) {
 		this.queryConf = queryConf;

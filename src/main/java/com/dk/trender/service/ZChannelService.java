@@ -1,38 +1,66 @@
 package com.dk.trender.service;
 
+import static com.dk.trender.core.ZPost.BBC;
+import static com.dk.trender.core.ZPost.STEEMIT;
+import static com.dk.trender.core.ZPost.TWITTER;
+import static com.dk.trender.core.ZPost.YOUTUBE;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.NoResultException;
-import javax.ws.rs.NotFoundException;
 
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.impl.ConcurrentUpdateSolrClient;
+import org.apache.solr.client.solrj.response.QueryResponse;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dk.trender.core.ZTimeline;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.dk.trender.core.QueryConf;
 import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
+import com.dk.trender.core.ZGroup;
+import com.dk.trender.core.ZPost;
+import com.dk.trender.exceptions.SolrExecutionException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
 public class ZChannelService extends AbstractDAO<ZChannel> {
 	private static final Logger log = LoggerFactory.getLogger(ZChannelService.class);
-	public ZChannelService(SessionFactory sessionFactory) {
+	private static final int ROWS_PER_REQ=5;
+	private final ConcurrentUpdateSolrClient solr;
+
+	public ZChannelService(SessionFactory sessionFactory,
+						   ConcurrentUpdateSolrClient client) {
 		super(sessionFactory);
+		this.solr = client;
 	}
 
 	public ZChannel byId(long id) {
-		return Optional
-				.ofNullable(get(id))
-				.orElseThrow(NoResultException::new);
+		ZChannel chan = Optional
+			.ofNullable(get(id))
+			.orElseThrow(NoResultException::new);
+
+		List<ZCollection> defaultCols = Arrays.asList(
+			nativeCol("t/newsfeed", "Newsfeed"),
+			nativeCol("t/places", "Places"),
+			nativeCol("t/events", "Events"),
+			nativeCol("t/videos", "Videos"),
+			nativeCol("t/media", "Media"),
+			nativeCol("t/more", "More...")
+		);
+
+		chan.setCollections(defaultCols);
+		return chan;
 	}
 
 	public ZChannel create(ZChannel obj) {
@@ -54,7 +82,7 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		  .executeUpdate();
 
 		if (affected == 0) {
-			throw new NoResultException("No channel with id" + id + " found!");
+			throw new NoResultException("No channel with id " + id + " found!");
 		}
 	}
 
@@ -70,6 +98,8 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 				);
 	}
 
+	// TODO: fix this to avoid duplicate 
+	//       channels with the same name
 	@SuppressWarnings({"unchecked"})
 	public ZChannel findByName(String name, String q) {
 		q = q.trim().toLowerCase();
@@ -122,5 +152,72 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 			.createQuery(query)
 			.setParameter("channelId", id)
 			.getResultList();		
+	}
+
+	public List<ZGroup> fromChannel(ZChannel chan) {
+		Map<String, List<ZPost>> stream = loadStream(chan);
+		List<ZGroup> groups = new ArrayList<>();
+		return groups;
+	}
+
+	public Map<String, List<ZPost>> loadStream(ZChannel chan) {
+		List<String> types = Arrays.asList(
+			BBC,STEEMIT,TWITTER,YOUTUBE
+		);
+
+		QueryConf conf = chan.queryConf();
+		conf.setLimit(ROWS_PER_REQ);
+		return groupByType(types, conf);
+	}
+
+
+
+	private Map<String, List<ZPost>> groupByType(List<String> types, QueryConf conf) {		
+		return types
+		.parallelStream()
+		.collect(Collectors.<String, String, List<ZPost>>toMap(
+			type -> type,
+			type -> {
+				return search(conf,type)
+				  .getResults()
+				  .stream()
+				  .map(ZPost::fromDoc)
+				  .collect(Collectors.toList());
+			})
+		);
+	}
+	
+
+	private ZCollection nativeCol(String name, String label) {
+		ZCollection col = new ZCollection();
+		col.setId(1);
+		col.setName(name);
+		col.setLabel(label);
+		col.setDisplay(true);
+		col.setAudience(ZChannel.PRIVATE);
+		return col;
+	}
+
+
+	private QueryResponse search(QueryConf conf, String type) {
+		SolrQuery sq = new SolrQuery();
+		sq.set("q", conf.getQ());
+		sq.set("rows", conf.getLimit());
+		sq.set("start", conf.getStart());
+		sq.set("sort", conf.getSort());
+		sq.set("facet", true);
+		sq.set("facet.field", "category", "type");
+
+		List<String> fq = new ArrayList<>(conf.getFq());
+		fq.add("type:" + type);
+		fq.add("!cached:none");
+		sq.set("fq", fq.toArray(new String[]{}));
+
+		log.info("conf: {}", sq);
+		try {
+			return solr.query(sq);
+		} catch (Exception e) {
+			throw new SolrExecutionException(e);
+		}
 	}
 }

@@ -41,18 +41,18 @@ public class ZUser implements Principal {
 	private String email;
 
 	@NotNull
-	@Length(min=7, max=250)
+	@Length(min=7, max=200)
 	@Column(name="password_hash", nullable=false)
 	private String password = "";
 
-	@Length(max=200)
+	@Length(max=50)
 	@Column(name="lang")
 	private String lang = "en";
 
 	@Column(name="picture")
 	private String picture;
 	
-	@Length(max=250)
+	@Length(max=100)
 	@Column(name="location")
 	private String location = "worldwide";	
 

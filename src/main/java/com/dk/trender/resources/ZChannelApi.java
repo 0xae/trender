@@ -1,6 +1,7 @@
 package com.dk.trender.resources;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
+import com.dk.trender.core.ZPost;
 import com.dk.trender.service.ZChannelService;
 
 import io.dropwizard.hibernate.UnitOfWork;
@@ -101,6 +103,13 @@ public class ZChannelApi {
 	@UnitOfWork
 	public void delete(@PathParam("id") long id) {
 		$channel.delete(id);
+	}
+
+	@GET
+	@Path("/{id}/more")	
+	@UnitOfWork
+	public  Map<String, List<ZPost>> loadMore(@PathParam("id") long id) {
+		return $channel.loadStream($channel.byId(id));
 	}
 }
 

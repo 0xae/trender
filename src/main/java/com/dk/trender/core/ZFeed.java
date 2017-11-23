@@ -10,15 +10,15 @@ public class ZFeed {
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public List<ZCollection> getPrivateCols() {
 		return privateCols;
 	}
-	
+
 	public void setPrivateCols(List<ZCollection> privateCols) {
 		this.privateCols = privateCols;
 	}
