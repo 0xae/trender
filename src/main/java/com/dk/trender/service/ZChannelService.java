@@ -6,6 +6,7 @@ import static com.dk.trender.core.ZPost.TWITTER;
 import static com.dk.trender.core.ZPost.YOUTUBE;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -120,7 +121,6 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 			try {
 				HashMap<String, Object> queryConf =
 					mapper.readValue(chan.getQueryConf(), HashMap.class);
-				
 				// i know i wont ever find a null here ;)
 				String $q = queryConf.get("q").toString();
 				if ($q.equalsIgnoreCase(q))
@@ -131,7 +131,7 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 				// to be created
 				// i cant gracefuly recover from this error
 				throw new RuntimeException(e);
-			}				
+			}
 		}
 
 		throw new NoResultException();
@@ -151,7 +151,7 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		return currentSession()
 			.createQuery(query)
 			.setParameter("channelId", id)
-			.getResultList();		
+			.getResultList();
 	}
 
 	public List<ZGroup> fromChannel(ZChannel chan) {
@@ -159,6 +159,16 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		List<ZGroup> groups = new ArrayList<>();
 		return groups;
 	}
+
+//	public List<ZGroup> fromCollection(ZChannel chan, ZCollection coll) {
+//		stream = loadStream(chan);
+//		res = [];
+//		if (impl = db[collName]) {
+//			res = impl.process(stream);
+//		} else {
+//			res = new GenericGroup().process(stream);
+//		}
+//	}
 
 	public Map<String, List<ZPost>> loadStream(ZChannel chan) {
 		List<String> types = Arrays.asList(
@@ -170,11 +180,8 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		return groupByType(types, conf);
 	}
 
-
-
 	private Map<String, List<ZPost>> groupByType(List<String> types, QueryConf conf) {		
-		return types
-		.parallelStream()
+		return types.parallelStream()
 		.collect(Collectors.<String, String, List<ZPost>>toMap(
 			type -> type,
 			type -> {
@@ -186,7 +193,6 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 			})
 		);
 	}
-	
 
 	private ZCollection nativeCol(String name, String label) {
 		ZCollection col = new ZCollection();
@@ -195,9 +201,9 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		col.setLabel(label);
 		col.setDisplay(true);
 		col.setAudience(ZChannel.PRIVATE);
+		col.setCuration(BigDecimal.ONE);
 		return col;
 	}
-
 
 	private QueryResponse search(QueryConf conf, String type) {
 		SolrQuery sq = new SolrQuery();

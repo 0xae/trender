@@ -36,7 +36,7 @@ public class ZChannel {
 	private String name;
 
 	@Column(name="picture")
-	private String picture;
+	private String picture = "";
 
 	@Column(name="query_conf")
 	@ColumnTransformer(write="?::jsonb")

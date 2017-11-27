@@ -38,7 +38,7 @@ public class ZCollectionApi {
 	}
 
 	@GET
-	@Path("/")	
+	@Path("/")
 	@UnitOfWork
 	public List<ZCollection> getAllCols(@QueryParam("audience")
 									    @NotEmpty String audience) {
@@ -50,6 +50,14 @@ public class ZCollectionApi {
 	@UnitOfWork
 	public ZCollection colById(@PathParam("id") long id) {
 		return $col.byId(id);
+	}
+
+	@GET
+	@Path("/{id}/feed")	
+	@UnitOfWork
+	public ZCollection feed(@PathParam("id") long id) {
+		ZCollection col = $col.byId(id);
+		return col;
 	}
 
 	@POST
@@ -64,8 +72,6 @@ public class ZCollectionApi {
 	@UnitOfWork
 	public ZCollection colUpdate(@PathParam("id") long id,
 								 @Valid ZCollection col) {
-		if (col.getId()==0)
-			col.setId(id);
 		return $col.update(col);
 	}
 }

@@ -1,7 +1,7 @@
 package com.dk.trender.core;
 
 import java.math.BigDecimal;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -54,13 +54,13 @@ public class ZCollection {
 
 	@Column(name="last_update")
 	private DateTime lastUpdate=new DateTime();
-	
+
 	@Column(name="channel_id", nullable=true)
 	private Long channelId;
 
 	@Column(name="display")
 	private boolean display=false;
-	
+
 	@Column(name="curation", nullable=false)
 	private BigDecimal curation = BigDecimal.valueOf(0.1);
 
@@ -68,14 +68,22 @@ public class ZCollection {
 	private boolean update=true;
 
 	@Transient
-	private List<ZGroup> groups = Collections.EMPTY_LIST;	
+	private List<ZGroup> groups = new ArrayList<>();
 
+	@JsonProperty
+	public void setGroups(List<ZGroup> groups) {
+		this.groups = groups;
+	}
+
+	@JsonProperty
 	public List<ZGroup> getGroups() {
 		return groups;
 	}
 
-	public void setGroups(List<ZGroup> groups) {
-		this.groups = groups;
+	public ZGroup group(String label) {
+		ZGroup g = new ZGroup(label);
+		groups.add(g);
+		return g;
 	}
 
 	public BigDecimal getCuration() {
@@ -97,7 +105,7 @@ public class ZCollection {
 	public void setDisplay(boolean display) {
 		this.display = display;
 	}
-	
+
 	public boolean isDisplay() {
 		return display;
 	}

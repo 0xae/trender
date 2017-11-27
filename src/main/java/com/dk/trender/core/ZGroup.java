@@ -1,6 +1,8 @@
 package com.dk.trender.core;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.joda.time.DateTime;
@@ -10,10 +12,12 @@ public class ZGroup {
 	private final long id;
 	private final String label;
 	private DateTime time = DateTime.now();
-	private List<ZPost> posts;
+	private List<ZPost> posts = new ArrayList<>();
 
 	public ZGroup(String label) {
+		// XXX: is this a good idea ?
 		id = c.incrementAndGet();
+		Objects.requireNonNull(label);
 		this.label = label;
 	}
 
