@@ -75,4 +75,3 @@ public class ZCollectionApi {
 		return $col.update(col);
 	}
 }
-

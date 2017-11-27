@@ -51,7 +51,7 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 			.ofNullable(get(id))
 			.orElseThrow(NoResultException::new);
 
-		List<ZCollection> defaultCols = Arrays.asList(
+		List<ZCollection> cols = Arrays.asList(
 			nativeCol("t/newsfeed", "Newsfeed"),
 			nativeCol("t/places", "Places"),
 			nativeCol("t/events", "Events"),
@@ -60,7 +60,7 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 			nativeCol("t/more", "More...")
 		);
 
-		chan.setCollections(defaultCols);
+		chan.setCollections(cols);
 		return chan;
 	}
 
