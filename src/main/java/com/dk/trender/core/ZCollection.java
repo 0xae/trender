@@ -68,22 +68,16 @@ public class ZCollection {
 	private boolean update=true;
 
 	@Transient
-	private List<ZGroup> groups = new ArrayList<>();
+	private List<ZPost> posts = new ArrayList<>();
 
 	@JsonProperty
-	public void setGroups(List<ZGroup> groups) {
-		this.groups = groups;
+	public void setPosts(List<ZPost> posts) {
+		this.posts = posts;
 	}
 
 	@JsonProperty
-	public List<ZGroup> getGroups() {
-		return groups;
-	}
-
-	public ZGroup group(String label) {
-		ZGroup g = new ZGroup(label);
-		groups.add(g);
-		return g;
+	public List<ZPost> getPosts() {
+		return posts;
 	}
 
 	public BigDecimal getCuration() {

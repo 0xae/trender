@@ -32,6 +32,7 @@ import com.dk.trender.core.ZGroup;
 import com.dk.trender.core.ZPost;
 import com.dk.trender.exceptions.SolrExecutionException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableMap;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
@@ -47,21 +48,9 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 	}
 
 	public ZChannel byId(long id) {
-		ZChannel chan = Optional
+		return Optional
 			.ofNullable(get(id))
 			.orElseThrow(NoResultException::new);
-
-		List<ZCollection> cols = Arrays.asList(
-			nativeCol("t/newsfeed", "Newsfeed"),
-			nativeCol("t/places", "Places"),
-			nativeCol("t/events", "Events"),
-			nativeCol("t/videos", "Videos"),
-			nativeCol("t/media", "Media"),
-			nativeCol("t/more", "More...")
-		);
-
-		chan.setCollections(cols);
-		return chan;
 	}
 
 	public ZChannel create(ZChannel obj) {
@@ -154,34 +143,46 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 			.getResultList();
 	}
 
-	public List<ZGroup> fromChannel(ZChannel chan) {
-		Map<String, List<ZPost>> stream = loadStream(chan);
-		List<ZGroup> groups = new ArrayList<>();
-		return groups;
-	}
-
-//	public List<ZGroup> fromCollection(ZChannel chan, ZCollection coll) {
-//		stream = loadStream(chan);
-//		res = [];
-//		if (impl = db[collName]) {
-//			res = impl.process(stream);
-//		} else {
-//			res = new GenericGroup().process(stream);
-//		}
-//	}
-
-	public Map<String, List<ZPost>> loadStream(ZChannel chan) {
-		List<String> types = Arrays.asList(
-			BBC,STEEMIT,TWITTER,YOUTUBE
-		);
-
+	public Map<String, ZCollection> feed(ZChannel chan) {
 		QueryConf conf = chan.queryConf();
 		conf.setLimit(ROWS_PER_REQ);
-		return groupByType(types, conf);
+		Map<String, List<ZPost>> types=groupByType(conf);
+
+		ZCollection newsfeed = nativeCol("t/newsfeed", "Newsfeed");
+		ZCollection videos = nativeCol("t/videos", "Videos");
+		ZCollection places = nativeCol("t/places", "Places");
+		ZCollection events = nativeCol("t/events", "Events");
+		ZCollection more =	nativeCol("t/more", "More...");
+
+		videos.setPosts(types.get(ZPost.YOUTUBE));
+		newsfeed.setPosts(types.get(ZPost.STEEMIT));
+		places.setPosts(types.get(ZPost.TWITTER));
+		more.setPosts(types.get(ZPost.BBC));
+
+		// List for public collections
+		List<ZCollection> cols = Arrays.asList(
+			videos,
+			places,
+			newsfeed,
+			more
+		);
+
+		return cols.stream()
+		.filter(col -> !col.getPosts().isEmpty())
+		.collect(Collectors.<ZCollection, String, ZCollection>toMap(
+				ZCollection::getName, 
+				col -> col
+		));
+	}
+	
+	public static interface PostFilter {
+		boolean filter(ZPost p);
 	}
 
-	private Map<String, List<ZPost>> groupByType(List<String> types, QueryConf conf) {		
-		return types.parallelStream()
+	private Map<String, List<ZPost>> groupByType(QueryConf conf) {		
+		return Arrays
+		.asList(BBC, STEEMIT, TWITTER, YOUTUBE)
+		.parallelStream()
 		.collect(Collectors.<String, String, List<ZPost>>toMap(
 			type -> type,
 			type -> {

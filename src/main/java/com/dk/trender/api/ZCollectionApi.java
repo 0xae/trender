@@ -1,4 +1,4 @@
-package com.dk.trender.resources;
+package com.dk.trender.api;
 
 import java.util.List;
 

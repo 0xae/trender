@@ -1,4 +1,4 @@
-package com.dk.trender.resources;
+package com.dk.trender.api;
 
 import java.util.List;
 import java.util.Map;
@@ -106,10 +106,10 @@ public class ZChannelApi {
 	}
 
 	@GET
-	@Path("/{id}/more")	
+	@Path("/{id}/feed")	
 	@UnitOfWork
-	public  Map<String, List<ZPost>> loadMore(@PathParam("id") long id) {
-		return $channel.loadStream($channel.byId(id));
+	public  Map<String, ZCollection> feed(@PathParam("id") long id) {
+		ZChannel chan = $channel.byId(id);
+		return $channel.feed(chan); 
 	}
 }
-
