@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,9 @@ import javax.persistence.NoResultException;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.ConcurrentUpdateSolrClient;
+import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.response.FacetField.Count;
 import org.hibernate.SessionFactory;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -30,6 +33,7 @@ import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
 import com.dk.trender.core.ZGroup;
 import com.dk.trender.core.ZPost;
+import com.dk.trender.core.ZTimeline;
 import com.dk.trender.exceptions.SolrExecutionException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
@@ -39,6 +43,9 @@ import io.dropwizard.hibernate.AbstractDAO;
 public class ZChannelService extends AbstractDAO<ZChannel> {
 	private static final Logger log = LoggerFactory.getLogger(ZChannelService.class);
 	private static final int ROWS_PER_REQ=5;
+	private static final int GROUP_MIN_SIZE = 3;
+	private static final int MAX_GROUPS= 6;
+
 	private final ConcurrentUpdateSolrClient solr;
 
 	public ZChannelService(SessionFactory sessionFactory,
@@ -143,38 +150,72 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 			.getResultList();
 	}
 
+	public void newsfeed(ZChannel chan) {
+		ZCollection newsfeed = nativeCol("t/newsfeed", "Newsfeed");
+		QueryConf conf = chan.queryConf();
+		conf.setLimit(3);
+
+		// parallel this shit
+		// TODO: load more from facets
+		List<String> groups = new ArrayList<>();
+		QueryResponse resp = search(conf, Collections.emptyList());
+		int i = 0;
+
+		outer: for (FacetField f : resp.getFacetFields()) {
+			if (f.getName().equals("category")) {
+				for (Count pivot : f.getValues()) {
+					if (i++>=MAX_GROUPS){
+						break outer;
+					}
+
+					if (pivot.getCount()<GROUP_MIN_SIZE) {
+						continue;
+					}
+
+					// long count=pivot.getCount();
+					// ZCollection group = postGroup("posts about " + topic);
+					groups.add(pivot.getName());
+				}
+			}
+		}
+
+		groups.parallelStream()
+		.map((String group) -> {
+			QueryConf c = chan.queryConf();
+			c.getFq().add("category:"+group);
+			c.setLimit(3);
+			return groupByType(c);
+		});
+	}
+
 	public Map<String, ZCollection> feed(ZChannel chan) {
 		QueryConf conf = chan.queryConf();
 		conf.setLimit(ROWS_PER_REQ);
 		Map<String, List<ZPost>> types=groupByType(conf);
 
 		ZCollection newsfeed = nativeCol("t/newsfeed", "Newsfeed");
-		ZCollection videos = nativeCol("t/videos", "Videos");
-		ZCollection places = nativeCol("t/places", "Places");
 		ZCollection events = nativeCol("t/events", "Events");
-		ZCollection more =	nativeCol("t/more", "More...");
+		ZCollection trending = nativeCol("t/trending", "Trending");
+		ZCollection videos = nativeCol("t/videos", "Videos");
 
-		videos.setPosts(types.get(ZPost.YOUTUBE));
 		newsfeed.setPosts(types.get(ZPost.STEEMIT));
-		places.setPosts(types.get(ZPost.TWITTER));
-		more.setPosts(types.get(ZPost.BBC));
 
 		// List for public collections
 		List<ZCollection> cols = Arrays.asList(
 			videos,
-			places,
-			newsfeed,
-			more
+			events,
+			trending,
+			newsfeed
 		);
 
 		return cols.stream()
-		.filter(col -> !col.getPosts().isEmpty())
+		//.filter(col -> !col.getPosts().isEmpty())
 		.collect(Collectors.<ZCollection, String, ZCollection>toMap(
-				ZCollection::getName, 
-				col -> col
+			ZCollection::getName,
+			col -> col
 		));
 	}
-	
+
 	public static interface PostFilter {
 		boolean filter(ZPost p);
 	}
@@ -186,7 +227,7 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		.collect(Collectors.<String, String, List<ZPost>>toMap(
 			type -> type,
 			type -> {
-				return search(conf,type)
+				return search(conf, Arrays.asList("type:"+type))
 				  .getResults()
 				  .stream()
 				  .map(ZPost::fromDoc)
@@ -206,7 +247,14 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		return col;
 	}
 
-	private QueryResponse search(QueryConf conf, String type) {
+	private ZCollection postGroup(String label) {
+		ZCollection postGroup =	nativeCol("t/group", label);
+		postGroup.setDisplay(false);
+		postGroup.setUpdate(false);		
+		return postGroup;
+	}
+
+	private QueryResponse search(QueryConf conf, List<String> pfq) {
 		SolrQuery sq = new SolrQuery();
 		sq.set("q", conf.getQ());
 		sq.set("rows", conf.getLimit());
@@ -216,8 +264,11 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		sq.set("facet.field", "category", "type");
 
 		List<String> fq = new ArrayList<>(conf.getFq());
-		fq.add("type:" + type);
+		/*if (type.isPresent()) {
+			fq.add("type:" + type.get());
+		}*/
 		fq.add("!cached:none");
+		fq.addAll(pfq);
 		sq.set("fq", fq.toArray(new String[]{}));
 
 		log.info("conf: {}", sq);

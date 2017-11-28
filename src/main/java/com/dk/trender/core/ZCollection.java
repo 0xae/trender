@@ -69,6 +69,19 @@ public class ZCollection {
 
 	@Transient
 	private List<ZPost> posts = new ArrayList<>();
+	
+	@Transient
+	private List<ZCollection> groups = new ArrayList<>();
+	
+	@JsonProperty
+	public void setGroups(List<ZCollection> groups) {
+		this.groups = groups;
+	}
+
+	@JsonProperty
+	public List<ZCollection> getGroups() {
+		return groups;
+	}
 
 	@JsonProperty
 	public void setPosts(List<ZPost> posts) {
