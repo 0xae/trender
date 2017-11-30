@@ -37,6 +37,7 @@ import com.dk.trender.service.ZChannelService;
 import com.dk.trender.service.ZCollectionService;
 import com.dk.trender.service.ZMediaService;
 import com.dk.trender.service.ZPostService;
+import com.dk.trender.service.ZSearchService;
 import com.dk.trender.service.ZUserService;
 
 import io.dropwizard.Application;
@@ -100,8 +101,9 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		JwtService jwt = configAuth(conf, env);
 		ManagedSolr solr = new ManagedSolr();
 		ZPostService $post = new ZPostService(solr.getClient());
+		ZSearchService search = new ZSearchService(solr.getClient());
 		ZMediaService $media = new ZMediaService(conf.getMediaHost());
-		ZChannelService $channel = new ZChannelService(session, solr.getClient());
+		ZChannelService $channel = new ZChannelService(session, search);
 		ZCollectionService $col = new ZCollectionService(session);
 		ZUserService $user = new ZUserService(session, jwt, conf.getAuthorizationPrefix());
 
