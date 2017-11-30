@@ -40,14 +40,15 @@ import io.dropwizard.hibernate.AbstractDAO;
 public class ZChannelService extends AbstractDAO<ZChannel> {
 	private static final Logger log = LoggerFactory.getLogger(ZChannelService.class);
 	private static final int GROUP_MIN_SIZE = 3;
-	private static final int ROWS_PER_REQ = 7;
+	private static final int ROWS_PER_REQ = 15;
 	private static final int MAX_GROUPS = 6;
-	private final ZSearchService search;
+
+	private final ConcurrentUpdateSolrClient solr;
 
 	public ZChannelService(SessionFactory sessionFactory,
-						   ZSearchService service) {
+						   ConcurrentUpdateSolrClient client) {
 		super(sessionFactory);
-		this.search = service;
+		this.solr = client;
 	}
 
 	public ZChannel byId(long id) {
@@ -148,10 +149,48 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 			.getResultList();
 	}
 
+	public void newsfeed(ZChannel chan) {
+		ZCollection newsfeed = nativeCol("t/newsfeed", "Newsfeed");
+		QueryConf conf = chan.queryConf();
+		conf.setLimit(3);
+
+		// parallel this shit
+		// TODO: load more from facets
+		List<String> groups = new ArrayList<>();
+		QueryResponse resp = search(conf, Collections.emptyList());
+		int i = 0;
+
+		outer: for (FacetField f : resp.getFacetFields()) {
+			if (f.getName().equals("category")) {
+				for (Count pivot : f.getValues()) {
+					if (i++>=MAX_GROUPS){
+						break outer;
+					}
+
+					if (pivot.getCount()<GROUP_MIN_SIZE) {
+						continue;
+					}
+
+					// long count=pivot.getCount();
+					// ZCollection group = postGroup("posts about " + topic);
+					groups.add(pivot.getName());
+				}
+			}
+		}
+
+		groups.parallelStream()
+		.map((String group) -> {
+			QueryConf c = chan.queryConf();
+			c.getFq().add("category:"+group);
+			c.setLimit(3);
+			return groupByType(c);
+		});
+	}
+
 	public Map<String, ZCollection> feed(ZChannel chan) {
 		QueryConf conf = chan.queryConf();
 		conf.setLimit(ROWS_PER_REQ);
-		Map<String, List<ZPost>> types=search.groupByType(conf);
+		Map<String, List<ZPost>> types=groupByType(conf);
 
 		ZCollection newsfeed = nativeCol("t/newsfeed", "Newsfeed");
 		ZCollection events = nativeCol("t/events", "Events");
@@ -186,6 +225,22 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		boolean filter(ZPost p);
 	}
 
+	private Map<String, List<ZPost>> groupByType(QueryConf conf) {		
+		return Arrays
+		.asList(BBC, STEEMIT, TWITTER, YOUTUBE)
+		.parallelStream()
+		.collect(Collectors.<String, String, List<ZPost>>toMap(
+			type -> type,
+			type -> {
+				return search(conf, Arrays.asList("type:"+type))
+				  .getResults()
+				  .stream()
+				  .map(ZPost::fromDoc)
+				  .collect(Collectors.toList());
+			})
+		);
+	}
+
 	private ZCollection nativeCol(String name, String label) {
 		ZCollection col = new ZCollection();
 		col.setId(1);
@@ -195,5 +250,27 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		col.setAudience(ZChannel.PRIVATE);
 		col.setCuration(BigDecimal.ONE);
 		return col;
+	}
+
+	private QueryResponse search(QueryConf conf, List<String> pfq) {
+		SolrQuery sq = new SolrQuery();
+		sq.set("q", conf.getQ());
+		sq.set("rows", conf.getLimit());
+		sq.set("start", conf.getStart());
+		sq.set("sort", conf.getSort());
+		sq.set("facet", true);
+		sq.set("facet.field", "category", "type");
+
+		List<String> fq = new ArrayList<>(conf.getFq());
+		fq.add("!cached:none");
+		fq.addAll(pfq);
+		sq.set("fq", fq.toArray(new String[]{}));
+		log.info("conf: {}", sq);
+
+		try {
+			return solr.query(sq);
+		} catch (Exception e) {
+			throw new SolrExecutionException(e);
+		}
 	}
 }
