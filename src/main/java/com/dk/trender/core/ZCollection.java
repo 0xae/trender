@@ -2,7 +2,9 @@ package com.dk.trender.core;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -69,10 +71,24 @@ public class ZCollection {
 
 	@Transient
 	private List<ZPost> posts = new ArrayList<>();
-	
+
 	@Transient
 	private List<ZCollection> groups = new ArrayList<>();
-	
+
+	@Transient
+	private Map<String, Object> data = new HashMap<>();
+
+	@JsonProperty
+	public <T> T addObj(String key, T value) {
+		this.data.put(key, value);
+		return value;
+	}
+
+	@JsonProperty
+	public Map<String, Object> getData() {
+		return this.data;
+	}
+
 	@JsonProperty
 	public void setGroups(List<ZCollection> groups) {
 		this.groups = groups;

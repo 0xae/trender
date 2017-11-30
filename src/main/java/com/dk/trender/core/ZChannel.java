@@ -35,6 +35,9 @@ public class ZChannel {
 	@Column(name="name")
 	private String name;
 
+	@Column(name="description")
+	private String description="";
+	
 	@Column(name="picture")
 	private String picture = "";
 
@@ -184,5 +187,15 @@ public class ZChannel {
 	@JsonProperty
 	public void setCreatedAt(DateTime createdAt) {
 		this.createdAt = createdAt;
+	}
+	
+	@JsonProperty
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	@JsonProperty
+	public String getDescription() {
+		return description;
 	}
 }

@@ -121,6 +121,7 @@ create table z_channel (
         rank integer default -1,
         inteligence jsonb,
         audience varchar(50) not null,
+        description varchar(250),
         -- time
         created_at timestamp not null default now(),
         last_update timestamp,

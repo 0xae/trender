@@ -21,8 +21,8 @@ import javax.persistence.NoResultException;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.ConcurrentUpdateSolrClient;
 import org.apache.solr.client.solrj.response.FacetField;
-import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.response.FacetField.Count;
+import org.apache.solr.client.solrj.response.QueryResponse;
 import org.hibernate.SessionFactory;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -31,20 +31,17 @@ import org.slf4j.LoggerFactory;
 import com.dk.trender.core.QueryConf;
 import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
-import com.dk.trender.core.ZGroup;
 import com.dk.trender.core.ZPost;
-import com.dk.trender.core.ZTimeline;
 import com.dk.trender.exceptions.SolrExecutionException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableMap;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
 public class ZChannelService extends AbstractDAO<ZChannel> {
 	private static final Logger log = LoggerFactory.getLogger(ZChannelService.class);
-	private static final int ROWS_PER_REQ=5;
 	private static final int GROUP_MIN_SIZE = 3;
-	private static final int MAX_GROUPS= 6;
+	private static final int ROWS_PER_REQ = 15;
+	private static final int MAX_GROUPS = 6;
 
 	private final ConcurrentUpdateSolrClient solr;
 
@@ -62,7 +59,9 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 
 	public ZChannel create(ZChannel obj) {
 		ZChannel t = persist(obj);
-		log.info("created zchannel {}#{}", t.getId(), t.getName());
+		log.info("created zchannel {}#{}", 
+			t.getId(), t.getName()
+		);
 		return t;
 	}
 
@@ -110,7 +109,7 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		);
 
 		// TODO move this search to postgres with json query operators
-		//      but first we need to figure out a way to make native queries
+		//      but first we need to figure out a way to make native sql queries
 		//      and use the same ResultSetTransformer
 		ObjectMapper mapper = new ObjectMapper();
 		for (ZChannel chan : l) {
@@ -195,21 +194,27 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 
 		ZCollection newsfeed = nativeCol("t/newsfeed", "Newsfeed");
 		ZCollection events = nativeCol("t/events", "Events");
-		ZCollection trending = nativeCol("t/trending", "Trending");
 		ZCollection videos = nativeCol("t/videos", "Videos");
 
+		ZCollection mostPopular = nativeCol("t/mpopular", "Most Popular");
+		ZCollection trending = nativeCol("t/trending", "Trending");
+		ZCollection sugest = nativeCol("t/csugestions", "Suggested Channels");
+
 		newsfeed.setPosts(types.get(ZPost.STEEMIT));
+		videos.setPosts(types.get(ZPost.YOUTUBE));
 
 		// List for public collections
 		List<ZCollection> cols = Arrays.asList(
-			videos,
+			/*
 			events,
 			trending,
+			*/
+			videos,
 			newsfeed
 		);
 
 		return cols.stream()
-		//.filter(col -> !col.getPosts().isEmpty())
+		.filter(col -> !col.getPosts().isEmpty())
 		.collect(Collectors.<ZCollection, String, ZCollection>toMap(
 			ZCollection::getName,
 			col -> col
@@ -247,13 +252,6 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		return col;
 	}
 
-	private ZCollection postGroup(String label) {
-		ZCollection postGroup =	nativeCol("t/group", label);
-		postGroup.setDisplay(false);
-		postGroup.setUpdate(false);		
-		return postGroup;
-	}
-
 	private QueryResponse search(QueryConf conf, List<String> pfq) {
 		SolrQuery sq = new SolrQuery();
 		sq.set("q", conf.getQ());
@@ -264,14 +262,11 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		sq.set("facet.field", "category", "type");
 
 		List<String> fq = new ArrayList<>(conf.getFq());
-		/*if (type.isPresent()) {
-			fq.add("type:" + type.get());
-		}*/
 		fq.add("!cached:none");
 		fq.addAll(pfq);
 		sq.set("fq", fq.toArray(new String[]{}));
-
 		log.info("conf: {}", sq);
+
 		try {
 			return solr.query(sq);
 		} catch (Exception e) {
