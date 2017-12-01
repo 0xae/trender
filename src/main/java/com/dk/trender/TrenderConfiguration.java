@@ -19,27 +19,27 @@ import io.dropwizard.db.DataSourceFactory;
 public class TrenderConfiguration extends Configuration {
 	@NotEmpty
 	private String authorizationPrefix;
-	
+
 	@NotEmpty
 	private String mediaHost;
-	
+
 	@NotEmpty
 	private String jwtSecretToken;
 
 	@Valid
     @NotNull
     private DataSourceFactory database = new DataSourceFactory();	
-	
+
 	@JsonProperty
 	public void setJwtSecretToken(String jwtSecretToken) {
 		this.jwtSecretToken = jwtSecretToken;
 	}
-	
+
 	@JsonProperty
 	public String getJwtSecretToken() {
 		return jwtSecretToken;
 	}
-	
+
 	@JsonProperty
 	public void setMediaHost(String mediaHost) {
 		this.mediaHost = mediaHost;
