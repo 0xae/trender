@@ -1,15 +1,8 @@
 package com.dk.trender.service;
 
-import static com.dk.trender.core.ZPost.BBC;
-import static com.dk.trender.core.ZPost.STEEMIT;
-import static com.dk.trender.core.ZPost.TWITTER;
-import static com.dk.trender.core.ZPost.YOUTUBE;
-
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,11 +11,6 @@ import java.util.stream.Collectors;
 
 import javax.persistence.NoResultException;
 
-import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.impl.ConcurrentUpdateSolrClient;
-import org.apache.solr.client.solrj.response.FacetField;
-import org.apache.solr.client.solrj.response.FacetField.Count;
-import org.apache.solr.client.solrj.response.QueryResponse;
 import org.hibernate.SessionFactory;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -32,7 +20,6 @@ import com.dk.trender.core.QueryConf;
 import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
 import com.dk.trender.core.ZPost;
-import com.dk.trender.exceptions.SolrExecutionException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.dropwizard.hibernate.AbstractDAO;
