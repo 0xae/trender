@@ -26,9 +26,7 @@ import io.dropwizard.hibernate.AbstractDAO;
 
 public class ZChannelService extends AbstractDAO<ZChannel> {
 	private static final Logger log = LoggerFactory.getLogger(ZChannelService.class);
-	private static final int GROUP_MIN_SIZE = 3;
 	private static final int ROWS_PER_REQ = 7;
-	private static final int MAX_GROUPS = 6;
 	private final ZSearchService search;
 
 	public ZChannelService(SessionFactory sessionFactory,
