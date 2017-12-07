@@ -26,7 +26,7 @@ import io.dropwizard.hibernate.AbstractDAO;
 
 public class ZChannelService extends AbstractDAO<ZChannel> {
 	private static final Logger log = LoggerFactory.getLogger(ZChannelService.class);
-	private static final int ROWS_PER_REQ = 7;
+	private static final int ROWS_PER_REQ = 10;
 	private final ZSearchService search;
 
 	public ZChannelService(SessionFactory sessionFactory,
@@ -138,15 +138,17 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		conf.setLimit(ROWS_PER_REQ);
 		Map<String, List<ZPost>> types=search.groupByType(conf);
 
+		// native collections
 		ZCollection newsfeed = nativeCol("t/newsfeed", "Newsfeed");
 		ZCollection events = nativeCol("t/events", "Events");
 		ZCollection videos = nativeCol("t/videos", "Videos");
-
 		ZCollection mostPopular = nativeCol("t/mpopular", "Most Popular");
 		ZCollection trending = nativeCol("t/trending", "Trending");
 		ZCollection sugest = nativeCol("t/csugestions", "Suggested Channels");
 
-		newsfeed.setPosts(types.get(ZPost.STEEMIT));
+		newsfeed.getPosts().addAll(types.get(ZPost.STEEMIT));
+		newsfeed.getPosts().addAll(types.get(ZPost.TWITTER));
+		newsfeed.getPosts().addAll(types.get(ZPost.BBC));
 		videos.setPosts(types.get(ZPost.YOUTUBE));
 
 		// List for public collections

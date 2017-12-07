@@ -78,7 +78,6 @@ public class ZCollection {
 	@Transient
 	private Map<String, Object> data = new HashMap<>();
 
-	@JsonProperty
 	public <T> T addObj(String key, T value) {
 		this.data.put(key, value);
 		return value;
