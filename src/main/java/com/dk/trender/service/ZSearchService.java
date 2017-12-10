@@ -29,6 +29,11 @@ public class ZSearchService {
 		this.solr = solr;
 	}
 	
+	/**
+	 * XXX: Arrays.asList("type:"+type) ???
+	 * @param conf
+	 * @return
+	 */
 	public Map<String, List<ZPost>> groupByType(QueryConf conf) {		
 		return Arrays
 		.asList(BBC, STEEMIT, TWITTER, YOUTUBE)
@@ -58,7 +63,6 @@ public class ZSearchService {
 		fq.add("!cached:none");
 		fq.addAll(pfq);
 		sq.set("fq", fq.toArray(new String[]{}));
-		log.info("conf: {}", sq);
 
 		try {
 			return solr.query(sq);

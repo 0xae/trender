@@ -144,7 +144,7 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		ZCollection videos = nativeCol("t/videos", "Videos");
 		ZCollection mostPopular = nativeCol("t/mpopular", "Most Popular");
 		ZCollection trending = nativeCol("t/trending", "Trending");
-		ZCollection sugest = nativeCol("t/csugestions", "Suggested Channels");
+		ZCollection sugest = nativeCol("t/sugestions", "Suggested Channels");
 
 		newsfeed.getPosts().addAll(types.get(ZPost.STEEMIT));
 		newsfeed.getPosts().addAll(types.get(ZPost.TWITTER));
@@ -167,10 +167,6 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 			ZCollection::getName,
 			col -> col
 		));
-	}
-
-	public static interface PostFilter {
-		boolean filter(ZPost p);
 	}
 
 	private ZCollection nativeCol(String name, String label) {
