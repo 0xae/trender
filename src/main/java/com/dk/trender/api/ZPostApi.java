@@ -94,7 +94,7 @@ public class ZPostApi {
 	public void addToCollection(
 		 @PathParam("id") @NotEmpty 
 		 String id,
-		 @PathParam("name") @Pattern(regexp=ZCollection.NAMEP)
+		 @PathParam("name") @Pattern(regexp=ZCollection.NAME)
 		 String collectionName) 
 	{
 		$post.updateCollection("add", id, collectionName);
@@ -105,7 +105,7 @@ public class ZPostApi {
 	@Path("/{id}/remove_from/{name}")
 	public void removeFromCollection(
 		 @PathParam("id") @NotEmpty String id,
-		 @PathParam("name") @Pattern(regexp=ZCollection.NAMEP)
+		 @PathParam("name") @Pattern(regexp=ZCollection.NAME)
 		 String collectionName) 
 	{
 		$post.updateCollection("removeregex", id, collectionName);

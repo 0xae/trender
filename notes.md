@@ -1,6 +1,7 @@
 Trender Entertainment
 ====
 
+* Hall
 * Games
 * Videos
 * Films & Tv shows

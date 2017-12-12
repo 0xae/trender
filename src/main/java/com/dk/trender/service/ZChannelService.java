@@ -128,9 +128,9 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 					   " where c.channelId = :channelId";
 
 		return currentSession()
-			.createQuery(query)
-			.setParameter("channelId", id)
-			.getResultList();
+		.createQuery(query)
+		.setParameter("channelId", id)
+		.getResultList();
 	}
 
 	public Map<String, ZCollection> feed(ZChannel chan) {
@@ -151,7 +151,7 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		newsfeed.getPosts().addAll(types.get(ZPost.BBC));
 		videos.setPosts(types.get(ZPost.YOUTUBE));
 
-		// List for public collections
+		// public collections
 		List<ZCollection> cols = Arrays.asList(
 			/*
 			events,
@@ -175,7 +175,7 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		col.setName(name);
 		col.setLabel(label);
 		col.setDisplay(true);
-		col.setAudience(ZChannel.PRIVATE);
+		col.setAudience(ZChannel.PUBLIC);
 		col.setCuration(BigDecimal.ONE);
 		return col;
 	}

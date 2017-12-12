@@ -37,7 +37,7 @@ public class ZChannel {
 
 	@Column(name="description")
 	private String description="";
-	
+
 	@Column(name="picture")
 	private String picture = "";
 

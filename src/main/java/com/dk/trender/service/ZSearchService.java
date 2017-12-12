@@ -28,13 +28,13 @@ public class ZSearchService {
 		super();
 		this.solr = solr;
 	}
-	
+
 	/**
 	 * XXX: Arrays.asList("type:"+type) ???
 	 * @param conf
 	 * @return
 	 */
-	public Map<String, List<ZPost>> groupByType(QueryConf conf) {		
+	public Map<String, List<ZPost>> groupByType(QueryConf conf) {
 		return Arrays
 		.asList(BBC, STEEMIT, TWITTER, YOUTUBE)
 		.parallelStream()
@@ -42,14 +42,14 @@ public class ZSearchService {
 			type -> type,
 			type -> {
 				return search(conf, Arrays.asList("type:"+type))
-				  .getResults()
-				  .stream()
-				  .map(ZPost::fromDoc)
-				  .collect(Collectors.toList());
+			    .getResults()
+			    .stream()
+			    .map(ZPost::fromDoc)
+			    .collect(Collectors.toList());
 			})
 		);
 	}
-	
+
 	private QueryResponse search(QueryConf conf, List<String> pfq) {
 		SolrQuery sq = new SolrQuery();
 		sq.set("q", conf.getQ());

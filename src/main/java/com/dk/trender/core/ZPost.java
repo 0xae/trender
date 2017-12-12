@@ -282,8 +282,6 @@ public class ZPost {
 		p.setCached(Optional.ofNullable(doc.get("cached")).orElse("").toString());
 		p.setData(doc.get("data").toString());
 		p.setCategory((List<String>)doc.get("category"));
-		Optional<List<String>> op = Optional.ofNullable((List<String>)doc.get("collections"));
-
 		return p;
 	}
 

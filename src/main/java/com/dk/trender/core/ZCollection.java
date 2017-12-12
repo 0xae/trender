@@ -27,7 +27,9 @@ import io.dropwizard.validation.OneOf;
 @Entity
 @Table(name="z_collection")
 public class ZCollection {
-	public static final String NAMEP = "[a-zA-Z0-9_@.-]+";
+	public static final String NAME = "[a-zA-Z0-9_@.-]+";
+	public static final String PUBLIC = "public";
+	public static final String PRIVATE = "private";
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -35,7 +37,7 @@ public class ZCollection {
 
 	@NotEmpty
 	@Column(name="name", updatable=false)
-	@Pattern(regexp=NAMEP)
+	@Pattern(regexp=NAME)
 	private String name;
 
 	@NotEmpty
@@ -47,9 +49,9 @@ public class ZCollection {
 	private String description="";
 
 	@NotEmpty
-	@OneOf({"public", "private"})
+	@OneOf({PUBLIC, PRIVATE})
 	@Column(name="audience", nullable=false)
-	private String audience="";
+	private String audience=PUBLIC;
 
 	@Column(name="created_at", updatable=false)
 	private DateTime createdAt=new DateTime();
