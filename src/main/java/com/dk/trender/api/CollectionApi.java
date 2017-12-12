@@ -29,11 +29,11 @@ import io.dropwizard.hibernate.UnitOfWork;
 @Path("/api/v1/collection")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ZCollectionApi {
-	private static final Logger log = LoggerFactory.getLogger(ZCollectionApi.class);
+public class CollectionApi {
+	private static final Logger log = LoggerFactory.getLogger(CollectionApi.class);
 	private final ZCollectionService $col;
 
-	public ZCollectionApi(ZCollectionService $col) {
+	public CollectionApi(ZCollectionService $col) {
 		this.$col = $col;
 	}
 

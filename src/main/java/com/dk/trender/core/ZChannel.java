@@ -32,23 +32,23 @@ public class ZChannel {
 	private long id;
 
 	@NotEmpty
-	@Column(name="name")
+	@Column
 	private String name;
 
-	@Column(name="description")
+	@Column
 	private String description="";
 
-	@Column(name="picture")
+	@Column
 	private String picture = "";
 
 	@Column(name="query_conf")
 	@ColumnTransformer(write="?::jsonb")
 	private String queryConf="{}";
 
-	@Column(name="curation")
+	@Column
 	private int curation=0;
 
-	@Column(name="rank", nullable=false)
+	@Column(nullable=false)
 	private int rank=-1;
 
 	@Column(name="inteligence", nullable=false)
@@ -56,9 +56,9 @@ public class ZChannel {
 	private String intel="{}";
 
 	@NotEmpty
-	@Column(name="audience", nullable=false)
+	@Column(nullable=false)
 	@OneOf({PUBLIC, PRIVATE})
-	private String audience = PRIVATE;
+	private String audience = PUBLIC;
 
 	@Column(name="created_at", updatable=false)
 	private DateTime createdAt=new DateTime();
@@ -188,7 +188,7 @@ public class ZChannel {
 	public void setCreatedAt(DateTime createdAt) {
 		this.createdAt = createdAt;
 	}
-	
+
 	@JsonProperty
 	public void setDescription(String description) {
 		this.description = description;

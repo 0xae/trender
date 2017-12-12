@@ -1,6 +1,7 @@
 package com.dk.trender.core;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,9 +9,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public final class QueryConf {
 	private String q;
-	private List<String> fq = Collections.EMPTY_LIST;
-	private int limit=10;
+	private List<String> fq = new ArrayList<>();	
 	private String sort="timestamp desc";
+	private int limit=10;
 	private int start=0;
 	
 	public int getStart() {
@@ -55,11 +56,19 @@ public final class QueryConf {
 
 	public static QueryConf parse(String buf) {
 		try {
-			// XXX: should we move mapper to a higher level (private static) ?
-			ObjectMapper mapper = new ObjectMapper();
-			return mapper.readValue(buf, QueryConf.class);
+			return new ObjectMapper()
+					   .readValue(buf, QueryConf.class);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public static String encode(QueryConf b) {
+		try {
+			return new ObjectMapper()
+					   .writeValueAsString(b);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}		
 	}
 }

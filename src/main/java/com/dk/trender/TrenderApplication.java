@@ -17,9 +17,9 @@ import org.slf4j.LoggerFactory;
 
 import com.dk.trender.api.AuthApi;
 import com.dk.trender.api.TestApi;
-import com.dk.trender.api.ZChannelApi;
-import com.dk.trender.api.ZCollectionApi;
-import com.dk.trender.api.ZPostApi;
+import com.dk.trender.api.ChannelApi;
+import com.dk.trender.api.CollectionApi;
+import com.dk.trender.api.PostApi;
 import com.dk.trender.auth.JwtAuthFilter;
 import com.dk.trender.auth.JwtService;
 import com.dk.trender.auth.TrenderAuthenticator;
@@ -111,9 +111,9 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		// api resources
 		// env.jersey().register(new TestApi());
 		env.jersey().register(new AuthApi($user));
-		env.jersey().register(new ZCollectionApi($col));
-		env.jersey().register(new ZPostApi($post, $media));
-		env.jersey().register(new ZChannelApi($channel));
+		env.jersey().register(new CollectionApi($col));
+		env.jersey().register(new PostApi($post, $media));
+		env.jersey().register(new ChannelApi($channel));
 
 		// exception handlers
 		env.jersey().register(new NoResultExceptionExceptionMapper(env.metrics()));

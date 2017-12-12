@@ -2,9 +2,9 @@ package com.dk.trender.core;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,11 +15,15 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Pattern;
 
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 
+import com.dk.trender.core.feed.ZGroup;
+import com.dk.trender.exceptions.BadRequest;
 import com.dk.trender.service.utils.Utils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.dropwizard.validation.OneOf;
@@ -30,27 +34,25 @@ public class ZCollection {
 	public static final String NAME = "[a-zA-Z0-9_@.-]+";
 	public static final String PUBLIC = "public";
 	public static final String PRIVATE = "private";
+	private static final int MAX_TYPES = 5;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 
 	@NotEmpty
-	@Column(name="name", updatable=false)
+	@Column(updatable=false)
 	@Pattern(regexp=NAME)
 	private String name;
 
 	@NotEmpty
-	@Column(name="label")
+	@Column
 	@Length(min=3, max=50)
 	private String label;
 
-	@Column(name="description")
-	private String description="";
-
 	@NotEmpty
 	@OneOf({PUBLIC, PRIVATE})
-	@Column(name="audience", nullable=false)
+	@Column(nullable=false)
 	private String audience=PUBLIC;
 
 	@Column(name="created_at", updatable=false)
@@ -62,41 +64,90 @@ public class ZCollection {
 	@Column(name="channel_id", nullable=true)
 	private Long channelId;
 
-	@Column(name="display")
+	@Column
 	private boolean display=false;
 
-	@Column(name="curation", nullable=false)
+	@Column(nullable=false)
 	private BigDecimal curation = BigDecimal.valueOf(0.1);
 
-	@Column(name="update", nullable=false)
+	@Column(nullable=false)
 	private boolean update=true;
 
 	@Transient
 	private List<ZPost> posts = new ArrayList<>();
 
 	@Transient
-	private List<ZCollection> groups = new ArrayList<>();
+	private List<ZGroup> groups = new ArrayList<>();
+	
+	@Column
+	@ColumnTransformer(write="?::jsonb")
+	private String conf = "{}";
 
-	@Transient
-	private Map<String, Object> data = new HashMap<>();
+	@Column
+	@NotEmpty
+	private String feed;
 
-	public <T> T addObj(String key, T value) {
-		this.data.put(key, value);
+	@Column
+	@ColumnTransformer(write="regexp_split_to_array(?, ',')",
+			   read="array_to_string(types, ',')")
+	private String types;
+
+	@JsonProperty
+	public void setTypes(List<String> types) {
+		if (types.size() > MAX_TYPES) {
+			String msg = "Only " + MAX_TYPES + " allowed!";
+			throw new BadRequest(Arrays.asList(msg));
+		}
+
+		this.types = types.stream()
+						.map(t -> t.trim().toLowerCase())
+						.distinct()
+						.collect(Collectors.joining(","));
+	}
+
+	@JsonProperty
+	public List<String> getTypes() {
+		return Arrays.asList(types.split(","));
+	}
+
+	@JsonProperty
+	public void setFeed(String feed) {
+		this.feed = feed;
+	}
+
+	@JsonProperty
+	public String getFeed() {
+		return feed;
+	}
+
+	@JsonProperty
+	public String getConf() {
+		return conf;
+	}
+
+	@JsonProperty
+	public void setConf(String conf) {
+		this.conf = conf;
+	}
+
+	@JsonIgnore
+	public QueryConf queryConf() {
+		return QueryConf.parse(conf);
+	}
+
+	@JsonIgnore
+	public QueryConf queryConf(QueryConf value) {
+		this.conf = QueryConf.encode(value);
 		return value;
 	}
 
 	@JsonProperty
-	public Map<String, Object> getData() {
-		return this.data;
-	}
-
-	@JsonProperty
-	public void setGroups(List<ZCollection> groups) {
+	public void setGroups(List<ZGroup> groups) {
 		this.groups = groups;
 	}
 
 	@JsonProperty
-	public List<ZCollection> getGroups() {
+	public List<ZGroup> getGroups() {
 		return groups;
 	}
 
@@ -110,34 +161,42 @@ public class ZCollection {
 		return posts;
 	}
 
+	@JsonProperty
 	public BigDecimal getCuration() {
 		return curation;
 	}
 
+	@JsonProperty
 	public void setCuration(BigDecimal curation) {
 		this.curation = curation;
 	}
 
+	@JsonProperty
 	public boolean isUpdate() {
 		return update;
 	}
 
+	@JsonProperty
 	public void setUpdate(boolean update) {
 		this.update = update;
 	}
 
+	@JsonProperty
 	public void setDisplay(boolean display) {
 		this.display = display;
 	}
 
+	@JsonProperty
 	public boolean isDisplay() {
 		return display;
 	}
 
+	@JsonProperty
 	public void setLabel(String label) {
 		this.label = label;
 	}
 
+	@JsonProperty
 	public String getLabel() {
 		return label;
 	}
@@ -170,16 +229,6 @@ public class ZCollection {
 	@JsonProperty
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	@JsonProperty
-	public String getDescription() {
-		return description;
-	}
-
-	@JsonProperty
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	@JsonProperty

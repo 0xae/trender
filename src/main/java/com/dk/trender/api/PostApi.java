@@ -30,12 +30,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Path("/api/v1/post")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ZPostApi {
-	private static final Logger log = LoggerFactory.getLogger(ZPostApi.class);
+public class PostApi {
+	private static final Logger log = LoggerFactory.getLogger(PostApi.class);
 	private final ZPostService $post;
 	private final ZMediaService $media;
 
-	public ZPostApi(ZPostService $post,
+	public PostApi(ZPostService $post,
 				    ZMediaService $media) {
 		this.$post = $post;
 		this.$media = $media;

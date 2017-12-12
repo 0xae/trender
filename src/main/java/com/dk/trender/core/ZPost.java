@@ -45,7 +45,18 @@ public class ZPost {
 	private @NotNull String picture = "";
 	private @NotNull String data = "{}";
 	private String cached = "";
+	private String group = "";
 	private @NotNull List<String> category = Collections.emptyList();
+	
+	@JsonProperty
+	public void setGroup(String group) {
+		this.group = group;
+	}
+	
+	@JsonProperty
+	public String getGroup() {
+		return group;
+	}
 
 	@JsonProperty
 	public void setAuthorId(String authorId) {
@@ -262,7 +273,7 @@ public class ZPost {
 		return doc;
 	}
 
-	public static ZPost fromDoc(SolrDocument doc) {		
+	public static ZPost fromDoc(SolrDocument doc) {	
 		ZPost p = new ZPost();
 		p.setId(doc.get("id").toString());
 
@@ -282,6 +293,7 @@ public class ZPost {
 		p.setCached(Optional.ofNullable(doc.get("cached")).orElse("").toString());
 		p.setData(doc.get("data").toString());
 		p.setCategory((List<String>)doc.get("category"));
+
 		return p;
 	}
 

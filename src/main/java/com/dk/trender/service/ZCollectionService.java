@@ -21,7 +21,7 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 				.ofNullable(get(id))
 				.orElseThrow(NoResultException::new);
 	}
-	
+
 	public ZCollection create(ZCollection col) {		
 		return persist(col);
 	}
@@ -30,12 +30,12 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 		currentSession().update(col);
 		return col;
 	}
-	
+
 	public void delete(long id) {
 		ZCollection col = byId(id);
 		currentSession().delete(col);
 	}
-	
+
 	@SuppressWarnings({"unchecked"})
 	public List<ZCollection> all(String audience) {
 		String query = "from ZCollection z "+

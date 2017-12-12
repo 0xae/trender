@@ -17,8 +17,8 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 
 import com.dk.trender.core.QueryConf;
 import com.dk.trender.core.ZChannel;
-import com.dk.trender.core.ZGroup;
 import com.dk.trender.core.ZPost;
+import com.dk.trender.core.feed.ZGroup;
 import com.dk.trender.exceptions.SolrExecutionException;
 
 public class ZFeedService {

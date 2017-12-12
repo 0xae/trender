@@ -133,6 +133,9 @@ create table z_collection (
         name varchar(250) not null,
         label varchar(250) not null,
         description text,
+        conf jsonb not null,
+        feed varchar(100) not null,
+        types varchar(100)[] not null,
         audience varchar(50) not null,
         curation decimal(10,2) not null default 0.0,
         update boolean not null default true,
@@ -143,8 +146,9 @@ create table z_collection (
         UNIQUE(name)
 );
 
-insert into z_collection(id, name, display, label, audience, curation)
-values(1, 't/core', false, 'internal collection', 'private', 1);
+insert into z_collection(id, name, display, label, audience, curation, feed, conf, types)
+values(1, 't-newsfeed', true, 'newsfeed collection', 'public', 1,
+'newsfeed', '{}', '{steemit-post,youtube-post,twitter-post,bbc-post}'::varchar[]);
 
 create table z_user (
         id bigserial primary key,

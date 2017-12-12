@@ -32,11 +32,11 @@ import io.dropwizard.hibernate.UnitOfWork;
 @Path("/api/v1/channel")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ZChannelApi {
-	private static final Logger log = LoggerFactory.getLogger(ZChannelApi.class);
+public class ChannelApi {
+	private static final Logger log = LoggerFactory.getLogger(ChannelApi.class);
 	private final ZChannelService $channel;
 
-	public ZChannelApi(ZChannelService channel) {
+	public ChannelApi(ZChannelService channel) {
 		this.$channel = channel;
 	}
 
