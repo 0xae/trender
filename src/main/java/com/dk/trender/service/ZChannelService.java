@@ -26,7 +26,6 @@ import io.dropwizard.hibernate.AbstractDAO;
 
 public class ZChannelService extends AbstractDAO<ZChannel> {
 	private static final Logger log = LoggerFactory.getLogger(ZChannelService.class);
-	private static final int ROWS_PER_REQ = 10;
 	private final ZSearchService search;
 
 	public ZChannelService(SessionFactory sessionFactory,
@@ -121,62 +120,21 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		return list(currentSession()
 					.createQuery("from ZChannel"));
 	}
+	
+	public List<ZCollection> collections(long id) {
+		return collections(id, 0);
+	}
 
 	@SuppressWarnings({"unchecked"})
-	public List<ZCollection> collections(long id) {
+	public List<ZCollection> collections(long id, int start) {
 		String query = "from ZCollection c"+
 					   " where c.channelId = :channelId";
 
 		return currentSession()
 		.createQuery(query)
 		.setParameter("channelId", id)
+		.setMaxResults(10)
+		.setFirstResult(start)		
 		.getResultList();
-	}
-
-	public Map<String, ZCollection> feed(ZChannel chan) {
-		QueryConf conf = chan.queryConf();
-		conf.setLimit(ROWS_PER_REQ);
-		Map<String, List<ZPost>> types=search.groupByType(conf);
-
-		// native collections
-		ZCollection newsfeed = nativeCol("t/newsfeed", "Newsfeed");
-		ZCollection events = nativeCol("t/events", "Events");
-		ZCollection videos = nativeCol("t/videos", "Videos");
-		ZCollection mostPopular = nativeCol("t/mpopular", "Most Popular");
-		ZCollection trending = nativeCol("t/trending", "Trending");
-		ZCollection sugest = nativeCol("t/sugestions", "Suggested Channels");
-
-		newsfeed.getPosts().addAll(types.get(ZPost.STEEMIT));
-		newsfeed.getPosts().addAll(types.get(ZPost.TWITTER));
-		newsfeed.getPosts().addAll(types.get(ZPost.BBC));
-		videos.setPosts(types.get(ZPost.YOUTUBE));
-
-		// public collections
-		List<ZCollection> cols = Arrays.asList(
-			/*
-			events,
-			trending,
-			*/
-			videos,
-			newsfeed
-		);
-
-		return cols.stream()
-		.filter(col -> !col.getPosts().isEmpty())
-		.collect(Collectors.<ZCollection, String, ZCollection>toMap(
-			ZCollection::getName,
-			col -> col
-		));
-	}
-
-	private ZCollection nativeCol(String name, String label) {
-		ZCollection col = new ZCollection();
-		col.setId(1);
-		col.setName(name);
-		col.setLabel(label);
-		col.setDisplay(true);
-		col.setAudience(ZChannel.PUBLIC);
-		col.setCuration(BigDecimal.ONE);
-		return col;
 	}
 }

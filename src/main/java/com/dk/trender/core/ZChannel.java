@@ -134,6 +134,12 @@ public class ZChannel {
 		return QueryConf.parse(this.queryConf);
 	}
 
+	@JsonIgnore
+	public QueryConf queryConf(QueryConf c) {
+		this.queryConf = c.toString();
+		return c;
+	}
+	
 	@JsonProperty
 	public void setQueryConf(String queryConf) {
 		this.queryConf = queryConf;

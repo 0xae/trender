@@ -25,7 +25,6 @@ public class ZSearchService {
 	private final ConcurrentUpdateSolrClient solr;
 	private static final Logger log = LoggerFactory.getLogger(ZSearchService.class);
 	public ZSearchService(ConcurrentUpdateSolrClient solr) {
-		super();
 		this.solr = solr;
 	}
 
@@ -35,8 +34,7 @@ public class ZSearchService {
 	 * @return
 	 */
 	public Map<String, List<ZPost>> groupByType(QueryConf conf) {
-		return Arrays
-		.asList(BBC, STEEMIT, TWITTER, YOUTUBE)
+		return conf.getTypes()
 		.parallelStream()
 		.collect(Collectors.<String, String, List<ZPost>>toMap(
 			type -> type,

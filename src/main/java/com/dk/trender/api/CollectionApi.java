@@ -1,6 +1,7 @@
 package com.dk.trender.api;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -40,37 +41,36 @@ public class CollectionApi {
 	@GET
 	@Path("/")
 	@UnitOfWork
-	public List<ZCollection> getAllCols(@QueryParam("audience")
-									    @NotEmpty String audience) {
+	public List<ZCollection> all(@QueryParam("audience")
+								 @NotEmpty String audience) {
 		return $col.all(audience);
 	}
 
 	@GET
 	@Path("/{id}")	
 	@UnitOfWork
-	public ZCollection colById(@PathParam("id") long id) {
+	public ZCollection byId(@PathParam("id") long id) {
 		return $col.byId(id);
 	}
 
 	@GET
-	@Path("/{id}/feed")	
+	@Path("/by_name/{name}")	
 	@UnitOfWork
-	public ZCollection feed(@PathParam("id") long id) {
-		ZCollection col = $col.byId(id);
-		return col;
+	public ZCollection byName(@PathParam("name") String name) {
+		return $col.byName(name);
 	}
 
 	@POST
 	@Path("/new")	
 	@UnitOfWork
-	public ZCollection createCol(@Valid ZCollection obj) {		
+	public ZCollection create(@Valid ZCollection obj) {		
 		return $col.create(obj);
 	}
 
 	@PUT
 	@Path("/{id}")	
 	@UnitOfWork
-	public ZCollection colUpdate(@PathParam("id") long id,
+	public ZCollection update(@PathParam("id") long id,
 								 @Valid ZCollection col) {
 		return $col.update(col);
 	}

@@ -137,7 +137,7 @@ public class ZCollection {
 
 	@JsonIgnore
 	public QueryConf queryConf(QueryConf value) {
-		this.conf = QueryConf.encode(value);
+		this.conf = value.toString();
 		return value;
 	}
 

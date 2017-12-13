@@ -22,6 +22,7 @@ import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
 import com.dk.trender.core.ZPost;
 import com.dk.trender.service.ZChannelService;
+import com.dk.trender.service.ZCollectionService;
 
 import io.dropwizard.hibernate.UnitOfWork;
 
@@ -35,9 +36,12 @@ import io.dropwizard.hibernate.UnitOfWork;
 public class ChannelApi {
 	private static final Logger log = LoggerFactory.getLogger(ChannelApi.class);
 	private final ZChannelService $channel;
+	private final ZCollectionService $col;
 
-	public ChannelApi(ZChannelService channel) {
+	public ChannelApi(ZChannelService channel,
+					  ZCollectionService col) {
 		this.$channel = channel;
+		this.$col = col;
 	}
 
 	@GET
@@ -45,6 +49,14 @@ public class ChannelApi {
 	@UnitOfWork
 	public List<ZChannel> all() {
 		return $channel.all();
+	}
+	
+	@GET
+	@Path("/{id}/feed/{collName}")	
+	@UnitOfWork
+	public Map<String, List<ZPost>> feed(@PathParam("id") long id,
+							@PathParam("collName") String collName) {
+		return $col.feed($channel.byId(id), collName); 
 	}
 
 	@GET
@@ -103,13 +115,5 @@ public class ChannelApi {
 	@UnitOfWork
 	public void delete(@PathParam("id") long id) {
 		$channel.delete(id);
-	}
-
-	@GET
-	@Path("/{id}/feed")	
-	@UnitOfWork
-	public  Map<String, ZCollection> feed(@PathParam("id") long id) {
-		ZChannel chan = $channel.byId(id);
-		return $channel.feed(chan); 
 	}
 }

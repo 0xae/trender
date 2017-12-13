@@ -105,7 +105,7 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		ZSearchService search = new ZSearchService(solr.getClient());
 		ZMediaService $media = new ZMediaService(conf.getMediaHost());
 		ZChannelService $channel = new ZChannelService(session, search);
-		ZCollectionService $col = new ZCollectionService(session);
+		ZCollectionService $col = new ZCollectionService(session, search, $channel);
 		ZUserService $user = new ZUserService(session, jwt, conf.getAuthorizationPrefix());
 
 		// api resources
@@ -113,7 +113,7 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		env.jersey().register(new AuthApi($user));
 		env.jersey().register(new CollectionApi($col));
 		env.jersey().register(new PostApi($post, $media));
-		env.jersey().register(new ChannelApi($channel));
+		env.jersey().register(new ChannelApi($channel, $col));
 
 		// exception handlers
 		env.jersey().register(new NoResultExceptionExceptionMapper(env.metrics()));
