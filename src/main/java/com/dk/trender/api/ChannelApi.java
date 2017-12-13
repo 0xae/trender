@@ -1,5 +1,6 @@
 package com.dk.trender.api;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -45,16 +46,15 @@ public class ChannelApi {
 	}
 
 	@GET
-	@Path("/")
 	@UnitOfWork
 	public List<ZChannel> all() {
 		return $channel.all();
 	}
 	
 	@GET
-	@Path("/{id}/feed/{collName}")	
+	@Path("/{id}/feed/{collName}")
 	@UnitOfWork
-	public Map<String, List<ZPost>> feed(@PathParam("id") long id,
+	public ZCollection feed(@PathParam("id") long id,
 							@PathParam("collName") String collName) {
 		return $col.feed($channel.byId(id), collName); 
 	}
@@ -63,9 +63,13 @@ public class ChannelApi {
 	@Path("/{id}")	
 	@UnitOfWork
 	public ZChannel get(@PathParam("id") long id) {
-		return $channel.byId(id);
+		ZChannel c = $channel.byId(id);
+		List<ZCollection> cols = $channel.collections(id, 0);
+		cols.add($col.byName("t-newsfeed"));
+		c.setCollections(cols);
+		return c;
 	}
-
+	
 	@GET
 	@Path("/find")	
 	@UnitOfWork
@@ -87,12 +91,14 @@ public class ChannelApi {
 						   @QueryParam("q") @NotEmpty String q) {
 		return $channel.findByName(name, q);
 	}
-
+	
 	@GET
 	@Path("/{id}/collections")	
 	@UnitOfWork
-	public List<ZCollection> getCols(@PathParam("id") long id) {
-		return $channel.collections(id);
+	public List<ZCollection> getColls(@PathParam("id") long id,
+								   @QueryParam("start") 
+								   @DefaultValue("0") int start) {
+		return $channel.collections(id, start);
 	}
 
 	@POST
@@ -114,6 +120,6 @@ public class ChannelApi {
 	@Path("/{id}/delete")	
 	@UnitOfWork
 	public void delete(@PathParam("id") long id) {
-		$channel.delete(id);
+		// $channel.delete(id);
 	}
 }

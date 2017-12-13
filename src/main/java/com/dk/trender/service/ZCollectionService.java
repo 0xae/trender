@@ -1,5 +1,6 @@
 package com.dk.trender.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -64,11 +65,12 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 					.setParameter("audience", audience));
 	}
 
-	public Map<String, List<ZPost>> feed(ZChannel chan, String collName) {
+	public ZCollection feed(ZChannel chan, String collName) {
 		ZCollection coll = byName(collName);
 		QueryConf mainConf = chan.queryConf();
 		QueryConf collConf = coll.queryConf();
 		boolean updateChan = false;
+
 		mainConf.setLimit(ROWS_PER_REQ);
 		collConf.setLimit(ROWS_PER_REQ);
 
@@ -87,6 +89,14 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 
 		log.info("conf: " + collConf.toString());
 		Map<String, List<ZPost>> types=search.groupByType(collConf);
+		
+		List<ZPost> posts = new ArrayList<>();
+		for (String t : types.keySet()) {
+			posts.addAll(types.get(t));
+		}
+
+		coll.setPosts(posts);
+		return coll;
 
 		// int fetched = 0;
 		// XXX: this wont work well, because we split requests
@@ -98,6 +108,5 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 //			// update the index of the channel
 //			$channel.update(chan);
 //		}
-		return types;
 	}
 }

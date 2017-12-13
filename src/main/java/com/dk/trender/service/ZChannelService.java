@@ -120,10 +120,6 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		return list(currentSession()
 					.createQuery("from ZChannel"));
 	}
-	
-	public List<ZCollection> collections(long id) {
-		return collections(id, 0);
-	}
 
 	@SuppressWarnings({"unchecked"})
 	public List<ZCollection> collections(long id, int start) {

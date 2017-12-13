@@ -105,7 +105,7 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 		ZSearchService search = new ZSearchService(solr.getClient());
 		ZMediaService $media = new ZMediaService(conf.getMediaHost());
 		ZChannelService $channel = new ZChannelService(session, search);
-		ZCollectionService $col = new ZCollectionService(session, search, $channel);
+		ZCollectionService $col = new ZCollectionService(session, search);
 		ZUserService $user = new ZUserService(session, jwt, conf.getAuthorizationPrefix());
 
 		// api resources

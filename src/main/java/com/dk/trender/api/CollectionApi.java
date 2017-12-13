@@ -39,7 +39,6 @@ public class CollectionApi {
 	}
 
 	@GET
-	@Path("/")
 	@UnitOfWork
 	public List<ZCollection> all(@QueryParam("audience")
 								 @NotEmpty String audience) {
@@ -47,7 +46,7 @@ public class CollectionApi {
 	}
 
 	@GET
-	@Path("/{id}")	
+	@Path("/{id}")
 	@UnitOfWork
 	public ZCollection byId(@PathParam("id") long id) {
 		return $col.byId(id);
