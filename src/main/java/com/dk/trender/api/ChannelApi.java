@@ -1,8 +1,7 @@
 package com.dk.trender.api;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -21,7 +20,6 @@ import org.slf4j.LoggerFactory;
 
 import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
-import com.dk.trender.core.ZPost;
 import com.dk.trender.service.ZChannelService;
 import com.dk.trender.service.ZCollectionService;
 
@@ -64,8 +62,9 @@ public class ChannelApi {
 	@UnitOfWork
 	public ZChannel get(@PathParam("id") long id) {
 		ZChannel c = $channel.byId(id);
-		List<ZCollection> cols = $channel.collections(id, 0);
+		List<ZCollection> cols = new ArrayList<>();
 		cols.add($col.byName("t-newsfeed"));
+		cols.addAll($channel.collections(id, 0));
 		c.setCollections(cols);
 		return c;
 	}
@@ -109,7 +108,7 @@ public class ChannelApi {
 	}
 
 	@POST
-	@Path("/{id}")	
+	@Path("/{id}")
 	@UnitOfWork
 	public ZChannel update(@PathParam("id") long id,
 						   @Valid ZChannel chan) {

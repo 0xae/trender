@@ -33,6 +33,7 @@ import com.dk.trender.exceptions.BadRequestExceptionMapper;
 import com.dk.trender.exceptions.ConnectExceptionMapper;
 import com.dk.trender.exceptions.ConstraintViolationExceptionMapper;
 import com.dk.trender.exceptions.NoResultExceptionExceptionMapper;
+import com.dk.trender.health.SolrHealth;
 import com.dk.trender.service.ZChannelService;
 import com.dk.trender.service.ZCollectionService;
 import com.dk.trender.service.ZMediaService;
@@ -123,6 +124,7 @@ public class TrenderApplication extends Application<TrenderConfiguration> {
 
 		// managed objects
 		env.lifecycle().manage(solr);
+		env.healthChecks().register("solr", new SolrHealth(solr.getClient()));
 	}
 
 	private JwtService configAuth(TrenderConfiguration conf, Environment env) throws Exception {

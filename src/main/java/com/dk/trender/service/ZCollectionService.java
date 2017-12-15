@@ -1,6 +1,7 @@
 package com.dk.trender.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -15,12 +16,13 @@ import com.dk.trender.core.QueryConf;
 import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
 import com.dk.trender.core.ZPost;
+import com.dk.trender.exceptions.BadRequest;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
 public class ZCollectionService extends AbstractDAO<ZCollection>{
 	private static final Logger log = LoggerFactory.getLogger(ZCollectionService.class);
-	private static final int ROWS_PER_REQ = 10;
+	private static final int ROWS_PER_REQ = 5;
 	private final ZSearchService search;
 
 	public ZCollectionService(SessionFactory sessionFactory,
@@ -34,15 +36,21 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 				.ofNullable(get(id))
 				.orElseThrow(NoResultException::new);
 	}
-	
+
 	public ZCollection byName(String name) {
 		String q = "from ZCollection where name=lower(trim(:name))";
-		return (ZCollection)currentSession().createQuery(q)
+		return (ZCollection)currentSession()
+				.createQuery(q)
 				.setParameter("name", name)
 				.getSingleResult();
 	}
 
-	public ZCollection create(ZCollection col) {		
+	public ZCollection create(ZCollection col) {
+		if (col.getName().toLowerCase().startsWith("t-")) {
+			String msg = "Channels starting with t- are reserved.";
+			throw new BadRequest(Arrays.asList(msg));
+		}
+
 		return persist(col);
 	}
 
@@ -71,6 +79,9 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 		QueryConf collConf = coll.queryConf();
 		boolean updateChan = false;
 
+		// XXX: shouldnt this be configurable
+		//	    per collection ? 
+		//	    the max represented by ROWS_PER_REQ
 		mainConf.setLimit(ROWS_PER_REQ);
 		collConf.setLimit(ROWS_PER_REQ);
 
@@ -97,7 +108,6 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 
 		coll.setPosts(posts);
 		return coll;
-
 		// int fetched = 0;
 		// XXX: this wont work well, because we split requests
 		//      into types remember ?

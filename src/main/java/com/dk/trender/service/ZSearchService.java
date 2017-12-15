@@ -1,10 +1,5 @@
 package com.dk.trender.service;
 
-import static com.dk.trender.core.ZPost.BBC;
-import static com.dk.trender.core.ZPost.STEEMIT;
-import static com.dk.trender.core.ZPost.TWITTER;
-import static com.dk.trender.core.ZPost.YOUTUBE;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
