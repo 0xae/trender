@@ -78,7 +78,7 @@ public class ZCollection {
 
 	@Transient
 	private List<ZGroup> groups = new ArrayList<>();
-	
+
 	@Column
 	@ColumnTransformer(write="?::jsonb")
 	private String conf = "{}";

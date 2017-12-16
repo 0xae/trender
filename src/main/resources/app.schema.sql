@@ -85,18 +85,18 @@ create schema public;
 --insert into z_listing(title, description) 
 --values ('general', 'listing for uncategorized posts'), ('breaking-news', 'breaking media social news');
 
-create table z_media (
-        id bigserial primary key,
-        title text,
-        description text,
-        type varchar(50) not null,
-        timestamp timestamp not null,
-        data jsonb not null,
-        post_id varchar(150) not null,
-        source text,
-        cached_at text,
-        indexed_at timestamp not null default now()
-);
+-- create table z_media (
+--         id bigserial primary key,
+--         title text,
+--         description text,
+--         type varchar(50) not null,
+--         timestamp timestamp not null,
+--         data jsonb not null,
+--         post_id varchar(150) not null,
+--         source text,
+--         cached_at text,
+--         indexed_at timestamp not null default now()
+-- );
 
 create table z_profile (
         id bigserial primary key,

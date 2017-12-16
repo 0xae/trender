@@ -54,11 +54,11 @@ public class ChannelApi {
 	@UnitOfWork
 	public ZCollection feed(@PathParam("id") long id,
 							@PathParam("collName") String collName) {
-		return $col.feed($channel.byId(id), collName); 
+		return $col.feed($channel.byId(id), collName);
 	}
 
 	@GET
-	@Path("/{id}")	
+	@Path("/{id}")
 	@UnitOfWork
 	public ZChannel get(@PathParam("id") long id) {
 		ZChannel c = $channel.byId(id);
