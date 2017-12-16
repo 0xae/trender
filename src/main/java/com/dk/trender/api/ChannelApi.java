@@ -48,7 +48,7 @@ public class ChannelApi {
 	public List<ZChannel> all() {
 		return $channel.all();
 	}
-	
+
 	@GET
 	@Path("/{id}/feed/{collName}")
 	@UnitOfWork
@@ -68,7 +68,7 @@ public class ChannelApi {
 		c.setCollections(cols);
 		return c;
 	}
-	
+
 	@GET
 	@Path("/find")	
 	@UnitOfWork
