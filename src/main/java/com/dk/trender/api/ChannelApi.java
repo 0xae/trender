@@ -35,12 +35,12 @@ import io.dropwizard.hibernate.UnitOfWork;
 public class ChannelApi {
 	private static final Logger log = LoggerFactory.getLogger(ChannelApi.class);
 	private final ZChannelService $channel;
-	private final ZCollectionService $col;
+	private final ZCollectionService $colls;
 
 	public ChannelApi(ZChannelService channel,
 					  ZCollectionService col) {
 		this.$channel = channel;
-		this.$col = col;
+		this.$colls = col;
 	}
 
 	@GET
@@ -54,7 +54,7 @@ public class ChannelApi {
 	@UnitOfWork
 	public ZCollection feed(@PathParam("id") long id,
 							@PathParam("collName") String collName) {
-		return $col.feed($channel.byId(id), collName);
+		return $colls.feed($channel.byId(id), collName);
 	}
 
 	@GET
@@ -63,7 +63,7 @@ public class ChannelApi {
 	public ZChannel get(@PathParam("id") long id) {
 		ZChannel c = $channel.byId(id);
 		List<ZCollection> cols = new ArrayList<>();
-		cols.add($col.byName("t-newsfeed"));
+		cols.add($colls.byName("t-newsfeed"));
 		cols.addAll($channel.collections(id, 0));
 		c.setCollections(cols);
 		return c;
@@ -90,9 +90,9 @@ public class ChannelApi {
 						   @QueryParam("q") @NotEmpty String q) {
 		return $channel.findByName(name, q);
 	}
-	
+
 	@GET
-	@Path("/{id}/collections")	
+	@Path("/{id}/collections")
 	@UnitOfWork
 	public List<ZCollection> getColls(@PathParam("id") long id,
 								   @QueryParam("start") 

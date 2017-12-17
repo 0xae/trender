@@ -83,7 +83,7 @@ public class ZChannel {
 	public void setLastUpdate(DateTime lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
-	
+
 	@JsonProperty
 	public DateTime getLastUpdate() {
 		return lastUpdate;
@@ -92,7 +92,7 @@ public class ZChannel {
 	@JsonProperty
 	public String getLastUpdateFmt() {
 		return Utils.format(lastUpdate);
-	}	
+	}
 
 	@JsonProperty
 	public long getId() {
@@ -108,7 +108,7 @@ public class ZChannel {
 	public String getName() {
 		return name;
 	}
-	
+
 	@JsonProperty
 	public void setName(String name) {
 		this.name = name;
@@ -128,7 +128,7 @@ public class ZChannel {
 	public String getQueryConf() {
 		return queryConf;
 	}
-	
+
 	@JsonIgnore
 	public QueryConf queryConf() {
 		return QueryConf.parse(this.queryConf);
@@ -139,7 +139,7 @@ public class ZChannel {
 		this.queryConf = c.toString();
 		return c;
 	}
-	
+
 	@JsonProperty
 	public void setQueryConf(String queryConf) {
 		this.queryConf = queryConf;
