@@ -84,7 +84,6 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 		//	    the max represented by ROWS_PER_REQ
 		mainConf.setLimit(ROWS_PER_REQ);
 		collConf.setLimit(ROWS_PER_REQ);
-
 		collConf.getFq().addAll(mainConf.getFq());
 		collConf.setQ(mainConf.getQ());
 		collConf.setTypes(coll.getTypes());
