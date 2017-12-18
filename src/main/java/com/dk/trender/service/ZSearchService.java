@@ -2,6 +2,7 @@ package com.dk.trender.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.ConcurrentUpdateSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocumentList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +45,12 @@ public class ZSearchService {
 		);
 	}
 
+	public int count(QueryConf conf) {
+		return (int) search(conf, Collections.emptyList())
+				.getResults()
+				.getNumFound();
+	}
+
 	private QueryResponse search(QueryConf conf, List<String> pfq) {
 		SolrQuery sq = new SolrQuery();
 		sq.set("q", conf.getQ());
@@ -58,7 +66,7 @@ public class ZSearchService {
 		sq.set("fq", fq.toArray(new String[]{}));
 
 		try {
-			return solr.query(sq);
+			return solr.query(sq);			
 		} catch (Exception e) {
 			throw new SolrExecutionException(e);
 		}

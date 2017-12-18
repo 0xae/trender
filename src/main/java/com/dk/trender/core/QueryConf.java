@@ -12,7 +12,7 @@ public final class QueryConf {
 	private List<String> fq = new ArrayList<>();	
 	private List<String> types = new ArrayList<>();
 	private String sort="timestamp desc";
-	private int limit=10;
+	private int limit=5;
 	private int start=0;
 	
 	public QueryConf setTypes(List<String> types) {

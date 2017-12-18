@@ -9,6 +9,7 @@ import java.util.Optional;
 import javax.persistence.NoResultException;
 
 import org.hibernate.SessionFactory;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,7 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 		super(sessionFactory);
 		this.search = search;
 	}
-
+	
 	public ZCollection byId(long id) {
 		return Optional
 				.ofNullable(get(id))
@@ -39,10 +40,10 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 
 	public ZCollection byName(String name) {
 		String q = "from ZCollection where name=lower(trim(:name))";
-		return (ZCollection)currentSession()
+		return ((ZCollection)currentSession()
 				.createQuery(q)
 				.setParameter("name", name)
-				.getSingleResult();
+				.getSingleResult());
 	}
 
 	public ZCollection create(ZCollection col) {
@@ -73,24 +74,16 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 					.setParameter("audience", audience));
 	}
 
-	public ZCollection feed(ZChannel chan, String collName) {
-		ZCollection coll = byName(collName);
+	public ZCollection feed(ZChannel chan, ZCollection coll) {
 		QueryConf mainConf = chan.queryConf();
 		QueryConf collConf = coll.queryConf();
-		boolean updateChan = false;
 
-		// XXX: shouldnt this be configurable
-		//	    per collection ? 
-		//	    the max represented by ROWS_PER_REQ
-		mainConf.setLimit(ROWS_PER_REQ);
-		collConf.setLimit(ROWS_PER_REQ);
 		collConf.getFq().addAll(mainConf.getFq());
 		collConf.setQ(mainConf.getQ());
 		collConf.setTypes(coll.getTypes());
 
 		if (collConf.getStart()==0) {
 			collConf.setStart(mainConf.getStart());
-			updateChan = true;
 		}
 
 		if (collConf.getQ()==null || collConf.getQ().trim().isEmpty()) {

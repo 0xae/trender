@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.annotations.ColumnTransformer;
@@ -90,6 +91,7 @@ public class ZCollection {
 	@Column
 	@ColumnTransformer(write="regexp_split_to_array(?, ',')",
 			   read="array_to_string(types, ',')")
+	@NotNull
 	private String types;
 
 	@JsonProperty

@@ -125,6 +125,7 @@ create table z_channel (
         -- time
         created_at timestamp not null default now(),
         last_update timestamp,
+        last_access timestamp,
         UNIQUE(name)
 );
 
@@ -147,7 +148,7 @@ create table z_collection (
 );
 
 insert into z_collection(id, name, display, label, audience, curation, feed, conf, types)
-values(1, 't-newsfeed', true, 'newsfeed collection', 'public', 1,
+values(1, 't-newsfeed', true, 'Newsfeed', 'public', 1,
 'newsfeed', '{}', '{steemit-post,youtube-post,twitter-post,bbc-post}'::varchar[]);
 
 create table z_user (

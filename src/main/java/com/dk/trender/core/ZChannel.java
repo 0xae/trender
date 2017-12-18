@@ -1,5 +1,6 @@
 package com.dk.trender.core;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -66,8 +67,24 @@ public class ZChannel {
 	@Column(name="last_update")
 	private DateTime lastUpdate=new DateTime();
 
+	@Column(name="last_access")
+	private DateTime lastAccess=new DateTime();
+	
 	@Transient
-	private List<ZCollection> collections = Collections.emptyList();
+	private List<ZCollection> collections = new ArrayList<>();
+	
+	@Transient
+	private int totalCount;
+	
+	@JsonIgnore
+	public void totalCount(int totalCount) {
+		this.totalCount = totalCount;
+	}
+	
+	@JsonIgnore
+	public int totalCount() {
+		return totalCount;
+	}
 
 	@JsonProperty
 	public void setCollections(List<ZCollection> collections) {
@@ -77,6 +94,21 @@ public class ZChannel {
 	@JsonProperty
 	public List<ZCollection> getCollections() {
 		return collections;
+	}
+	
+	@JsonProperty
+	public ZChannel setLastAccess(DateTime lastAccess) {
+		this.lastAccess = lastAccess;
+		return this;
+	}
+	
+	@JsonProperty
+	public DateTime getLastAccess() {
+		return lastAccess;
+	}
+	
+	public String getLastAccessFmt() {
+		return Utils.format(lastAccess);
 	}
 
 	@JsonProperty

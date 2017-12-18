@@ -1,12 +1,8 @@
 package com.dk.trender.service;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import javax.persistence.NoResultException;
@@ -16,11 +12,8 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dk.trender.core.QueryConf;
 import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
-import com.dk.trender.core.ZPost;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
@@ -35,9 +28,12 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 	}
 
 	public ZChannel byId(long id) {
-		return Optional
+		ZChannel c = Optional
 			.ofNullable(get(id))
-			.orElseThrow(NoResultException::new);
+			.orElseThrow(NoResultException::new)
+			.setLastAccess(DateTime.now());
+		update(c);
+		return c;
 	}
 
 	public ZChannel create(ZChannel obj) {
@@ -94,22 +90,10 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		// TODO move this search to postgres with json query operators
 		//      but first we need to figure out a way to make native sql queries
 		//      and use the same ResultSetTransformer
-		ObjectMapper mapper = new ObjectMapper();
 		for (ZChannel chan : l) {
-			try {
-				HashMap<String, Object> queryConf =
-					mapper.readValue(chan.getQueryConf(), HashMap.class);
-				// i know i wont ever find a null here ;)
-				String $q = queryConf.get("q").toString();
-				if ($q.equalsIgnoreCase(q))
-					return chan;
-			} catch (IOException e) {
-				// XXX: it is not possible to reach here
-				// because postgres wont allow invalid json
-				// to be created
-				// i cant gracefuly recover from this error
-				throw new RuntimeException(e);
-			}
+			String $q = chan.queryConf().getQ();
+			if ($q.equalsIgnoreCase(q))
+				return chan;
 		}
 
 		throw new NoResultException();
@@ -132,5 +116,49 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		.setMaxResults(10)
 		.setFirstResult(start)		
 		.getResultList();
+	}
+
+	@SuppressWarnings({"unchecked"})
+	public List<ZChannel> recent() {
+		String query = "from ZChannel c"+
+				   " order by last_access desc";
+
+		// a bit of randomness in the system
+		int max = new Random()
+			.ints(3, 4)
+			.findFirst()
+			.getAsInt();
+	
+		return currentSession()
+			.createQuery(query)
+			.setMaxResults(max)
+			.getResultList();
+	}
+
+	@SuppressWarnings({"unchecked"})
+	public List<ZChannel> top() {
+		String query = "from ZChannel";
+
+		// a bit of randomness in the system
+		int max = new Random()
+			.ints(3, 4)
+			.findFirst()
+			.getAsInt();
+
+		List<ZChannel> list = currentSession()
+			.createQuery(query)
+			.setMaxResults(max)
+			.getResultList();
+
+		return list.parallelStream()
+			.map(this::count)
+			.sorted((o1,o2) -> o1.totalCount() - o2.totalCount())
+			.collect(Collectors.toList());
+	}
+
+	private ZChannel count(ZChannel source) {		
+		int count = search.count(source.queryConf());
+		source.totalCount(count);
+		return source;
 	}
 }

@@ -18,12 +18,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dk.trender.core.QueryConf;
 import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
 import com.dk.trender.service.ZChannelService;
 import com.dk.trender.service.ZCollectionService;
 
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.validation.OneOf;
 
 /**
  * 
@@ -54,7 +56,32 @@ public class ChannelApi {
 	@UnitOfWork
 	public ZCollection feed(@PathParam("id") long id,
 							@PathParam("collName") String collName) {
-		return $colls.feed($channel.byId(id), collName);
+		ZCollection col = $colls.byName("t-newsfeed");
+		ZChannel chan = $channel.byId(id);
+		return $colls.feed(chan, col);
+	}
+
+	@GET
+	@Path("/sugestions/{name}")
+	@UnitOfWork
+	public List<ZChannel> sugestions(@PathParam("name") 
+								     @OneOf({"recent", "top"}) 
+								  	 String name) {
+		List<ZChannel> data;
+		if ("recent".equals(name)) {
+			data = $channel.recent();
+		} else {
+			data = $channel.top();
+		}
+
+		ZCollection col = $colls.byName("t-newsfeed");
+		col.queryConf(col.queryConf().setLimit(1));
+		for (ZChannel chan : data) {
+			chan.getCollections()
+			.add($colls.feed(chan, col));
+		}
+
+		return data;
 	}
 
 	@GET
