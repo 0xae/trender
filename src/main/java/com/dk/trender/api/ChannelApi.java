@@ -18,11 +18,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dk.trender.core.QueryConf;
 import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
 import com.dk.trender.service.ZChannelService;
 import com.dk.trender.service.ZCollectionService;
+import com.dk.trender.service.utils.Utils;
 
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.validation.OneOf;
@@ -75,7 +75,8 @@ public class ChannelApi {
 		}
 
 		ZCollection col = $colls.byName("t-newsfeed");
-		col.queryConf(col.queryConf().setLimit(1));
+		col.queryConf(col.queryConf().setLimit(2));
+
 		for (ZChannel chan : data) {
 			chan.getCollections()
 			.add($colls.feed(chan, col));

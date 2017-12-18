@@ -2,7 +2,6 @@ package com.dk.trender.core;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,11 +18,11 @@ public final class QueryConf {
 		this.types = types;
 		return this;
 	}
-	
+
 	public List<String> getTypes() {
 		return types;
 	}
-	
+
 	public int getStart() {
 		return start;
 	}

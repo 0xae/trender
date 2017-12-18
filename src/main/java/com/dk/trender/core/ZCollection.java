@@ -20,6 +20,8 @@ import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dk.trender.core.feed.ZGroup;
 import com.dk.trender.exceptions.BadRequest;
@@ -32,6 +34,7 @@ import io.dropwizard.validation.OneOf;
 @Entity
 @Table(name="z_collection")
 public class ZCollection {
+	private static final Logger log = LoggerFactory.getLogger(ZCollection.class);
 	public static final String NAME = "[a-zA-Z0-9_@.-]+";
 	public static final String PUBLIC = "public";
 	public static final String PRIVATE = "private";
@@ -112,6 +115,27 @@ public class ZCollection {
 		return Arrays.asList(types.split(","));
 	}
 
+	public ZCollection copy() {
+		ZCollection source = this;
+		ZCollection dest = new ZCollection();
+		dest.setId(source.getId());
+		dest.setName(source.getName());
+		dest.setLabel(source.getLabel());
+		dest.setAudience(source.getAudience());
+		dest.setCreatedAt(source.getCreatedAt());
+		dest.setLastUpdate(source.getLastUpdate());
+		dest.setTypes(source.getTypes());
+		dest.setFeed(source.getFeed());
+		dest.setConf(source.getConf());
+//		dest.setGroups(source.getGroups());
+//		dest.setPosts(source.getPosts());
+		dest.setChannelId(source.getChannelId());
+		dest.setCuration(source.getCuration());
+		dest.setDisplay(source.isDisplay());
+		dest.setUpdate(source.isUpdate());
+		return dest;
+	}	
+	
 	@JsonProperty
 	public void setFeed(String feed) {
 		this.feed = feed;
@@ -122,13 +146,14 @@ public class ZCollection {
 		return feed;
 	}
 
-	@JsonProperty
+	@JsonIgnore
 	public String getConf() {
 		return conf;
 	}
 
-	@JsonProperty
+	@JsonIgnore
 	public void setConf(String conf) {
+		log.debug("set conf called: " + conf);
 		this.conf = conf;
 	}
 

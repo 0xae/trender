@@ -122,32 +122,19 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 	public List<ZChannel> recent() {
 		String query = "from ZChannel c"+
 				   " order by last_access desc";
-
-		// a bit of randomness in the system
-		int max = new Random()
-			.ints(3, 4)
-			.findFirst()
-			.getAsInt();
 	
 		return currentSession()
 			.createQuery(query)
-			.setMaxResults(max)
+			.setMaxResults(10)
 			.getResultList();
 	}
 
 	@SuppressWarnings({"unchecked"})
 	public List<ZChannel> top() {
 		String query = "from ZChannel";
-
-		// a bit of randomness in the system
-		int max = new Random()
-			.ints(3, 4)
-			.findFirst()
-			.getAsInt();
-
 		List<ZChannel> list = currentSession()
 			.createQuery(query)
-			.setMaxResults(max)
+			.setMaxResults(4)
 			.getResultList();
 
 		return list.parallelStream()
