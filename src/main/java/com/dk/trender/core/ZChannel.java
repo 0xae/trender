@@ -77,8 +77,9 @@ public class ZChannel {
 	private int totalCount;
 	
 	@JsonIgnore
-	public void totalCount(int totalCount) {
+	public ZChannel totalCount(int totalCount) {
 		this.totalCount = totalCount;
+		return this;
 	}
 	
 	@JsonIgnore

@@ -113,7 +113,7 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 //			// update the index of the channel
 //			$channel.update(chan);
 //		}
-		
+
 		ZCollection zc = coll.copy();
 		zc.setPosts(posts);
 		return zc;

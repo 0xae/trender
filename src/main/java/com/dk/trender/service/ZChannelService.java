@@ -2,7 +2,6 @@ package com.dk.trender.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import javax.persistence.NoResultException;
@@ -76,8 +75,8 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 	// TODO: fix this to avoid duplicate 
 	//       channels with the same name
 	@SuppressWarnings({"unchecked"})
-	public ZChannel findByName(String name, String q) {
-		q = q.trim().toLowerCase();
+	public ZChannel findByName(String name, String q_) {
+		String q = q_.trim().toLowerCase();
 		String query = "from ZChannel z "+
 						"where lower(trim(z.name))=lower(trim(:name))";
 		log.info("searching for channel {}", name);
@@ -107,14 +106,14 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 
 	@SuppressWarnings({"unchecked"})
 	public List<ZCollection> collections(long id, int start) {
-		String query = "from ZCollection c"+
+		String query = "from ZCollection c" + 
 					   " where c.channelId = :channelId";
 
 		return currentSession()
 		.createQuery(query)
 		.setParameter("channelId", id)
 		.setMaxResults(10)
-		.setFirstResult(start)		
+		.setFirstResult(start)
 		.getResultList();
 	}
 
@@ -132,9 +131,10 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 	@SuppressWarnings({"unchecked"})
 	public List<ZChannel> top() {
 		String query = "from ZChannel";
+
 		List<ZChannel> list = currentSession()
 			.createQuery(query)
-			.setMaxResults(4)
+			.setMaxResults(20)
 			.getResultList();
 
 		return list.parallelStream()
@@ -143,9 +143,8 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 			.collect(Collectors.toList());
 	}
 
-	private ZChannel count(ZChannel source) {		
-		int count = search.count(source.queryConf());
-		source.totalCount(count);
-		return source;
+	private ZChannel count(ZChannel chan) {
+		int count = search.count(chan.queryConf());
+		return chan.totalCount(count);
 	}
 }
