@@ -69,19 +69,19 @@ public class ZChannel {
 
 	@Column(name="last_access")
 	private DateTime lastAccess=new DateTime();
-	
+
 	@Transient
 	private List<ZCollection> collections = new ArrayList<>();
-	
+
 	@Transient
 	private int totalCount;
-	
+
 	@JsonIgnore
 	public ZChannel totalCount(int totalCount) {
 		this.totalCount = totalCount;
 		return this;
 	}
-	
+
 	@JsonIgnore
 	public int totalCount() {
 		return totalCount;
@@ -96,18 +96,18 @@ public class ZChannel {
 	public List<ZCollection> getCollections() {
 		return collections;
 	}
-	
+
 	@JsonProperty
 	public ZChannel setLastAccess(DateTime lastAccess) {
 		this.lastAccess = lastAccess;
 		return this;
 	}
-	
+
 	@JsonProperty
 	public DateTime getLastAccess() {
 		return lastAccess;
 	}
-	
+
 	public String getLastAccessFmt() {
 		return Utils.format(lastAccess);
 	}
