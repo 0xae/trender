@@ -98,7 +98,7 @@ public class ZCollection {
 	private String types;
 
 	@JsonProperty
-	public void setTypes(List<String> types) {
+	public ZCollection setTypes(List<String> types) {
 		if (types.size() > MAX_TYPES) {
 			String msg = "Only " + MAX_TYPES + " allowed!";
 			throw new BadRequest(Arrays.asList(msg));
@@ -108,6 +108,8 @@ public class ZCollection {
 						.map(t -> t.trim().toLowerCase())
 						.distinct()
 						.collect(Collectors.joining(","));
+		
+		return this;
 	}
 
 	@JsonProperty
@@ -134,11 +136,12 @@ public class ZCollection {
 		dest.setDisplay(source.isDisplay());
 		dest.setUpdate(source.isUpdate());
 		return dest;
-	}	
-	
+	}
+
 	@JsonProperty
-	public void setFeed(String feed) {
+	public ZCollection setFeed(String feed) {
 		this.feed = feed;
+		return this;
 	}
 
 	@JsonProperty
@@ -152,9 +155,10 @@ public class ZCollection {
 	}
 
 	@JsonIgnore
-	public void setConf(String conf) {
-		log.debug("set conf called: " + conf);
+	public ZCollection setConf(String conf) {
+		log.debug("set coll conf: " + conf);
 		this.conf = conf;
+		return this;
 	}
 
 	@JsonIgnore
@@ -169,8 +173,9 @@ public class ZCollection {
 	}
 
 	@JsonProperty
-	public void setGroups(List<ZGroup> groups) {
+	public ZCollection setGroups(List<ZGroup> groups) {
 		this.groups = groups;
+		return this;
 	}
 
 	@JsonProperty
@@ -179,8 +184,9 @@ public class ZCollection {
 	}
 
 	@JsonProperty
-	public void setPosts(List<ZPost> posts) {
+	public ZCollection setPosts(List<ZPost> posts) {
 		this.posts = posts;
+		return this;
 	}
 
 	@JsonProperty
@@ -194,8 +200,9 @@ public class ZCollection {
 	}
 
 	@JsonProperty
-	public void setCuration(BigDecimal curation) {
+	public ZCollection setCuration(BigDecimal curation) {
 		this.curation = curation;
+		return this;
 	}
 
 	@JsonProperty
@@ -204,13 +211,15 @@ public class ZCollection {
 	}
 
 	@JsonProperty
-	public void setUpdate(boolean update) {
+	public ZCollection setUpdate(boolean update) {
 		this.update = update;
+		return this;
 	}
 
 	@JsonProperty
-	public void setDisplay(boolean display) {
+	public ZCollection setDisplay(boolean display) {
 		this.display = display;
+		return this;
 	}
 
 	@JsonProperty
@@ -219,8 +228,9 @@ public class ZCollection {
 	}
 
 	@JsonProperty
-	public void setLabel(String label) {
+	public ZCollection setLabel(String label) {
 		this.label = label;
+		return this;
 	}
 
 	@JsonProperty
@@ -229,8 +239,9 @@ public class ZCollection {
 	}
 
 	@JsonProperty
-	public void setId(long id) {
+	public ZCollection setId(long id) {
 		this.id = id;
+		return this;
 	}
 
 	@JsonProperty
@@ -239,8 +250,9 @@ public class ZCollection {
 	}
 
 	@JsonProperty
-	public void setAudience(String audience) {
+	public ZCollection setAudience(String audience) {
 		this.audience = audience;
+		return this;
 	}
 
 	@JsonProperty
@@ -254,8 +266,9 @@ public class ZCollection {
 	}
 
 	@JsonProperty
-	public void setName(String name) {
+	public ZCollection setName(String name) {
 		this.name = name;
+		return this;
 	}
 
 	@JsonProperty
@@ -264,8 +277,9 @@ public class ZCollection {
 	}
 
 	@JsonProperty
-	public void setCreatedAt(DateTime createdAt) {
+	public ZCollection setCreatedAt(DateTime createdAt) {
 		this.createdAt = createdAt;
+		return this;
 	}
 
 	@JsonProperty
@@ -281,11 +295,12 @@ public class ZCollection {
 	@JsonProperty
 	public String getCreatedAtFmt() {
 		return Utils.format(createdAt);
-	}		
+	}
 
 	@JsonProperty
-	public void setLastUpdate(DateTime lastUpdate) {
+	public ZCollection setLastUpdate(DateTime lastUpdate) {
 		this.lastUpdate = lastUpdate;
+		return this;
 	}
 
 	@JsonProperty
@@ -294,7 +309,8 @@ public class ZCollection {
 	}
 
 	@JsonProperty
-	public void setChannelId(Long channelId) {
+	public ZCollection setChannelId(Long channelId) {
 		this.channelId = channelId;
+		return this;
 	}
 }

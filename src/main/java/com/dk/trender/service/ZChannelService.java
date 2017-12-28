@@ -74,21 +74,20 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 
 	// TODO: fix this to avoid duplicate 
 	//       channels with the same name
+	// TODO move this search to postgres with json query operators
+	//      but first we need to figure out a way to make native sql queries
+	//      and use the same ResultSetTransformer
 	@SuppressWarnings({"unchecked"})
 	public ZChannel findByName(String name, String q_) {
 		String q = q_.trim().toLowerCase();
 		String query = "from ZChannel z "+
 						"where lower(trim(z.name))=lower(trim(:name))";
 		log.info("searching for channel {}", name);
-		List<ZChannel> l = list(
-			currentSession()
+		List<ZChannel> l = currentSession()
 		    .createQuery(query)
 			.setParameter("name", name)
-		);
+			.getResultList();
 
-		// TODO move this search to postgres with json query operators
-		//      but first we need to figure out a way to make native sql queries
-		//      and use the same ResultSetTransformer
 		for (ZChannel chan : l) {
 			String $q = chan.queryConf().getQ();
 			if ($q.equalsIgnoreCase(q))
@@ -110,11 +109,11 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 					   " where c.channelId = :channelId";
 
 		return currentSession()
-		.createQuery(query)
-		.setParameter("channelId", id)
-		.setMaxResults(10)
-		.setFirstResult(start)
-		.getResultList();
+			.createQuery(query)
+			.setParameter("channelId", id)
+			.setMaxResults(10)
+			.setFirstResult(start)
+			.getResultList();
 	}
 
 	@SuppressWarnings({"unchecked"})

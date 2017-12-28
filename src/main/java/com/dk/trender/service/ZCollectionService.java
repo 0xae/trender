@@ -90,7 +90,7 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 			collConf.setQ(mainConf.getQ());
 		}
 
-		log.info("conf: " + collConf.toString());
+		// log.info("conf: " + collConf.toString());
 		Map<String, List<ZPost>> types=search.groupByType(collConf);
 		List<ZPost> posts = new ArrayList<>();
 
@@ -98,25 +98,11 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 			posts.addAll(types.get(t));
 		}
 
-		String fd = coll.getFeed();
 		// design the Feed interface, so fd is not a string
 		// it is a feed instance represented by the interface
-		// apply the algorithm
-		// int fetched = 0;
-		// metadata should be sent on headers !!!
-		// XXX: this wont work well, because we split requests
-		//      into types remember ?
-//		if (updateChan && fetched>0) {
-//			QueryConf c = chan.queryConf();
-//			c.setStart(c.getStart() + fetched);
-//			chan.queryConf(c);
-//			// update the index of the channel
-//			$channel.update(chan);
-//		}
+		String fd = coll.getFeed();
 
-		ZCollection zc = coll.copy();
-		zc.setPosts(posts);
-		return zc;
+		return coll.copy()
+			.setPosts(posts);
 	}
-
 }
