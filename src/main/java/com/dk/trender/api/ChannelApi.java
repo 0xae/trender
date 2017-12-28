@@ -74,7 +74,7 @@ public class ChannelApi {
 			data = $channel.top();
 		}
 
-		ZCollection col = $colls.byName("t-newsfeed");
+		ZCollection col = $colls.byName("t-newsfeed").copy();
 		col.queryConf(col.queryConf().setLimit(2));
 
 		for (ZChannel chan : data) {

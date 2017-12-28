@@ -31,7 +31,7 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 			.ofNullable(get(id))
 			.orElseThrow(NoResultException::new)
 			.setLastAccess(DateTime.now());
-		update(c);
+		// update(c);
 		return c;
 	}
 

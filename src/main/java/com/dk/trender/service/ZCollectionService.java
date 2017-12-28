@@ -9,7 +9,6 @@ import java.util.Optional;
 import javax.persistence.NoResultException;
 
 import org.hibernate.SessionFactory;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +22,6 @@ import io.dropwizard.hibernate.AbstractDAO;
 
 public class ZCollectionService extends AbstractDAO<ZCollection>{
 	private static final Logger log = LoggerFactory.getLogger(ZCollectionService.class);
-	private static final int ROWS_PER_REQ = 5;
 	private final ZSearchService search;
 
 	public ZCollectionService(SessionFactory sessionFactory,
@@ -92,7 +90,7 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 
 		// log.info("conf: " + collConf.toString());
 		Map<String, List<ZPost>> types=search.groupByType(collConf);
-		List<ZPost> posts = new ArrayList<>();
+		List<ZPost> posts=new ArrayList<>();
 
 		for (String t : types.keySet()) {
 			posts.addAll(types.get(t));
@@ -100,8 +98,7 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 
 		// design the Feed interface, so fd is not a string
 		// it is a feed instance represented by the interface
-		String fd = coll.getFeed();
-
+		// ZFeed fd = coll.getFeed();
 		return coll.copy()
 			.setPosts(posts);
 	}

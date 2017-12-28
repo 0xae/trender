@@ -162,4 +162,3 @@ create table z_user (
         created_at timestamp not null default now(),
         UNIQUE(email)
 );
-
