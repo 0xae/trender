@@ -61,8 +61,9 @@ public class ZUser implements Principal {
 	private DateTime createdAt = DateTime.now();
 
 	@JsonProperty
-	public void setLocation(String location) {
+	public ZUser setLocation(String location) {
 		this.location = location;
+		return this;
 	}
 
 	@JsonProperty
@@ -71,8 +72,9 @@ public class ZUser implements Principal {
 	}
 
 	@JsonProperty
-	public void setPicture(String picture) {
+	public ZUser setPicture(String picture) {
 		this.picture = picture;
+		return this;
 	}
 
 	@JsonProperty
@@ -81,8 +83,9 @@ public class ZUser implements Principal {
 	}
 
 	@JsonProperty
-	public void setLang(String lang) {
+	public ZUser setLang(String lang) {
 		this.lang = lang;
+		return this;
 	}
 
 	@JsonProperty
@@ -91,8 +94,9 @@ public class ZUser implements Principal {
 	}
 
 	@JsonProperty
-	public void setCreatedAt(DateTime createdAt) {
+	public ZUser setCreatedAt(DateTime createdAt) {
 		this.createdAt = createdAt;
+		return this;
 	}
 
 	@JsonProperty
@@ -106,8 +110,9 @@ public class ZUser implements Principal {
 	}
 
 	@JsonProperty
-	public void setPassword(String password) {
+	public ZUser setPassword(String password) {
 		this.password = password;
+		return this;
 	}
 
 	@Override
@@ -117,8 +122,9 @@ public class ZUser implements Principal {
 	}
 
 	@JsonProperty
-	public void setName(String name) {
+	public ZUser setName(String name) {
 		this.name = name;
+		return this;
 	}
 
 	@JsonProperty
@@ -127,8 +133,9 @@ public class ZUser implements Principal {
 	}
 
 	@JsonProperty
-	public void setEmail(String email) {
+	public ZUser setEmail(String email) {
 		this.email = email;
+		return this;
 	}
 
 	@JsonProperty
@@ -137,8 +144,9 @@ public class ZUser implements Principal {
 	}
 
 	@JsonProperty
-	public void setId(long id) {
+	public ZUser setId(long id) {
 		this.id = id;
+		return this;
 	}
 
 	@Override
@@ -150,9 +158,12 @@ public class ZUser implements Principal {
 	public boolean equals(final Object obj) {
 		if (this == obj)
 			return true;
+
 		if (obj == null || getClass() != obj.getClass())
 			return false;
-		final ZUser other = (ZUser) obj;
+
+		ZUser other = (ZUser) obj;
+
 		return this.id == other.id &&
 				Objects.equals(email, other.email) && 
 				Objects.equals(name, other.name); 

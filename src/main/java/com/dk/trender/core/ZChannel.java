@@ -87,8 +87,9 @@ public class ZChannel {
 	}
 
 	@JsonProperty
-	public void setCollections(List<ZCollection> collections) {
+	public ZChannel setCollections(List<ZCollection> collections) {
 		this.collections = collections;
+		return this;
 	}
 
 	@JsonProperty
@@ -112,8 +113,9 @@ public class ZChannel {
 	}
 
 	@JsonProperty
-	public void setLastUpdate(DateTime lastUpdate) {
+	public ZChannel setLastUpdate(DateTime lastUpdate) {
 		this.lastUpdate = lastUpdate;
+		return this;
 	}
 
 	@JsonProperty
@@ -132,8 +134,9 @@ public class ZChannel {
 	}
 
 	@JsonProperty
-	public void setId(long id) {
+	public ZChannel setId(long id) {
 		this.id = id;
+		return this;
 	}
 
 	@JsonProperty
@@ -142,8 +145,9 @@ public class ZChannel {
 	}
 
 	@JsonProperty
-	public void setName(String name) {
+	public ZChannel setName(String name) {
 		this.name = name;
+		return this;
 	}
 
 	@JsonProperty
@@ -152,8 +156,9 @@ public class ZChannel {
 	}
 
 	@JsonProperty
-	public void setPicture(String picture) {
+	public ZChannel setPicture(String picture) {
 		this.picture = picture;
+		return this;
 	}
 
 	@JsonProperty
@@ -173,8 +178,9 @@ public class ZChannel {
 	}
 
 	@JsonProperty
-	public void setQueryConf(String queryConf) {
+	public ZChannel setQueryConf(String queryConf) {
 		this.queryConf = queryConf;
+		return this;
 	}
 
 	@JsonProperty
@@ -183,8 +189,9 @@ public class ZChannel {
 	}
 
 	@JsonProperty
-	public void setCuration(int curation) {
+	public ZChannel setCuration(int curation) {
 		this.curation = curation;
+		return this;
 	}
 
 	@JsonProperty
@@ -193,8 +200,9 @@ public class ZChannel {
 	}
 
 	@JsonProperty
-	public void setRank(int rank) {
+	public ZChannel setRank(int rank) {
 		this.rank = rank;
+		return this;
 	}
 
 	@JsonProperty
@@ -203,8 +211,9 @@ public class ZChannel {
 	}
 
 	@JsonProperty
-	public void setIntel(String inteligence) {
+	public ZChannel setIntel(String inteligence) {
 		this.intel = inteligence;
+		return this;
 	}
 
 	@JsonProperty
@@ -213,8 +222,9 @@ public class ZChannel {
 	}
 
 	@JsonProperty
-	public void setAudience(String audience) {
+	public ZChannel setAudience(String audience) {
 		this.audience = audience;
+		return this;
 	}
 
 	@JsonProperty
@@ -223,13 +233,15 @@ public class ZChannel {
 	}
 
 	@JsonProperty
-	public void setCreatedAt(DateTime createdAt) {
+	public ZChannel setCreatedAt(DateTime createdAt) {
 		this.createdAt = createdAt;
+		return this;
 	}
 
 	@JsonProperty
-	public void setDescription(String description) {
+	public ZChannel setDescription(String description) {
 		this.description = description;
+		return this;
 	}
 
 	@JsonProperty

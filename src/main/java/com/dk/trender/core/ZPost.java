@@ -49,8 +49,9 @@ public class ZPost {
 	private @NotNull List<String> category = Collections.emptyList();
 	
 	@JsonProperty
-	public void setGroup(String group) {
+	public ZPost setGroup(String group) {
 		this.group = group;
+		return this;
 	}
 	
 	@JsonProperty
@@ -59,8 +60,9 @@ public class ZPost {
 	}
 
 	@JsonProperty
-	public void setAuthorId(String authorId) {
+	public ZPost setAuthorId(String authorId) {
 		this.authorId = authorId;
+		return this;
 	}
 
 	@JsonProperty
@@ -113,8 +115,9 @@ public class ZPost {
 	}
 
 	@JsonProperty
-	public void setLocation(String location) {
+	public ZPost setLocation(String location) {
 		this.location = location;
+		return this;
 	}
 
 	@JsonProperty
@@ -227,10 +230,11 @@ public class ZPost {
 	}
 
 	@JsonProperty
-	public void setCategory(List<String> category) {
+	public ZPost setCategory(List<String> category) {
 		this.category = category.stream()
 				.map(t -> t.toLowerCase().trim())
 				.collect(Collectors.toList());
+		return this;
 	}
 
 	@JsonProperty
@@ -239,8 +243,9 @@ public class ZPost {
 	}
 
 	@JsonProperty
-	public void setCached(String cached) {
+	public ZPost setCached(String cached) {
 		this.cached = cached;
+		return this;
 	}
 
 	@JsonProperty
