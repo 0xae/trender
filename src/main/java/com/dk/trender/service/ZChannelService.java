@@ -18,6 +18,7 @@ import io.dropwizard.hibernate.AbstractDAO;
 
 public class ZChannelService extends AbstractDAO<ZChannel> {
 	private static final Logger log = LoggerFactory.getLogger(ZChannelService.class);
+	private static final int MAX_ITEM_SUGS = 4;
 	private final ZSearchService search;
 
 	public ZChannelService(SessionFactory sessionFactory,
@@ -66,10 +67,10 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 						" where z.audience=:audience"+
 						" order by lastUpdate desc";
 
-		return list(currentSession()
-				     .createQuery(query)
-					 .setParameter("audience", audience)
-				);
+		return currentSession()
+			     .createQuery(query)
+				 .setParameter("audience", audience)
+				 .getResultList();
 	}
 
 	// TODO: fix this to avoid duplicate 
@@ -99,8 +100,9 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 
 	@SuppressWarnings({"unchecked"})
 	public List<ZChannel> all() {
-		return list(currentSession()
-					.createQuery("from ZChannel"));
+		return currentSession()
+				.createQuery("from ZChannel")
+				.getResultList();
 	}
 
 	@SuppressWarnings({"unchecked"})
@@ -120,10 +122,10 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 	public List<ZChannel> recent() {
 		String query = "from ZChannel c"+
 				   " order by last_access desc";
-	
+
 		return currentSession()
 			.createQuery(query)
-			.setMaxResults(10)
+			.setMaxResults(25)
 			.getResultList();
 	}
 
@@ -133,13 +135,14 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 
 		List<ZChannel> list = currentSession()
 			.createQuery(query)
-			.setMaxResults(20)
+			.setMaxResults(10)
 			.getResultList();
 
 		return list.parallelStream()
 			.map(this::count)
 			.sorted((o1,o2) -> o1.totalCount() - o2.totalCount())
-			.collect(Collectors.toList());
+			.collect(Collectors.toList())
+			.subList(0, MAX_ITEM_SUGS);
 	}
 
 	private ZChannel count(ZChannel chan) {

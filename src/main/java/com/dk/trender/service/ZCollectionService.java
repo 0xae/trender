@@ -29,7 +29,7 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 		super(sessionFactory);
 		this.search = search;
 	}
-	
+
 	public ZCollection byId(long id) {
 		return Optional
 				.ofNullable(get(id))

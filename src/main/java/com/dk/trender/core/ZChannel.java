@@ -68,7 +68,7 @@ public class ZChannel {
 
 	@Column(name="last_access")
 	private DateTime lastAccess=new DateTime();
-
+	
 	@Transient
 	private List<ZCollection> collections = new ArrayList<>();
 
