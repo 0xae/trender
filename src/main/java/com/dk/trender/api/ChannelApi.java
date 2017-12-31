@@ -22,7 +22,6 @@ import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
 import com.dk.trender.service.ZChannelService;
 import com.dk.trender.service.ZCollectionService;
-import com.dk.trender.service.utils.Utils;
 
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.validation.OneOf;
@@ -74,7 +73,7 @@ public class ChannelApi {
 			data = $channel.top();
 		}
 
-		ZCollection col = $colls.byName("t-newsfeed").copy();
+		ZCollection col = $colls.byName("t-newsfeed");
 		col.queryConf(col.queryConf().setLimit(2));
 
 		for (ZChannel chan : data) {

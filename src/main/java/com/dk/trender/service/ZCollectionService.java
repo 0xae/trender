@@ -38,10 +38,10 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 
 	public ZCollection byName(String name) {
 		String q = "from ZCollection where name=lower(trim(:name))";
-		return ((ZCollection)currentSession()
-				.createQuery(q)
+		return currentSession()
+				.createQuery(q, ZCollection.class)
 				.setParameter("name", name)
-				.getSingleResult());
+				.getSingleResult();
 	}
 
 	public ZCollection create(ZCollection col) {
@@ -68,6 +68,7 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 		String query = "from ZCollection z "+
 			    "where z.audience=:audience "+
 				"order by lastUpdate desc";
+
 		return list(currentSession().createQuery(query)
 					.setParameter("audience", audience));
 	}
