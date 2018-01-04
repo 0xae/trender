@@ -15,7 +15,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.ConcurrentUpdateSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 
-import com.dk.trender.core.QueryConf;
+import com.dk.trender.core.ZSearch;
 import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZPost;
 import com.dk.trender.core.feed.ZGroup;

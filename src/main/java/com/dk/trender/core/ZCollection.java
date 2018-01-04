@@ -39,6 +39,7 @@ public class ZCollection {
 	public static final String PUBLIC = "public";
 	public static final String PRIVATE = "private";
 	private static final int MAX_TYPES = 5;
+	private static final String INTERNAL_PREFIX = "t-";
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -162,12 +163,12 @@ public class ZCollection {
 	}
 
 	@JsonIgnore
-	public QueryConf queryConf() {
-		return QueryConf.parse(conf);
+	public ZSearch queryConf() {
+		return ZSearch.parse(conf);
 	}
 
 	@JsonIgnore
-	public QueryConf queryConf(QueryConf value) {
+	public ZSearch queryConf(ZSearch value) {
 		this.conf = value.toString();
 		return value;
 	}
@@ -311,6 +312,15 @@ public class ZCollection {
 	@JsonProperty
 	public ZCollection setChannelId(Long channelId) {
 		this.channelId = channelId;
+		return this;
+	}
+
+	@JsonIgnore
+	public boolean isInternal() {
+		return name.startsWith(INTERNAL_PREFIX);
+	}
+
+	public ZCollection filter(ZSearch f) {
 		return this;
 	}
 }

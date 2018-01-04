@@ -14,7 +14,7 @@ import org.apache.solr.common.SolrDocumentList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dk.trender.core.QueryConf;
+import com.dk.trender.core.ZSearch;
 import com.dk.trender.core.ZPost;
 import com.dk.trender.exceptions.SolrExecutionException;
 
@@ -30,7 +30,7 @@ public class ZSearchService {
 	 * @param conf
 	 * @return
 	 */
-	public Map<String, List<ZPost>> groupByType(QueryConf conf) {
+	public Map<String, List<ZPost>> groupByType(ZSearch conf) {
 		return conf.getTypes()
 		.parallelStream()
 		.collect(Collectors.<String, String, List<ZPost>>toMap(
@@ -45,13 +45,13 @@ public class ZSearchService {
 		);
 	}
 
-	public int count(QueryConf conf) {
+	public int count(ZSearch conf) {
 		return (int) search(conf, Collections.emptyList())
 				.getResults()
 				.getNumFound();
 	}
 
-	private QueryResponse search(QueryConf conf, List<String> pfq) {
+	private QueryResponse search(ZSearch conf, List<String> pfq) {
 		SolrQuery sq = new SolrQuery();
 		sq.set("q", conf.getQ());
 		sq.set("rows", conf.getLimit());

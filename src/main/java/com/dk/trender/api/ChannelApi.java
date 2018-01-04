@@ -12,7 +12,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
@@ -20,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
+import com.dk.trender.core.ZSearch;
 import com.dk.trender.service.ZChannelService;
 import com.dk.trender.service.ZCollectionService;
 
@@ -54,8 +57,10 @@ public class ChannelApi {
 	@Path("/{id}/feed/{collName}")
 	@UnitOfWork
 	public ZCollection feed(@PathParam("id") long id,
-							@PathParam("collName") String collName) {
-		ZCollection col = $colls.byName("t-newsfeed");
+							@PathParam("collName") String collName,
+							@Context UriInfo uri) {
+		ZCollection col = $colls.byName("t-newsfeed")
+								.filter(new ZSearch(uri.getQueryParameters()));
 		ZChannel chan = $channel.byId(id);
 		return $colls.feed(chan, col);
 	}
@@ -73,8 +78,8 @@ public class ChannelApi {
 			data = $channel.top();
 		}
 
-		ZCollection col = $colls.byName("t-newsfeed");
-		col.queryConf(col.queryConf().setLimit(2));
+		ZCollection col = $colls.byName("t-newsfeed").copy();
+		col.queryConf(col.queryConf().setLimit(4));
 
 		for (ZChannel chan : data) {
 			chan.getCollections()

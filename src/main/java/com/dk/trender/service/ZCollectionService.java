@@ -12,7 +12,7 @@ import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dk.trender.core.QueryConf;
+import com.dk.trender.core.ZSearch;
 import com.dk.trender.core.ZChannel;
 import com.dk.trender.core.ZCollection;
 import com.dk.trender.core.ZPost;
@@ -54,7 +54,12 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 	}
 
 	public ZCollection update(ZCollection col) {
-		currentSession().update(col);
+		if (!col.isInternal()) {
+			currentSession().update(col);
+		} else {
+			log.info("No updates to internal collection #" + col.getName());
+		}
+
 		return col;
 	}
 
@@ -74,22 +79,17 @@ public class ZCollectionService extends AbstractDAO<ZCollection>{
 	}
 
 	public ZCollection feed(ZChannel chan, ZCollection coll) {
-		QueryConf mainConf = chan.queryConf();
-		QueryConf collConf = coll.queryConf();
+		ZSearch collConf = coll.queryConf();
 
-		collConf.getFq().addAll(mainConf.getFq());
-		collConf.setQ(mainConf.getQ());
-		collConf.setTypes(coll.getTypes());
+		// internal collections contains only inteligence configuration
+		if (coll.isInternal()) {
+			ZSearch mainConf = chan.queryConf();
+			collConf.getFq().addAll(mainConf.getFq());
+			collConf.setQ(mainConf.getQ())
+					.setTypes(coll.getTypes())	
+					.setStart(mainConf.getStart());
+		}		
 
-		if (collConf.getStart()==0) {
-			collConf.setStart(mainConf.getStart());
-		}
-
-		if (collConf.getQ()==null || collConf.getQ().trim().isEmpty()) {
-			collConf.setQ(mainConf.getQ());
-		}
-
-		// log.info("conf: " + collConf.toString());
 		Map<String, List<ZPost>> types=search.groupByType(collConf);
 		List<ZPost> posts=new ArrayList<>();
 

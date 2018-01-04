@@ -44,10 +44,10 @@ public class ZChannelService extends AbstractDAO<ZChannel> {
 		return t;
 	}
 
-	public ZChannel update(ZChannel obj) {
-		obj.setLastUpdate(DateTime.now());
-		currentSession().update(obj);
-		return obj;
+	public ZChannel update(ZChannel chan) {
+		chan.setLastUpdate(DateTime.now());
+		currentSession().update(chan);
+		return chan;
 	}
 
 	public void delete(long id) {

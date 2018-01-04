@@ -24,6 +24,7 @@ import io.dropwizard.validation.OneOf;
 @Entity
 @Table(name="z_channel")
 public class ZChannel {
+	public static final String INTERNAL_PREFIX = "t-";
 	public static final String PUBLIC="public";
 	public static final String PRIVATE="private";
 
@@ -43,7 +44,7 @@ public class ZChannel {
 
 	@Column(name="query_conf")
 	@ColumnTransformer(write="?::jsonb")
-	private String queryConf="{}";
+	private String queryConf;
 
 	@Column
 	private int curation=0;
@@ -167,12 +168,12 @@ public class ZChannel {
 	}
 
 	@JsonIgnore
-	public QueryConf queryConf() {
-		return QueryConf.parse(this.queryConf);
+	public ZSearch queryConf() {
+		return ZSearch.parse(this.queryConf);
 	}
 
 	@JsonIgnore
-	public QueryConf queryConf(QueryConf c) {
+	public ZSearch queryConf(ZSearch c) {
 		this.queryConf = c.toString();
 		return c;
 	}
